@@ -6,6 +6,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: "false"
     steps:
       - uses: actions/checkout@v2
       - run: yarn global add @wundergraph/wunderctl@latest
