@@ -10,3 +10,6 @@ create table if not exists Messages (
   user_id int not null references Users(id),
   message text not null
 );
+
+insert into Users (email, name) VALUES ('jens@wundergraph.com','Jens@WunderGraph');
+insert into Messages (user_id, message) VALUES ((select id from Users where email = 'jens@wundergraph.com'),'Hey, welcome to the WunderChat! =)');

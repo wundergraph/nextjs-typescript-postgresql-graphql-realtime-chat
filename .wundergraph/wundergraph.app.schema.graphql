@@ -342,7 +342,7 @@ type Query {
 
 input usersCreateWithoutMessagesInput {
   email: String!
-  name: String
+  name: String!
 }
 
 input usersCreateOrConnectWithoutMessagesInput {
@@ -430,7 +430,7 @@ input messagesCreateNestedManyWithoutUsersInput {
 
 input usersCreateInput {
   email: String!
-  name: String
+  name: String!
   messages: messagesCreateNestedManyWithoutUsersInput
 }
 
@@ -486,7 +486,7 @@ input usersUpdateInput {
 input usersCreateManyInput {
   id: Int
   email: String!
-  name: String
+  name: String!
 }
 
 input usersUpdateManyMutationInput {
