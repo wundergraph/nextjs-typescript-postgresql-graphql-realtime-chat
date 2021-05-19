@@ -1,0 +1,529 @@
+directive @fromClaim(name: Claim) on VARIABLE_DEFINITION
+
+input NestedIntFilter {
+  equals: Int
+  in: [Int]
+  notIn: [Int]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int]
+  notIn: [Int]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
+}
+
+input StringFilter {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+input MessagesListRelationFilter {
+  every: messagesWhereInput
+  some: messagesWhereInput
+  none: messagesWhereInput
+}
+
+input usersWhereInput {
+  AND: usersWhereInput
+  OR: [usersWhereInput]
+  NOT: usersWhereInput
+  id: IntFilter
+  email: StringFilter
+  name: StringFilter
+  messages: MessagesListRelationFilter
+}
+
+input UsersRelationFilter {
+  is: usersWhereInput
+  isNot: usersWhereInput
+}
+
+input messagesWhereInput {
+  AND: messagesWhereInput
+  OR: [messagesWhereInput]
+  NOT: messagesWhereInput
+  id: IntFilter
+  user_id: IntFilter
+  message: StringFilter
+  users: UsersRelationFilter
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input messagesOrderByInput {
+  id: SortOrder
+  user_id: SortOrder
+  message: SortOrder
+}
+
+input messagesWhereUniqueInput {
+  id: Int
+}
+
+enum MessagesScalarFieldEnum {
+  id
+  user_id
+  message
+}
+
+type users {
+  id: Int!
+  email: String!
+  name: String!
+  messages(where: messagesWhereInput, orderBy: [messagesOrderByInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]
+}
+
+type messages {
+  id: Int!
+  user_id: Int!
+  message: String!
+  users: users!
+}
+
+type MessagesCountAggregateOutputType {
+  id: Int!
+  user_id: Int!
+  message: Int!
+}
+
+type MessagesAvgAggregateOutputType {
+  id: Float
+  user_id: Float
+}
+
+type MessagesSumAggregateOutputType {
+  id: Int
+  user_id: Int
+}
+
+type MessagesMinAggregateOutputType {
+  id: Int
+  user_id: Int
+  message: String
+}
+
+type MessagesMaxAggregateOutputType {
+  id: Int
+  user_id: Int
+  message: String
+}
+
+type AggregateMessages {
+  count: MessagesCountAggregateOutputType
+  avg: MessagesAvgAggregateOutputType
+  sum: MessagesSumAggregateOutputType
+  min: MessagesMinAggregateOutputType
+  max: MessagesMaxAggregateOutputType
+}
+
+input NestedFloatFilter {
+  equals: Float
+  in: [Float]
+  notIn: [Float]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: NestedFloatFilter
+}
+
+input NestedIntWithAggregatesFilter {
+  equals: Int
+  in: [Int]
+  notIn: [Int]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntWithAggregatesFilter
+  count: NestedIntFilter
+  avg: NestedFloatFilter
+  sum: NestedIntFilter
+  min: NestedIntFilter
+  max: NestedIntFilter
+}
+
+input IntWithAggregatesFilter {
+  equals: Int
+  in: [Int]
+  notIn: [Int]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: NestedIntWithAggregatesFilter
+  count: NestedIntFilter
+  avg: NestedFloatFilter
+  sum: NestedIntFilter
+  min: NestedIntFilter
+  max: NestedIntFilter
+}
+
+input NestedStringWithAggregatesFilter {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringWithAggregatesFilter
+  count: NestedIntFilter
+  min: NestedStringFilter
+  max: NestedStringFilter
+}
+
+input StringWithAggregatesFilter {
+  equals: String
+  in: [String]
+  notIn: [String]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringWithAggregatesFilter
+  count: NestedIntFilter
+  min: NestedStringFilter
+  max: NestedStringFilter
+}
+
+input messagesScalarWhereWithAggregatesInput {
+  AND: messagesScalarWhereWithAggregatesInput
+  OR: [messagesScalarWhereWithAggregatesInput]
+  NOT: messagesScalarWhereWithAggregatesInput
+  id: IntWithAggregatesFilter
+  user_id: IntWithAggregatesFilter
+  message: StringWithAggregatesFilter
+}
+
+type MessagesGroupByOutputType {
+  id: Int!
+  user_id: Int!
+  message: String!
+  count: MessagesCountAggregateOutputType
+  avg: MessagesAvgAggregateOutputType
+  sum: MessagesSumAggregateOutputType
+  min: MessagesMinAggregateOutputType
+  max: MessagesMaxAggregateOutputType
+}
+
+input usersOrderByInput {
+  id: SortOrder
+  email: SortOrder
+  name: SortOrder
+}
+
+input usersWhereUniqueInput {
+  id: Int
+  email: String
+}
+
+enum UsersScalarFieldEnum {
+  id
+  email
+  name
+}
+
+type UsersCountAggregateOutputType {
+  id: Int!
+  email: Int!
+  name: Int!
+}
+
+type UsersAvgAggregateOutputType {
+  id: Float
+}
+
+type UsersSumAggregateOutputType {
+  id: Int
+}
+
+type UsersMinAggregateOutputType {
+  id: Int
+  email: String
+  name: String
+}
+
+type UsersMaxAggregateOutputType {
+  id: Int
+  email: String
+  name: String
+}
+
+type AggregateUsers {
+  count: UsersCountAggregateOutputType
+  avg: UsersAvgAggregateOutputType
+  sum: UsersSumAggregateOutputType
+  min: UsersMinAggregateOutputType
+  max: UsersMaxAggregateOutputType
+}
+
+input usersScalarWhereWithAggregatesInput {
+  AND: usersScalarWhereWithAggregatesInput
+  OR: [usersScalarWhereWithAggregatesInput]
+  NOT: usersScalarWhereWithAggregatesInput
+  id: IntWithAggregatesFilter
+  email: StringWithAggregatesFilter
+  name: StringWithAggregatesFilter
+}
+
+type UsersGroupByOutputType {
+  id: Int!
+  email: String!
+  name: String!
+  count: UsersCountAggregateOutputType
+  avg: UsersAvgAggregateOutputType
+  sum: UsersSumAggregateOutputType
+  min: UsersMinAggregateOutputType
+  max: UsersMaxAggregateOutputType
+}
+
+type Query {
+  findFirstmessages(where: messagesWhereInput, orderBy: [messagesOrderByInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): messages
+  findManymessages(where: messagesWhereInput, orderBy: [messagesOrderByInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]!
+  aggregatemessages(where: messagesWhereInput, orderBy: [messagesOrderByInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int): AggregateMessages!
+  groupBymessages(where: messagesWhereInput, orderBy: [messagesOrderByInput], by: [MessagesScalarFieldEnum]!, having: messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [MessagesGroupByOutputType]!
+  findUniquemessages(where: messagesWhereUniqueInput!): messages
+  findFirstusers(where: usersWhereInput, orderBy: [usersOrderByInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): users
+  findManyusers(where: usersWhereInput, orderBy: [usersOrderByInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): [users]!
+  aggregateusers(where: usersWhereInput, orderBy: [usersOrderByInput], cursor: usersWhereUniqueInput, take: Int, skip: Int): AggregateUsers!
+  groupByusers(where: usersWhereInput, orderBy: [usersOrderByInput], by: [UsersScalarFieldEnum]!, having: usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [UsersGroupByOutputType]!
+  findUniqueusers(where: usersWhereUniqueInput!): users
+}
+
+input usersCreateWithoutMessagesInput {
+  email: String!
+  name: String
+}
+
+input usersCreateOrConnectWithoutMessagesInput {
+  where: usersWhereUniqueInput!
+  create: usersCreateWithoutMessagesInput!
+}
+
+input usersCreateNestedOneWithoutMessagesInput {
+  create: usersCreateWithoutMessagesInput
+  connectOrCreate: usersCreateOrConnectWithoutMessagesInput
+  connect: usersWhereUniqueInput
+}
+
+input messagesCreateInput {
+  message: String!
+  users: usersCreateNestedOneWithoutMessagesInput!
+}
+
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
+input usersUpdateWithoutMessagesInput {
+  email: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+input usersUpsertWithoutMessagesInput {
+  update: usersUpdateWithoutMessagesInput!
+  create: usersCreateWithoutMessagesInput!
+}
+
+input usersUpdateOneRequiredWithoutMessagesInput {
+  create: usersCreateWithoutMessagesInput
+  connectOrCreate: usersCreateOrConnectWithoutMessagesInput
+  upsert: usersUpsertWithoutMessagesInput
+  connect: usersWhereUniqueInput
+  update: usersUpdateWithoutMessagesInput
+}
+
+input messagesUpdateInput {
+  message: StringFieldUpdateOperationsInput
+  users: usersUpdateOneRequiredWithoutMessagesInput
+}
+
+input messagesCreateManyInput {
+  id: Int
+  user_id: Int!
+  message: String!
+}
+
+type AffectedRowsOutput {
+  count: Int!
+}
+
+input messagesUpdateManyMutationInput {
+  message: StringFieldUpdateOperationsInput
+}
+
+input messagesCreateWithoutUsersInput {
+  message: String!
+}
+
+input messagesCreateOrConnectWithoutUsersInput {
+  where: messagesWhereUniqueInput!
+  create: messagesCreateWithoutUsersInput!
+}
+
+input messagesCreateManyUsersInput {
+  id: Int
+  message: String!
+}
+
+input messagesCreateManyUsersInputEnvelope {
+  data: [messagesCreateManyUsersInput]!
+  skipDuplicates: Boolean
+}
+
+input messagesCreateNestedManyWithoutUsersInput {
+  create: messagesCreateWithoutUsersInput
+  connectOrCreate: messagesCreateOrConnectWithoutUsersInput
+  createMany: messagesCreateManyUsersInputEnvelope
+  connect: messagesWhereUniqueInput
+}
+
+input usersCreateInput {
+  email: String!
+  name: String
+  messages: messagesCreateNestedManyWithoutUsersInput
+}
+
+input messagesUpdateWithoutUsersInput {
+  message: StringFieldUpdateOperationsInput
+}
+
+input messagesUpsertWithWhereUniqueWithoutUsersInput {
+  where: messagesWhereUniqueInput!
+  update: messagesUpdateWithoutUsersInput!
+  create: messagesCreateWithoutUsersInput!
+}
+
+input messagesUpdateWithWhereUniqueWithoutUsersInput {
+  where: messagesWhereUniqueInput!
+  data: messagesUpdateWithoutUsersInput!
+}
+
+input messagesScalarWhereInput {
+  AND: messagesScalarWhereInput
+  OR: [messagesScalarWhereInput]
+  NOT: messagesScalarWhereInput
+  id: IntFilter
+  user_id: IntFilter
+  message: StringFilter
+}
+
+input messagesUpdateManyWithWhereWithoutUsersInput {
+  where: messagesScalarWhereInput!
+  data: messagesUpdateManyMutationInput!
+}
+
+input messagesUpdateManyWithoutUsersInput {
+  create: messagesCreateWithoutUsersInput
+  connectOrCreate: messagesCreateOrConnectWithoutUsersInput
+  upsert: messagesUpsertWithWhereUniqueWithoutUsersInput
+  createMany: messagesCreateManyUsersInputEnvelope
+  connect: messagesWhereUniqueInput
+  set: messagesWhereUniqueInput
+  disconnect: messagesWhereUniqueInput
+  delete: messagesWhereUniqueInput
+  update: messagesUpdateWithWhereUniqueWithoutUsersInput
+  updateMany: messagesUpdateManyWithWhereWithoutUsersInput
+  deleteMany: messagesScalarWhereInput
+}
+
+input usersUpdateInput {
+  email: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+  messages: messagesUpdateManyWithoutUsersInput
+}
+
+input usersCreateManyInput {
+  id: Int
+  email: String!
+  name: String
+}
+
+input usersUpdateManyMutationInput {
+  email: StringFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
+}
+
+type Mutation {
+  createOnemessages(data: messagesCreateInput!): messages
+  upsertOnemessages(where: messagesWhereUniqueInput!, create: messagesCreateInput!, update: messagesUpdateInput!): messages
+  createManymessages(data: [messagesCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput
+  deleteOnemessages(where: messagesWhereUniqueInput!): messages
+  updateOnemessages(data: messagesUpdateInput!, where: messagesWhereUniqueInput!): messages
+  updateManymessages(data: messagesUpdateManyMutationInput!, where: messagesWhereInput): AffectedRowsOutput
+  deleteManymessages(where: messagesWhereInput): AffectedRowsOutput
+  createOneusers(data: usersCreateInput!): users
+  upsertOneusers(where: usersWhereUniqueInput!, create: usersCreateInput!, update: usersUpdateInput!): users
+  createManyusers(data: [usersCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput
+  deleteOneusers(where: usersWhereUniqueInput!): users
+  updateOneusers(data: usersUpdateInput!, where: usersWhereUniqueInput!): users
+  updateManyusers(data: usersUpdateManyMutationInput!, where: usersWhereInput): AffectedRowsOutput
+  deleteManyusers(where: usersWhereInput): AffectedRowsOutput
+}
+
+scalar DateTime
+
+scalar Json
+
+scalar UUID
+
+scalar BigInt
+
+enum Claim {
+  EMAIL
+  EMAIL_VERIFIED
+  NAME
+  NICKNAME
+  LOCATION
+  PROVIDER
+}

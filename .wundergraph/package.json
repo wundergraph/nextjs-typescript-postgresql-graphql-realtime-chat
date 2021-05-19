@@ -1,0 +1,21 @@
+{
+  "name": "wundergraph-application",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "$npm_execpath install && wunderctl up --debug",
+    "generate": "$npm_execpath install && ts-node-dev --respawn --transpile-only --experimental-modules --quiet wundergraph.config.ts",
+    "up": "$npm_execpath install && wunderctl up --debug",
+    "prod": "$npm_execpath install && NODE_ENV=production ts-node wundergraph.config.ts",
+    "deploy": "$npm_execpath run prod && wunderctl deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.14.37",
+    "@wundergraph/sdk": "0.21.2",
+    "concurrently": "^6.0.0",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.3"
+  }
+}

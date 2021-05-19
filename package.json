@@ -1,0 +1,23 @@
+{
+  "name": "nextjs-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --kill-others \"$npm_execpath run nextDev\" \"$npm_execpath run wundergraph\" \"$npm_execpath run database\"",
+    "wundergraph": "cd .wundergraph && $npm_execpath run dev",
+    "build": "cd .wundergraph && $npm_execpath run prod && cd .. && next build",
+    "database": "docker-compose up",
+    "nextDev": "next dev",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "10.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.3",
+    "concurrently": "^6.0.0",
+    "typescript": "^4.2.3"
+  }
+}
