@@ -79,14 +79,14 @@ interface TargetTypes {
 	MessagesMinAggregateOutputType: "id" | "user_id" | "message";
 	MessagesMaxAggregateOutputType: "id" | "user_id" | "message";
 	AggregateMessages: "count" | "avg" | "sum" | "min" | "max";
-	MessagesGroupByOutputType: "id" | "user_id" | "message" | "count" | "avg" | "sum" | "min" | "max";
+	MessagesGroupByOutputType: "id" | "user_id" | "message";
 	UsersCountAggregateOutputType: "id" | "email" | "name";
 	UsersAvgAggregateOutputType: "id";
 	UsersSumAggregateOutputType: "id";
 	UsersMinAggregateOutputType: "id" | "email" | "name";
 	UsersMaxAggregateOutputType: "id" | "email" | "name";
 	AggregateUsers: "count" | "avg" | "sum" | "min" | "max";
-	UsersGroupByOutputType: "id" | "email" | "name" | "count" | "avg" | "sum" | "min" | "max";
+	UsersGroupByOutputType: "id" | "email" | "name";
 	AffectedRowsOutput: "count";
 }
 

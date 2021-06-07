@@ -9,7 +9,7 @@ import {
 import {ConfigureOperations} from "./generated/operations";
 
 const db = introspect.postgresql({
-    database_querystring: "postgresql://admin:admin@localhost:55555/example?schema=public",
+    database_querystring: "postgresql://admin:admin@localhost:54322/example?schema=public",
 });
 
 const operations: ConfigureOperations = {

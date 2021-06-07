@@ -178,10 +178,15 @@ input NestedIntWithAggregatesFilter {
   gt: Int
   gte: Int
   not: NestedIntWithAggregatesFilter
+  _count: NestedIntFilter
   count: NestedIntFilter
+  _avg: NestedFloatFilter
   avg: NestedFloatFilter
+  _sum: NestedIntFilter
   sum: NestedIntFilter
+  _min: NestedIntFilter
   min: NestedIntFilter
+  _max: NestedIntFilter
   max: NestedIntFilter
 }
 
@@ -194,10 +199,15 @@ input IntWithAggregatesFilter {
   gt: Int
   gte: Int
   not: NestedIntWithAggregatesFilter
+  _count: NestedIntFilter
   count: NestedIntFilter
+  _avg: NestedFloatFilter
   avg: NestedFloatFilter
+  _sum: NestedIntFilter
   sum: NestedIntFilter
+  _min: NestedIntFilter
   min: NestedIntFilter
+  _max: NestedIntFilter
   max: NestedIntFilter
 }
 
@@ -213,8 +223,11 @@ input NestedStringWithAggregatesFilter {
   startsWith: String
   endsWith: String
   not: NestedStringWithAggregatesFilter
+  _count: NestedIntFilter
   count: NestedIntFilter
+  _min: NestedStringFilter
   min: NestedStringFilter
+  _max: NestedStringFilter
   max: NestedStringFilter
 }
 
@@ -231,8 +244,11 @@ input StringWithAggregatesFilter {
   endsWith: String
   mode: QueryMode
   not: NestedStringWithAggregatesFilter
+  _count: NestedIntFilter
   count: NestedIntFilter
+  _min: NestedStringFilter
   min: NestedStringFilter
+  _max: NestedStringFilter
   max: NestedStringFilter
 }
 
@@ -249,11 +265,6 @@ type MessagesGroupByOutputType {
   id: Int!
   user_id: Int!
   message: String!
-  count: MessagesCountAggregateOutputType
-  avg: MessagesAvgAggregateOutputType
-  sum: MessagesSumAggregateOutputType
-  min: MessagesMinAggregateOutputType
-  max: MessagesMaxAggregateOutputType
 }
 
 input usersOrderByInput {
@@ -320,11 +331,6 @@ type UsersGroupByOutputType {
   id: Int!
   email: String!
   name: String!
-  count: UsersCountAggregateOutputType
-  avg: UsersAvgAggregateOutputType
-  sum: UsersSumAggregateOutputType
-  min: UsersMinAggregateOutputType
-  max: UsersMaxAggregateOutputType
 }
 
 type Query {

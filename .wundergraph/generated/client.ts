@@ -98,9 +98,9 @@ export class Client {
 		this.logoutCallback = cb;
 	}
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "1f40b44d";
+	private readonly applicationHash: string = "20cb70b3";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.21.2";
+	private readonly sdkVersion: string = "0.21.5";
 	private csrfToken: string | undefined;
 	private user: User | undefined;
 	private userListener: UserListener | undefined;
