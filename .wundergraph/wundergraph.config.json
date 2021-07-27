@@ -9,34 +9,6 @@
     "enableGraphqlEndpoint": false,
     "operations": [
       {
-        "content": "query Messages {\n  findManymessages(take: 20, orderBy: [{id: desc}]) {\n    id\n    message\n    users {\n      id\n      name\n    }\n  }\n}",
-        "name": "Messages",
-        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findManymessages\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"users\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"name\"]}},\"additionalProperties\":false,\"required\":[\"id\",\"message\",\"users\"]}}},\"additionalProperties\":false,\"required\":[\"findManymessages\"]}},\"additionalProperties\":false}",
-        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
-        "operationType": 0,
-        "mock": {
-          "enabled": false,
-          "endpoint": "",
-          "subscriptionPollingIntervalMillis": -1
-        },
-        "cacheConfig": {
-          "enable": false,
-          "maxAge": 60,
-          "public": true,
-          "staleWhileRevalidate": 60
-        },
-        "authenticationConfig": {
-          "authRequired": false
-        },
-        "authorizationConfig": {
-          "claims": []
-        },
-        "liveQueryConfig": {
-          "enable": true,
-          "pollingIntervalSeconds": 2
-        }
-      },
-      {
         "content": "mutation AddMessage($email: String! @fromClaim(name: EMAIL), $name: String! @fromClaim(name: NAME), $message: String!) {\n  createOnemessages(\n    data: {message: $message, users: {connectOrCreate: {create: {name: $name, email: $email}, where: {email: $email}}}}\n  ) {\n    id\n    message\n  }\n}",
         "name": "AddMessage",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"createOnemessages\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"message\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
@@ -67,6 +39,34 @@
               "claim": 2
             }
           ]
+        }
+      },
+      {
+        "content": "query Messages {\n  findManymessages(take: 20, orderBy: [{id: desc}]) {\n    id\n    message\n    users {\n      id\n      name\n    }\n  }\n}",
+        "name": "Messages",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findManymessages\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"users\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"name\"]}},\"additionalProperties\":false,\"required\":[\"id\",\"message\",\"users\"]}}},\"additionalProperties\":false,\"required\":[\"findManymessages\"]}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
+        "operationType": 0,
+        "mock": {
+          "enabled": false,
+          "endpoint": "",
+          "subscriptionPollingIntervalMillis": -1
+        },
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": []
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 2
         }
       }
     ],

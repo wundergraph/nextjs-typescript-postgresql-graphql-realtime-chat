@@ -1,0 +1,10 @@
+mutation (
+    $email: String! @fromClaim(name: EMAIL)
+    $name: String! @fromClaim(name: NAME)
+    $message: String!
+) {
+    createOnemessages(data: {message: $message users: {connectOrCreate: {create: {name: $name email: $email} where: {email: $email}}}}){
+        id
+        message
+    }
+}

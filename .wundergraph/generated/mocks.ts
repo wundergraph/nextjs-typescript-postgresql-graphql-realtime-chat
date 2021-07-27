@@ -1,4 +1,4 @@
-import { MessagesResponse, AddMessageInput, AddMessageResponse } from "./models";
+import { AddMessageInput, AddMessageResponse, MessagesResponse } from "./models";
 
 export interface appMockConfig {
 	queries?: {

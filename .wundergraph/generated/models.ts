@@ -7,6 +7,16 @@ export interface GraphQLError {
 	path?: ReadonlyArray<string | number>;
 }
 
+export interface AddMessageResponse {
+	data?: {
+		createOnemessages?: {
+			id: number;
+			message: string;
+		};
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
 export interface MessagesResponse {
 	data?: {
 		findManymessages: {
@@ -17,16 +27,6 @@ export interface MessagesResponse {
 				name: string;
 			};
 		}[];
-	};
-	errors?: ReadonlyArray<GraphQLError>;
-}
-
-export interface AddMessageResponse {
-	data?: {
-		createOnemessages?: {
-			id: number;
-			message: string;
-		};
 	};
 	errors?: ReadonlyArray<GraphQLError>;
 }

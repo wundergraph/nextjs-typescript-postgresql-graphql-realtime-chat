@@ -1,0 +1,10 @@
+{
+    findManymessages(take: 20 orderBy: [{id: desc}]){
+        id
+        message
+        users {
+            id
+            name
+        }
+    }
+}
