@@ -181,10 +181,10 @@
   dependencies:
     ts-proto "^1.65.0"
 
-"@wundergraph/sdk@0.23.1":
-  version "0.23.1"
-  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.23.1.tgz#f51be4fd5f0e59084baf427ad4c2400665a39ef7"
-  integrity sha512-ODciRpeGIbZIrZaF8jmbbfIyMmkPYNzy5fOFZaeCdrkrJwhgE3RrywkmXROpIAYZJknq11ZY8Ps+XXDIJA4qPQ==
+"@wundergraph/sdk@0.24.1":
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.24.1.tgz#32ed295f51c4a9764fafb85bf763ad998b78bc44"
+  integrity sha512-ffSp0i97zfKhuZacWYuX0sNcdlru68lKL4EFaTRw0mBXJwjmITkOSlDLezmxSIZ2Kz58IUMrPumT91G6t/labQ==
   dependencies:
     "@graphql-tools/merge" "^6.2.6"
     "@types/chokidar" "^2.1.3"

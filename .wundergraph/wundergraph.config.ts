@@ -15,7 +15,7 @@ const db = introspect.postgresql({
 const operations: ConfigureOperations = {
     defaultConfig: {
         authentication: {
-            required: false
+            required: true
         }
     },
     queries: config => ({

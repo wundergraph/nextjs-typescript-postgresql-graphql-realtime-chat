@@ -109,26 +109,29 @@ const Mutation = <R extends {}, I extends {}>(
 	const { user, setRefetchMountedQueries } = useWunderGraph();
 	const [_options] = useState<MutateRequestOptions<I> | undefined>(options);
 	const [response, setResponse] = useState<Response<R>>({ status: "none" });
-	const mutate = useCallback(async (options?: MutateRequestOptions<I>) => {
-		if (internalOptions.requiresAuthentication && user === undefined) {
-			setResponse({ status: "requiresAuthentication" });
-			return;
-		}
-		const combinedOptions: MutateRequestOptions<I> = {
-			refetchMountedQueriesOnSuccess:
-				options !== undefined && options.refetchMountedQueriesOnSuccess !== undefined
-					? options.refetchMountedQueriesOnSuccess
-					: _options?.refetchMountedQueriesOnSuccess,
-			input: options !== undefined && options.input !== undefined ? options.input : _options?.input,
-			abortSignal:
-				options !== undefined && options.abortSignal !== undefined ? options.abortSignal : _options?.abortSignal,
-		};
-		const result = await promiseFactory(combinedOptions);
-		setResponse(result);
-		if (result.status === "ok" && combinedOptions.refetchMountedQueriesOnSuccess === true) {
-			setRefetchMountedQueries(new Date());
-		}
-	}, []);
+	const mutate = useCallback(
+		async (options?: MutateRequestOptions<I>) => {
+			if (internalOptions.requiresAuthentication && user === undefined) {
+				setResponse({ status: "requiresAuthentication" });
+				return;
+			}
+			const combinedOptions: MutateRequestOptions<I> = {
+				refetchMountedQueriesOnSuccess:
+					options !== undefined && options.refetchMountedQueriesOnSuccess !== undefined
+						? options.refetchMountedQueriesOnSuccess
+						: _options?.refetchMountedQueriesOnSuccess,
+				input: options !== undefined && options.input !== undefined ? options.input : _options?.input,
+				abortSignal:
+					options !== undefined && options.abortSignal !== undefined ? options.abortSignal : _options?.abortSignal,
+			};
+			const result = await promiseFactory(combinedOptions);
+			setResponse(result);
+			if (result.status === "ok" && combinedOptions.refetchMountedQueriesOnSuccess === true) {
+				setRefetchMountedQueries(new Date());
+			}
+		},
+		[user]
+	);
 	return {
 		response,
 		mutate,
@@ -192,20 +195,20 @@ const Subscription = <R, I>(
 export const useQuery = {
 	Messages: (options?: RequestOptions<never, MessagesResponse>) => {
 		const { client } = useWunderGraph();
-		return Query(client.query.Messages, { requiresAuthentication: false }, options);
+		return Query(client.query.Messages, { requiresAuthentication: true }, options);
 	},
 };
 
 export const useMutation = {
 	AddMessage: (options: MutateRequestOptions<AddMessageInput>) => {
 		const { client } = useWunderGraph();
-		return Mutation(client.mutation.AddMessage, { requiresAuthentication: false }, options);
+		return Mutation(client.mutation.AddMessage, { requiresAuthentication: true }, options);
 	},
 };
 
 export const useLiveQuery = {
 	Messages: (options?: SubscriptionRequestOptions) => {
 		const { client } = useWunderGraph();
-		return Subscription(client.liveQuery.Messages, { requiresAuthentication: false }, options);
+		return Subscription(client.liveQuery.Messages, { requiresAuthentication: true }, options);
 	},
 };

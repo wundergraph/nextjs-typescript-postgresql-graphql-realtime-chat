@@ -72,7 +72,7 @@ export interface SubscriptionRequestOptions<Input = never> {
 	stopOnWindowBlur?: boolean;
 }
 
-export type UserListener = (user: User | undefined) => void;
+export type UserListener = (user: User | null) => void;
 
 export interface User {
 	provider: string;
@@ -89,33 +89,44 @@ export interface User {
 	location: string;
 }
 
+export interface ClientConfig {
+	baseURL?: string;
+	extraHeaders?: HeadersInit;
+}
+
 export class Client {
-	constructor(baseURL?: string) {
-		this.baseURL = baseURL || this.baseURL;
+	constructor(config?: ClientConfig) {
+		this.baseURL = config?.baseURL || this.baseURL;
+		this.extraHeaders = config?.extraHeaders;
+		this.user = null;
 	}
 	private logoutCallback: undefined | (() => void);
 	public setLogoutCallback(cb: () => void) {
 		this.logoutCallback = cb;
 	}
+	public setExtraHeaders = (headers: HeadersInit) => {
+		this.extraHeaders = headers;
+	};
+	private extraHeaders?: HeadersInit;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "bd073d15";
+	private readonly applicationHash: string = "a94200f1";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.23.1";
+	private readonly sdkVersion: string = "0.24.1";
 	private csrfToken: string | undefined;
-	private user: User | undefined;
+	private user: User | null;
 	private userListener: UserListener | undefined;
 	public setUserListener = (listener: UserListener) => {
 		this.userListener = listener;
 	};
-	private setUser = (user: User | undefined) => {
+	private setUser = (user: User | null) => {
 		if (
-			(user === undefined && this.user !== undefined) ||
-			(user !== undefined && this.user === undefined) ||
+			(user === null && this.user !== null) ||
+			(user !== null && this.user === null) ||
 			JSON.stringify(user) !== JSON.stringify(this.user)
 		) {
 			this.user = user;
 			if (this.userListener !== undefined) {
-				this.userListener(user);
+				this.userListener(this.user);
 			}
 		}
 	};
@@ -173,6 +184,7 @@ export class Client {
 				this.csrfToken = await res.text();
 			}
 			const headers: Headers = new Headers({
+				...this.extraHeaders,
 				Accept: "application/json",
 				"WG-SDK-Version": this.sdkVersion,
 			});
@@ -250,6 +262,7 @@ export class Client {
 					this.baseURL + "/" + this.applicationPath + "/operations/" + fetchConfig.path + params,
 					{
 						headers: {
+							...this.extraHeaders,
 							"Content-Type": "application/json",
 							"WG-SDK-Version": this.sdkVersion,
 						},
@@ -307,9 +320,10 @@ export class Client {
 			.join("&");
 		return query === "" ? query : "?" + query;
 	};
-	public fetchUser = async (abortSignal?: AbortSignal): Promise<User | undefined> => {
+	public fetchUser = async (abortSignal?: AbortSignal): Promise<User | null> => {
 		const response = await fetch(this.baseURL + "/" + this.applicationPath + "/auth/cookie/user", {
 			headers: {
+				...this.extraHeaders,
 				"Content-Type": "application/json",
 				"WG-SDK-Version": this.sdkVersion,
 			},
@@ -323,8 +337,8 @@ export class Client {
 			this.setUser(user);
 			return this.user;
 		}
-		this.setUser(undefined);
-		return undefined;
+		this.setUser(null);
+		return null;
 	};
 	public login = {
 		github: (redirectURI?: string) => {
@@ -334,6 +348,7 @@ export class Client {
 	public logout = async (): Promise<boolean> => {
 		const response = await fetch(this.baseURL + "/" + this.applicationPath + "/auth/cookie/user/logout", {
 			headers: {
+				...this.extraHeaders,
 				"Content-Type": "application/json",
 				"WG-SDK-Version": this.sdkVersion,
 			},
@@ -341,7 +356,7 @@ export class Client {
 			credentials: "include",
 			mode: "cors",
 		});
-		this.setUser(undefined);
+		this.setUser(null);
 		if (this.logoutCallback) {
 			this.logoutCallback();
 		}
