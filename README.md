@@ -15,7 +15,7 @@ The headless API service handles authentication and API requests.
 Once authenticated, a cookie is set by the API service.
 Both NextJS application and headless API service run on the same root domain.
 
-This allows us to "forward" the cookie header from the initial client request from the NextJS `getStaticProps` method to the headless API service.
+This allows us to "forward" the cookie header from the initial client request from the NextJS `getServerSideProps` method to the headless API service.
 
 The code that might interest you the most can be found in [index.tsx](./pages/index.tsx)
 
