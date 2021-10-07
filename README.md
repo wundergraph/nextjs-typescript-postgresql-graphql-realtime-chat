@@ -44,6 +44,12 @@ yarn
 yarn dev
 ```
 
+## Cleanup
+
+```shell
+docker-compose rm -v -f
+```
+
 ## Questions?
 
 Read the [Docs](https://wundergraph.com/docs).
