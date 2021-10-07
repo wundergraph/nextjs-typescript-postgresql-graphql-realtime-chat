@@ -1,4 +1,4 @@
-import { Client, User } from "./client";
+import { Client, User, UserListener } from "./client";
 import React, { createContext, FunctionComponent, useMemo, useEffect, useState, Dispatch, SetStateAction } from "react";
 
 export interface Config {
@@ -30,7 +30,7 @@ export const WunderGraphProvider: FunctionComponent<Props> = ({ endpoint, childr
 	const [initializing, setInitializing] = useState(false);
 	const queryCache: { [key: string]: Object } = {};
 	const client = useMemo<Client>(() => {
-		const client = new Client(endpoint);
+		const client = new Client({ baseURL: endpoint });
 		client.setLogoutCallback(() => {
 			Object.keys(queryCache).forEach((key) => {
 				delete queryCache[key];
@@ -38,8 +38,17 @@ export const WunderGraphProvider: FunctionComponent<Props> = ({ endpoint, childr
 		});
 		return client;
 	}, [endpoint]);
+	const userListener = useMemo<UserListener>(() => {
+		return (userOrNull) => {
+			if (userOrNull === null) {
+				setUser(undefined);
+			} else {
+				setUser(userOrNull);
+			}
+		};
+	}, []);
 	useEffect(() => {
-		client.setUserListener(setUser);
+		client.setUserListener(userListener);
 		(async () => {
 			await client.fetchUser();
 			setInitialized(true);

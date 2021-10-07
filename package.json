@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --kill-others \"$npm_execpath run nextDev\" \"$npm_execpath run wundergraph\" \"$npm_execpath run database\"",
+    "dev": "concurrently \"$npm_execpath run nextDev\" \"$npm_execpath run wundergraph\" \"$npm_execpath run database\" \"$npm_execpath run browser\"",
     "wundergraph": "cd .wundergraph && $npm_execpath run dev",
     "build": "cd .wundergraph && $npm_execpath run prod && cd .. && next build",
+    "browser": "wait-on \"http-get://localhost:3000\" && open http://localhost:3000",
     "database": "docker-compose up",
     "nextDev": "next dev",
     "start": "next start"
@@ -13,7 +14,8 @@
   "dependencies": {
     "next": "10.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "wait-on": "^6.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.3",

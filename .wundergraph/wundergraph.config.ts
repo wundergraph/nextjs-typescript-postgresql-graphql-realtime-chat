@@ -6,39 +6,12 @@ import {
     introspect,
     templates
 } from "@wundergraph/sdk";
-import {ConfigureOperations} from "./generated/operations";
+import operations from "./wundergraph.operations";
+import wunderGraphHooks from "./wundergraph.hooks";
 
 const db = introspect.postgresql({
     database_querystring: "postgresql://admin:admin@localhost:54322/example?schema=public",
 });
-
-const operations: ConfigureOperations = {
-    defaultConfig: {
-        authentication: {
-            required: true
-        }
-    },
-    queries: config => ({
-        ...config,
-        caching: {
-            enable: false,
-            staleWhileRevalidate: 60,
-            maxAge: 60,
-            public: true
-        },
-        liveQuery: {
-            enable: true,
-            pollingIntervalSeconds: 2,
-        }
-    }),
-    mutations: config => ({
-        ...config
-    }),
-    subscriptions: config => ({
-        ...config,
-    }),
-    custom: {}
-}
 
 const myApplication = new Application({
     name: "app",
@@ -50,6 +23,7 @@ const myApplication = new Application({
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
     application: myApplication,
+
     codeGenerators: [
         {
             templates: [
@@ -75,8 +49,12 @@ configureWunderGraphApplication({
         cookieBased: {
             providers: [
                 authProviders.demo(),
+            ],
+            authorizedRedirectUris: [
+                "http://localhost:3000/"
             ]
         }
     },
-    operations: operations,
+    operations,
+    hooks: wunderGraphHooks.config,
 });

@@ -94,6 +94,15 @@ export interface ClientConfig {
 	extraHeaders?: HeadersInit;
 }
 
+export enum AuthProviderId {
+	"github" = "github",
+}
+
+export interface AuthProvider {
+	id: AuthProviderId;
+	login: (redirectURI?: string) => void;
+}
+
 export class Client {
 	constructor(config?: ClientConfig) {
 		this.baseURL = config?.baseURL || this.baseURL;
@@ -109,9 +118,9 @@ export class Client {
 	};
 	private extraHeaders?: HeadersInit;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "a94200f1";
+	private readonly applicationHash: string = "18d1f9ce";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.24.1";
+	private readonly sdkVersion: string = "0.35.0";
 	private csrfToken: string | undefined;
 	private user: User | null;
 	private userListener: UserListener | undefined;
@@ -172,8 +181,8 @@ export class Client {
 			const params =
 				fetchConfig.method !== "POST"
 					? this.queryString({
-							v: fetchConfig.input,
-							h: this.applicationHash,
+							wg_variables: fetchConfig.input,
+							wg_api_hash: this.applicationHash,
 					  })
 					: "";
 			if (fetchConfig.method === "POST" && this.csrfToken === undefined) {
@@ -255,8 +264,8 @@ export class Client {
 		(async () => {
 			try {
 				const params = this.queryString({
-					v: fetchConfig.input,
-					live: fetchConfig.liveQuery === true ? true : undefined,
+					wg_variables: fetchConfig.input,
+					wg_live: fetchConfig.liveQuery === true ? true : undefined,
 				});
 				const response = await fetch(
 					this.baseURL + "/" + this.applicationPath + "/operations/" + fetchConfig.path + params,
@@ -340,11 +349,17 @@ export class Client {
 		this.setUser(null);
 		return null;
 	};
-	public login = {
-		github: (redirectURI?: string) => {
-			this.startLogin("github", redirectURI);
+	public login: Record<AuthProviderId, AuthProvider["login"]> = {
+		github: (redirectURI?: string): void => {
+			this.startLogin(AuthProviderId.github, redirectURI);
 		},
 	};
+	public authProviders: Array<AuthProvider> = [
+		{
+			id: AuthProviderId.github,
+			login: this.login[AuthProviderId.github],
+		},
+	];
 	public logout = async (): Promise<boolean> => {
 		const response = await fetch(this.baseURL + "/" + this.applicationPath + "/auth/cookie/user/logout", {
 			headers: {
@@ -362,7 +377,7 @@ export class Client {
 		}
 		return response.status === 200;
 	};
-	private startLogin = (providerID: string, redirectURI?: string) => {
+	private startLogin = (providerID: AuthProviderId, redirectURI?: string) => {
 		const query = this.queryString({
 			redirect_uri: redirectURI || window.location.toString(),
 		});

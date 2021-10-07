@@ -38,7 +38,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
             <h2>
                 Add Message
             </h2>
-            {user === null ? (
+            {!user ? (
                 <div>
                     <p>
                         Please Login to be able to use the chat!

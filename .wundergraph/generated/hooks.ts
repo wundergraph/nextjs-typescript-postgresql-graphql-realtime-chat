@@ -56,7 +56,7 @@ const Query = <R extends {}, I extends {}>(
 		if (!initialized) {
 			return;
 		}
-		if (internalOptions.requiresAuthentication && user === undefined) {
+		if (internalOptions.requiresAuthentication && !user) {
 			setResponse({ status: "requiresAuthentication" });
 			return;
 		}
@@ -111,7 +111,7 @@ const Mutation = <R extends {}, I extends {}>(
 	const [response, setResponse] = useState<Response<R>>({ status: "none" });
 	const mutate = useCallback(
 		async (options?: MutateRequestOptions<I>) => {
-			if (internalOptions.requiresAuthentication && user === undefined) {
+			if (internalOptions.requiresAuthentication && !user) {
 				setResponse({ status: "requiresAuthentication" });
 				return;
 			}
@@ -169,7 +169,7 @@ const Subscription = <R, I>(
 		if (!computedInit) {
 			return;
 		}
-		if (internalOptions.requiresAuthentication && user === undefined) {
+		if (internalOptions.requiresAuthentication && !user) {
 			setResponse({ status: "requiresAuthentication" });
 			return;
 		}
@@ -195,20 +195,20 @@ const Subscription = <R, I>(
 export const useQuery = {
 	Messages: (options?: RequestOptions<never, MessagesResponse>) => {
 		const { client } = useWunderGraph();
-		return Query(client.query.Messages, { requiresAuthentication: true }, options);
+		return Query(client.query.Messages, { requiresAuthentication: false }, options);
 	},
 };
 
 export const useMutation = {
 	AddMessage: (options: MutateRequestOptions<AddMessageInput>) => {
 		const { client } = useWunderGraph();
-		return Mutation(client.mutation.AddMessage, { requiresAuthentication: true }, options);
+		return Mutation(client.mutation.AddMessage, { requiresAuthentication: false }, options);
 	},
 };
 
 export const useLiveQuery = {
 	Messages: (options?: SubscriptionRequestOptions) => {
 		const { client } = useWunderGraph();
-		return Subscription(client.liveQuery.Messages, { requiresAuthentication: true }, options);
+		return Subscription(client.liveQuery.Messages, { requiresAuthentication: false }, options);
 	},
 };
