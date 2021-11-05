@@ -23,7 +23,6 @@ const myApplication = new Application({
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
     application: myApplication,
-
     codeGenerators: [
         {
             templates: [

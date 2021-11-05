@@ -1011,6 +1011,7 @@
         }
       ]
     },
+    "s3UploadConfiguration": [],
     "corsConfiguration": {
       "allowCredentials": true,
       "allowedHeaders": [
