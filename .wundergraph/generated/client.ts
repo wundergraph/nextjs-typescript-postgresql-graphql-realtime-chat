@@ -1,4 +1,12 @@
-import { AddMessageInput, AddMessageResponse, MessagesResponse } from "./models";
+import {
+	AddMessageInput,
+	AddMessageResponse,
+	AllUsersResponse,
+	DeleteAllMessagesByUserEmailInput,
+	DeleteAllMessagesByUserEmailResponse,
+	MessagesResponse,
+	MockQueryResponse,
+} from "./models";
 
 export const WUNDERGRAPH_S3_ENABLED = false;
 export const WUNDERGRAPH_AUTH_ENABLED = true;
@@ -89,6 +97,7 @@ export interface User {
 	user_id: string;
 	avatar_url: string;
 	location: string;
+	roles: string[];
 }
 
 export interface ClientConfig {
@@ -120,9 +129,9 @@ export class Client {
 	};
 	private extraHeaders?: HeadersInit;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "3c18391b";
+	private readonly applicationHash: string = "68893211";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.37.1";
+	private readonly sdkVersion: string = "0.39.0";
 	private csrfToken: string | undefined;
 	private user: User | null;
 	private userListener: UserListener | undefined;
@@ -142,10 +151,26 @@ export class Client {
 		}
 	};
 	public query = {
+		AllUsers: async (options: RequestOptions<never, AllUsersResponse>) => {
+			return await this.doFetch<AllUsersResponse>({
+				method: "GET",
+				path: "AllUsers",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
 		Messages: async (options: RequestOptions<never, MessagesResponse>) => {
 			return await this.doFetch<MessagesResponse>({
 				method: "GET",
 				path: "Messages",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
+		MockQuery: async (options: RequestOptions<never, MockQueryResponse>) => {
+			return await this.doFetch<MockQueryResponse>({
+				method: "GET",
+				path: "MockQuery",
 				input: options.input,
 				abortSignal: options.abortSignal,
 			});
@@ -160,8 +185,33 @@ export class Client {
 				abortSignal: options.abortSignal,
 			});
 		},
+		DeleteAllMessagesByUserEmail: async (
+			options: RequestOptions<DeleteAllMessagesByUserEmailInput, DeleteAllMessagesByUserEmailResponse>
+		) => {
+			return await this.doFetch<DeleteAllMessagesByUserEmailResponse>({
+				method: "POST",
+				path: "DeleteAllMessagesByUserEmail",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
 	};
 	public liveQuery = {
+		AllUsers: (
+			options: RequestOptions<never, AllUsersResponse>,
+			cb: (response: Response<AllUsersResponse>) => void
+		) => {
+			return this.startSubscription<AllUsersResponse>(
+				{
+					method: "GET",
+					path: "AllUsers",
+					input: options.input,
+					abortSignal: options.abortSignal,
+					liveQuery: true,
+				},
+				cb
+			);
+		},
 		Messages: (
 			options: RequestOptions<never, MessagesResponse>,
 			cb: (response: Response<MessagesResponse>) => void
@@ -170,6 +220,21 @@ export class Client {
 				{
 					method: "GET",
 					path: "Messages",
+					input: options.input,
+					abortSignal: options.abortSignal,
+					liveQuery: true,
+				},
+				cb
+			);
+		},
+		MockQuery: (
+			options: RequestOptions<never, MockQueryResponse>,
+			cb: (response: Response<MockQueryResponse>) => void
+		) => {
+			return this.startSubscription<MockQueryResponse>(
+				{
+					method: "GET",
+					path: "MockQuery",
 					input: options.input,
 					abortSignal: options.abortSignal,
 					liveQuery: true,
@@ -331,15 +396,15 @@ export class Client {
 			.join("&");
 		return query === "" ? query : "?" + query;
 	};
-	public fetchUser = async (abortSignal?: AbortSignal): Promise<User | null> => {
-		const response = await fetch(this.baseURL + "/" + this.applicationPath + "/auth/cookie/user", {
+	public fetchUser = async (revalidate?: boolean): Promise<User | null> => {
+		const revalidateTrailer = revalidate === undefined ? "" : "?revalidate=true";
+		const response = await fetch(this.baseURL + "/" + this.applicationPath + "/auth/cookie/user" + revalidateTrailer, {
 			headers: {
 				...this.extraHeaders,
 				"Content-Type": "application/json",
 				"WG-SDK-Version": this.sdkVersion,
 			},
 			method: "GET",
-			signal: abortSignal,
 			credentials: "include",
 			mode: "cors",
 		});

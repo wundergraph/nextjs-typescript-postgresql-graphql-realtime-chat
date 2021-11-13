@@ -1,7 +1,13 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { WunderGraphContext } from "./provider";
 import { RequestOptions, MutateRequestOptions, SubscriptionRequestOptions, Response } from "./client";
-import { AddMessageInput, MessagesResponse } from "./models";
+import {
+	AddMessageInput,
+	DeleteAllMessagesByUserEmailInput,
+	AllUsersResponse,
+	MessagesResponse,
+	MockQueryResponse,
+} from "./models";
 
 export const useWunderGraph = () => {
 	const ctx = useContext(WunderGraphContext);
@@ -193,22 +199,42 @@ const Subscription = <R, I>(
 };
 
 export const useQuery = {
+	AllUsers: (options?: RequestOptions<never, AllUsersResponse>) => {
+		const { client } = useWunderGraph();
+		return Query(client.query.AllUsers, { requiresAuthentication: false }, options);
+	},
 	Messages: (options?: RequestOptions<never, MessagesResponse>) => {
 		const { client } = useWunderGraph();
 		return Query(client.query.Messages, { requiresAuthentication: false }, options);
+	},
+	MockQuery: (options?: RequestOptions<never, MockQueryResponse>) => {
+		const { client } = useWunderGraph();
+		return Query(client.query.MockQuery, { requiresAuthentication: false }, options);
 	},
 };
 
 export const useMutation = {
 	AddMessage: (options: MutateRequestOptions<AddMessageInput>) => {
 		const { client } = useWunderGraph();
-		return Mutation(client.mutation.AddMessage, { requiresAuthentication: false }, options);
+		return Mutation(client.mutation.AddMessage, { requiresAuthentication: true }, options);
+	},
+	DeleteAllMessagesByUserEmail: (options: MutateRequestOptions<DeleteAllMessagesByUserEmailInput>) => {
+		const { client } = useWunderGraph();
+		return Mutation(client.mutation.DeleteAllMessagesByUserEmail, { requiresAuthentication: true }, options);
 	},
 };
 
 export const useLiveQuery = {
+	AllUsers: (options?: SubscriptionRequestOptions) => {
+		const { client } = useWunderGraph();
+		return Subscription(client.liveQuery.AllUsers, { requiresAuthentication: false }, options);
+	},
 	Messages: (options?: SubscriptionRequestOptions) => {
 		const { client } = useWunderGraph();
 		return Subscription(client.liveQuery.Messages, { requiresAuthentication: false }, options);
+	},
+	MockQuery: (options?: SubscriptionRequestOptions) => {
+		const { client } = useWunderGraph();
+		return Subscription(client.liveQuery.MockQuery, { requiresAuthentication: false }, options);
 	},
 };

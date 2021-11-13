@@ -123,6 +123,17 @@ directive @jsonSchema(
   commonPattern: COMMON_REGEX_PATTERN
 ) on VARIABLE_DEFINITION
 
+directive @rbac(
+  """the user must match all roles"""
+  requireMatchAll: [WG_ROLE]
+  """the user must match at least one of the roles"""
+  requireMatchAny: [WG_ROLE]
+  """the user must not match all of the roles"""
+  denyMatchAll: [WG_ROLE]
+  """the user must not match any of the roles"""
+  denyMatchAny: [WG_ROLE]
+) on QUERY | MUTATION | SUBSCRIPTION
+
 input NestedIntFilter {
   equals: Int
   in: [Int]
@@ -660,4 +671,9 @@ enum Claim {
 enum COMMON_REGEX_PATTERN {
   EMAIL
   DOMAIN
+}
+
+enum WG_ROLE {
+  user
+  superadmin
 }

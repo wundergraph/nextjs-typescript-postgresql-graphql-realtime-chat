@@ -28,7 +28,6 @@ configureWunderGraphApplication({
             templates: [
                 // use all the typescript react templates to generate a client
                 templates.typescript.operations,
-                templates.typescript.mocks,
                 templates.typescript.linkBuilder,
                 ...templates.typescript.react
             ],
@@ -43,6 +42,12 @@ configureWunderGraphApplication({
             [
                 "http://localhost:3000",
             ]
+    },
+    authorization: {
+        roles: [
+            "user",
+            "superadmin"
+        ],
     },
     authentication: {
         cookieBased: {

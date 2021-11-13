@@ -2,9 +2,9 @@
   "item": [
     {
       "_": {
-        "postman_id": "1ce46974-070c-454d-8554-1ff820c372c4"
+        "postman_id": "5b77d142-92f4-4e38-b99a-522d5d13abb1"
       },
-      "id": "1ce46974-070c-454d-8554-1ff820c372c4",
+      "id": "5b77d142-92f4-4e38-b99a-522d5d13abb1",
       "name": "Queries",
       "description": {
         "content": "All your query operations",
@@ -12,7 +12,35 @@
       },
       "item": [
         {
-          "id": "5932fafa-98fb-4992-bc08-c6c784368127",
+          "id": "6ad30a42-2e5a-4f8f-99fe-477277e16b07",
+          "name": "AllUsers",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "AllUsers"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "ab85c0e6-1fbc-475a-b0d5-8f94dc95a6b0",
           "name": "Messages",
           "request": {
             "url": {
@@ -38,15 +66,43 @@
           },
           "response": [],
           "event": []
+        },
+        {
+          "id": "e583a13d-1b8a-4185-ae86-020dcd081b7a",
+          "name": "MockQuery",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "MockQuery"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
         }
       ],
       "event": []
     },
     {
       "_": {
-        "postman_id": "fbb1eb76-0769-4359-a7de-75ce9e065724"
+        "postman_id": "bbb247ed-5540-4819-970d-c20dd529f0ca"
       },
-      "id": "fbb1eb76-0769-4359-a7de-75ce9e065724",
+      "id": "bbb247ed-5540-4819-970d-c20dd529f0ca",
       "name": "Mutations",
       "description": {
         "content": "All your mutation operations",
@@ -54,7 +110,7 @@
       },
       "item": [
         {
-          "id": "6ce5265f-4c47-4e2d-90aa-c6fa78aec0c1",
+          "id": "3bc03a4d-8bbf-45e2-9c27-88a9515aeb44",
           "name": "AddMessage",
           "request": {
             "url": {
@@ -88,6 +144,42 @@
           },
           "response": [],
           "event": []
+        },
+        {
+          "id": "513545a0-a6c8-4002-b2dc-310483550efb",
+          "name": "DeleteAllMessagesByUserEmail",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "DeleteAllMessagesByUserEmail"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "email",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
         }
       ],
       "event": []
@@ -102,7 +194,7 @@
     }
   ],
   "info": {
-    "_postman_id": "c9fca9c9-0610-4316-b4ec-1c7284a1097b",
+    "_postman_id": "38fc3308-e7f6-4673-be37-44d31356d498",
     "name": "Wundergraph",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {

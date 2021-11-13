@@ -55,7 +55,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                     User
                 </h3>
                 <p>
-                    Logged in as: {user.name}, {user.email}
+                    Logged in as: {user.name}, {user.email} , {JSON.stringify(user.roles)}
                 </p>
                 <button onClick={() => logout()}>Logout</button>
             </div>}

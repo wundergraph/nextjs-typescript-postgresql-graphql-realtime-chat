@@ -1,0 +1,8 @@
+# check out ".wundergraph/wundergraph.hooks.ts" to make yourself a superadmin
+mutation ($email: String!)
+    @rbac(requireMatchAll: [superadmin])
+{
+    deleteManymessages(where: {users: {is: {email: {equals: $email}}}}){
+        count
+    }
+}

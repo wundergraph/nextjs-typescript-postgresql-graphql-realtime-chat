@@ -2,6 +2,10 @@ export interface AddMessageInput {
 	message: string;
 }
 
+export interface DeleteAllMessagesByUserEmailInput {
+	email: string;
+}
+
 export interface GraphQLError {
 	message: string;
 	path?: ReadonlyArray<string | number>;
@@ -17,6 +21,30 @@ export interface AddMessageResponse {
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
+export interface AllUsersResponse {
+	data?: {
+		findManyusers: {
+			id: number;
+			email: string;
+			name: string;
+			messages?: {
+				id: number;
+				message: string;
+			}[];
+		}[];
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
+export interface DeleteAllMessagesByUserEmailResponse {
+	data?: {
+		deleteManymessages?: {
+			count: number;
+		};
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
 export interface MessagesResponse {
 	data?: {
 		findManymessages: {
@@ -27,6 +55,17 @@ export interface MessagesResponse {
 				name: string;
 			};
 		}[];
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
+export interface MockQueryResponse {
+	data?: {
+		findFirstusers?: {
+			id: number;
+			email: string;
+			name: string;
+		};
 	};
 	errors?: ReadonlyArray<GraphQLError>;
 }

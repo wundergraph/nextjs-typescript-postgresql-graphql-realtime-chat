@@ -1,0 +1,11 @@
+{
+    findManyusers {
+        id
+        email
+        name
+        messages(take: 5,orderBy: [{id: desc}]) {
+            id
+            message
+        }
+    }
+}
