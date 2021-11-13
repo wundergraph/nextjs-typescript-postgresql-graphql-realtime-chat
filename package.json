@@ -6,7 +6,7 @@
     "dev": "concurrently \"$npm_execpath run nextDev\" \"$npm_execpath run wundergraph\" \"$npm_execpath run database\" \"$npm_execpath run browser\"",
     "wundergraph": "cd .wundergraph && $npm_execpath run dev",
     "build": "cd .wundergraph && $npm_execpath run prod && cd .. && next build",
-    "browser": "wait-on \"http-get://localhost:3000\" && open http://localhost:3000",
+    "browser": "wait-on \"http-get://localhost:3000\" && open-cli http://localhost:3000",
     "database": "docker-compose up",
     "nextDev": "next dev",
     "start": "next start"
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@types/react": "^17.0.3",
     "concurrently": "^6.0.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.3",
+    "open-cli": "^7.0.1"
   }
 }
