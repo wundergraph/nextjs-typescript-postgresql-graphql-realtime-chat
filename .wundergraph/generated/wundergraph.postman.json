@@ -2,9 +2,9 @@
   "item": [
     {
       "_": {
-        "postman_id": "badc8b0e-693b-430d-adaf-9a9a5bb8b771"
+        "postman_id": "3cc3e0c9-15cd-4fbb-ba6e-6ea9dcfc3caf"
       },
-      "id": "badc8b0e-693b-430d-adaf-9a9a5bb8b771",
+      "id": "3cc3e0c9-15cd-4fbb-ba6e-6ea9dcfc3caf",
       "name": "Queries",
       "description": {
         "content": "All your query operations",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "64d6e9e8-5e16-4163-bd13-f78c48ca8838",
+          "id": "9da61559-dcf1-481c-83b0-84eadef098d4",
           "name": "AllUsers",
           "request": {
             "url": {
@@ -40,7 +40,7 @@
           "event": []
         },
         {
-          "id": "488b22ca-eb7e-4ece-9c37-0a8e6c30fd1d",
+          "id": "025a6451-aaa8-4b1f-b4be-7e13dd60c7cb",
           "name": "Messages",
           "request": {
             "url": {
@@ -68,7 +68,7 @@
           "event": []
         },
         {
-          "id": "1fff6f72-bc90-4613-b160-74d2e39d0e96",
+          "id": "8691b10f-f827-46c9-a20e-bc2423f094dd",
           "name": "MockQuery",
           "request": {
             "url": {
@@ -100,9 +100,9 @@
     },
     {
       "_": {
-        "postman_id": "b1d10b33-5616-49fd-8771-491b4d577c07"
+        "postman_id": "a4fa0a13-2105-4be5-b848-20043eef879b"
       },
-      "id": "b1d10b33-5616-49fd-8771-491b4d577c07",
+      "id": "a4fa0a13-2105-4be5-b848-20043eef879b",
       "name": "Mutations",
       "description": {
         "content": "All your mutation operations",
@@ -110,7 +110,7 @@
       },
       "item": [
         {
-          "id": "87d06d26-3878-4941-86c5-f5c6073437fc",
+          "id": "7d03e45a-4891-4a3a-8e90-675e339af528",
           "name": "AddMessage",
           "request": {
             "url": {
@@ -146,7 +146,7 @@
           "event": []
         },
         {
-          "id": "735cee66-e556-40cc-87a0-d3e1331cec58",
+          "id": "0ea376c5-1678-48ec-8b0c-ea8ae43c4c2d",
           "name": "DeleteAllMessagesByUserEmail",
           "request": {
             "url": {
@@ -194,7 +194,7 @@
     }
   ],
   "info": {
-    "_postman_id": "8bfb2a5d-3196-47f7-a2d3-58e4eaeb1c5c",
+    "_postman_id": "47e4483b-160e-413c-8112-557084ef5745",
     "name": "Wundergraph",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
