@@ -8,6 +8,7 @@ import {
 	MessagesResponse,
 	MockQueryResponse,
 } from "./models";
+import { InternalAddMessageInput, InternalDeleteAllMessagesByUserEmailInput } from "./models";
 import { HooksConfiguration } from "@wundergraph/sdk/dist/configure";
 
 declare module "fastify" {
@@ -83,34 +84,34 @@ export interface HooksConfig {
 	};
 	mutations?: {
 		AddMessage?: {
-			mockResolve?: (ctx: Context, input: AddMessageInput) => Promise<AddMessageResponse>;
-			preResolve?: (ctx: Context, input: AddMessageInput) => Promise<void>;
-			mutatingPreResolve?: (ctx: Context, input: AddMessageInput) => Promise<AddMessageInput>;
-			postResolve?: (ctx: Context, input: AddMessageInput, response: AddMessageResponse) => Promise<void>;
+			mockResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<AddMessageResponse>;
+			preResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<InternalAddMessageInput>;
+			postResolve?: (ctx: Context, input: InternalAddMessageInput, response: AddMessageResponse) => Promise<void>;
 			mutatingPostResolve?: (
 				ctx: Context,
-				input: AddMessageInput,
+				input: InternalAddMessageInput,
 				response: AddMessageResponse
 			) => Promise<AddMessageResponse>;
 		};
 		DeleteAllMessagesByUserEmail?: {
 			mockResolve?: (
 				ctx: Context,
-				input: DeleteAllMessagesByUserEmailInput
+				input: InternalDeleteAllMessagesByUserEmailInput
 			) => Promise<DeleteAllMessagesByUserEmailResponse>;
-			preResolve?: (ctx: Context, input: DeleteAllMessagesByUserEmailInput) => Promise<void>;
+			preResolve?: (ctx: Context, input: InternalDeleteAllMessagesByUserEmailInput) => Promise<void>;
 			mutatingPreResolve?: (
 				ctx: Context,
-				input: DeleteAllMessagesByUserEmailInput
-			) => Promise<DeleteAllMessagesByUserEmailInput>;
+				input: InternalDeleteAllMessagesByUserEmailInput
+			) => Promise<InternalDeleteAllMessagesByUserEmailInput>;
 			postResolve?: (
 				ctx: Context,
-				input: DeleteAllMessagesByUserEmailInput,
+				input: InternalDeleteAllMessagesByUserEmailInput,
 				response: DeleteAllMessagesByUserEmailResponse
 			) => Promise<void>;
 			mutatingPostResolve?: (
 				ctx: Context,
-				input: DeleteAllMessagesByUserEmailInput,
+				input: InternalDeleteAllMessagesByUserEmailInput,
 				response: DeleteAllMessagesByUserEmailResponse
 			) => Promise<DeleteAllMessagesByUserEmailResponse>;
 		};
@@ -366,7 +367,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			 */
 
 			// mock
-			fastify.post<{ Body: { input: AddMessageInput } }>(
+			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
 				"/operation/AddMessage/mockResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -382,19 +383,22 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// preResolve
-			fastify.post<{ Body: { input: AddMessageInput } }>("/operation/AddMessage/preResolve", async (request, reply) => {
-				reply.type("application/json").code(200);
-				try {
-					await config?.mutations?.AddMessage?.preResolve?.(request.ctx, request.body.input);
-					return { op: "AddMessage", hook: "preResolve" };
-				} catch (err) {
-					request.log.error(err);
-					reply.code(500);
-					return { op: "AddMessage", hook: "preResolve", error: err };
+			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
+				"/operation/AddMessage/preResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.mutations?.AddMessage?.preResolve?.(request.ctx, request.body.input);
+						return { op: "AddMessage", hook: "preResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "AddMessage", hook: "preResolve", error: err };
+					}
 				}
-			});
+			);
 			// postResolve
-			fastify.post<{ Body: { input: AddMessageInput; response: AddMessageResponse } }>(
+			fastify.post<{ Body: { input: InternalAddMessageInput; response: AddMessageResponse } }>(
 				"/operation/AddMessage/postResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -409,7 +413,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 			// mutatingPreResolve
-			fastify.post<{ Body: { input: AddMessageInput } }>(
+			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
 				"/operation/AddMessage/mutatingPreResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -424,7 +428,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 			// mutatingPostResolve
-			fastify.post<{ Body: { input: AddMessageInput; response: AddMessageResponse } }>(
+			fastify.post<{ Body: { input: InternalAddMessageInput; response: AddMessageResponse } }>(
 				"/operation/AddMessage/mutatingPostResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -444,7 +448,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// mock
-			fastify.post<{ Body: { input: DeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/mockResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -463,7 +467,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// preResolve
-			fastify.post<{ Body: { input: DeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/preResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -479,7 +483,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 			// postResolve
 			fastify.post<{
-				Body: { input: DeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
+				Body: { input: InternalDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
 			}>("/operation/DeleteAllMessagesByUserEmail/postResolve", async (request, reply) => {
 				reply.type("application/json").code(200);
 				try {
@@ -496,7 +500,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			});
 			// mutatingPreResolve
-			fastify.post<{ Body: { input: DeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/mutatingPreResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -515,7 +519,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 			// mutatingPostResolve
 			fastify.post<{
-				Body: { input: DeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
+				Body: { input: InternalDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
 			}>("/operation/DeleteAllMessagesByUserEmail/mutatingPostResolve", async (request, reply) => {
 				reply.type("application/json").code(200);
 				try {

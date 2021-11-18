@@ -6,6 +6,16 @@ export interface DeleteAllMessagesByUserEmailInput {
 	email: string;
 }
 
+export interface InternalAddMessageInput {
+	email: string;
+	name: string;
+	message: string;
+}
+
+export interface InternalDeleteAllMessagesByUserEmailInput {
+	email: string;
+}
+
 export interface GraphQLError {
 	message: string;
 	path?: ReadonlyArray<string | number>;

@@ -10,7 +10,7 @@ import operations from "./wundergraph.operations";
 import wunderGraphHooks from "./wundergraph.hooks";
 
 const db = introspect.postgresql({
-    database_querystring: "postgresql://admin:admin@localhost:54322/example?schema=public",
+    databaseURL: "postgresql://admin:admin@localhost:54322/example?schema=public",
 });
 
 const myApplication = new Application({

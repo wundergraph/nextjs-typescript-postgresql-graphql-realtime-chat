@@ -71,22 +71,23 @@ const targetStep = <T, F extends keyof T, R>(field: F) => ({
 });
 
 interface TargetTypes {
-	users: "id" | "email" | "name" | "messages";
+	UsersCountOutputType: "messages";
+	users: "id" | "email" | "name" | "messages" | "_count";
 	messages: "id" | "user_id" | "message" | "users";
-	MessagesCountAggregateOutputType: "id" | "user_id" | "message";
+	MessagesCountAggregateOutputType: "id" | "user_id" | "message" | "_all";
 	MessagesAvgAggregateOutputType: "id" | "user_id";
 	MessagesSumAggregateOutputType: "id" | "user_id";
 	MessagesMinAggregateOutputType: "id" | "user_id" | "message";
 	MessagesMaxAggregateOutputType: "id" | "user_id" | "message";
-	AggregateMessages: "count" | "avg" | "sum" | "min" | "max";
-	MessagesGroupByOutputType: "id" | "user_id" | "message";
-	UsersCountAggregateOutputType: "id" | "email" | "name";
+	AggregateMessages: "_count" | "_avg" | "_sum" | "_min" | "_max";
+	MessagesGroupByOutputType: "id" | "user_id" | "message" | "_count" | "_avg" | "_sum" | "_min" | "_max";
+	UsersCountAggregateOutputType: "id" | "email" | "name" | "_all";
 	UsersAvgAggregateOutputType: "id";
 	UsersSumAggregateOutputType: "id";
 	UsersMinAggregateOutputType: "id" | "email" | "name";
 	UsersMaxAggregateOutputType: "id" | "email" | "name";
-	AggregateUsers: "count" | "avg" | "sum" | "min" | "max";
-	UsersGroupByOutputType: "id" | "email" | "name";
+	AggregateUsers: "_count" | "_avg" | "_sum" | "_min" | "_max";
+	UsersGroupByOutputType: "id" | "email" | "name" | "_count" | "_avg" | "_sum" | "_min" | "_max";
 	AffectedRowsOutput: "count";
 }
 
