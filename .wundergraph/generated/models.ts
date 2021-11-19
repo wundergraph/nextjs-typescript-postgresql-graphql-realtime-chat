@@ -79,3 +79,52 @@ export interface MockQueryResponse {
 	};
 	errors?: ReadonlyArray<GraphQLError>;
 }
+
+export interface GraphQLError {
+	message: string;
+	path?: ReadonlyArray<string | number>;
+}
+
+export interface AddMessageResponseData {
+	createOnemessages?: {
+		id: number;
+		message: string;
+	};
+}
+
+export interface AllUsersResponseData {
+	findManyusers: {
+		id: number;
+		email: string;
+		name: string;
+		messages?: {
+			id: number;
+			message: string;
+		}[];
+	}[];
+}
+
+export interface DeleteAllMessagesByUserEmailResponseData {
+	deleteManymessages?: {
+		count: number;
+	};
+}
+
+export interface MessagesResponseData {
+	findManymessages: {
+		id: number;
+		message: string;
+		users: {
+			id: number;
+			name: string;
+		};
+	}[];
+}
+
+export interface MockQueryResponseData {
+	findFirstusers?: {
+		id: number;
+		email: string;
+		name: string;
+	};
+}

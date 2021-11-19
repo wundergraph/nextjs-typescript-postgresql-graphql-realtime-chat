@@ -1,15 +1,15 @@
 import styles from '../styles/Home.module.css'
 import {useLiveQuery, useMutation, useWunderGraph} from "../.wundergraph/generated/hooks";
 import {useEffect, useState} from "react";
-import {MessagesResponse} from "../.wundergraph/generated/models";
+import type {MessagesResponseData} from "../.wundergraph/generated/models";
 import {GetServerSideProps, NextPage} from "next";
 import {Client, User} from '../.wundergraph/generated/client';
 
-type Messages = MessagesResponse["data"]["findManymessages"];
+type Messages = MessagesResponseData["findManymessages"];
 
 interface Props {
-    messages?: Messages,
-    user?: User
+    messages?: Messages;
+    user: User | null;
 }
 
 const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUser}) => {
@@ -22,7 +22,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
     const [messages, setMessages] = useState<Messages>(user !== undefined && serverSideMessages || []);
     useEffect(() => {
         if (loadMessages.status === "ok") {
-            setMessages(loadMessages.body.data.findManymessages.reverse());
+            setMessages((loadMessages.body.data?.findManymessages || []).reverse());
         }
         if (loadMessages.status === "requiresAuthentication"){
             setMessages([]);
@@ -55,9 +55,13 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                     User
                 </h3>
                 <p>
-                    Logged in as: {user.name}, {user.email} , {JSON.stringify(user.roles)}
+                    Logged in as: {user?.name}, {user?.email} , {JSON.stringify(user?.roles)}
                 </p>
-                <button onClick={() => logout()}>Logout</button>
+                <button onClick={async () => {
+                    await logout();
+                    window.location.reload();
+                }
+                }>Logout</button>
             </div>}
             {messages !== null && messages.length !== 0 && (
                 <div>
@@ -79,7 +83,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     // this way, we can make authenticated requests via SSR
     const client = new Client({
         extraHeaders: {
-            cookie: context.req.headers.cookie,
+            "cookie": context.req.headers.cookie || "",
         }
     });
     // fetch the user so that we can render the UI based on the user name and email
@@ -89,8 +93,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     return {
         props: {
             // pass on the data to the page renderer
-            user,
-            messages: messages.status === "ok" && messages.body.data.findManymessages.reverse(),
+            user: user || null,
+            messages: messages.status === "ok" && messages.body.data?.findManymessages.reverse() || [],
         }
     }
 }
