@@ -54,12 +54,6 @@ configureWunderGraphApplication({
         cookieBased: {
             providers: [
                 authProviders.demo(),
-                authProviders.openIdConnect({
-                    id: "authzero",
-                    clientId: "1HWiYYYAWnpWIzrYajzP5wf34RyEEIbt",
-                    clientSecret: "UDSDtvb2wtuSuClEiI3JNIDteb_PJHsMudc6bK033_VZlwcpqf-boKdtsgJqgpVG",
-                    issuer: "https://cosmicrocks.auth0.com/"
-                })
             ],
             authorizedRedirectUris: [
                 "http://localhost:3000/"
