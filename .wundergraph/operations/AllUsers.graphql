@@ -1,5 +1,5 @@
-{
-    findManyusers {
+query ($email: String!) {
+    findManyusers: db_findManyusers(where: {email: {equals: $email}}) {
         id
         email
         name

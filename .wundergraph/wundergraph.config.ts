@@ -10,6 +10,7 @@ import operations from "./wundergraph.operations";
 import wunderGraphHooks from "./wundergraph.hooks";
 
 const db = introspect.postgresql({
+    apiNamespace: "db",
     databaseURL: "postgresql://admin:admin@localhost:54322/example?schema=public",
 });
 
@@ -53,6 +54,12 @@ configureWunderGraphApplication({
         cookieBased: {
             providers: [
                 authProviders.demo(),
+                authProviders.openIdConnect({
+                    id: "authzero",
+                    clientId: "1HWiYYYAWnpWIzrYajzP5wf34RyEEIbt",
+                    clientSecret: "UDSDtvb2wtuSuClEiI3JNIDteb_PJHsMudc6bK033_VZlwcpqf-boKdtsgJqgpVG",
+                    issuer: "https://cosmicrocks.auth0.com/"
+                })
             ],
             authorizedRedirectUris: [
                 "http://localhost:3000/"

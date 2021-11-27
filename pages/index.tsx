@@ -1,5 +1,5 @@
 import styles from '../styles/Home.module.css'
-import {useLiveQuery, useMutation, useWunderGraph} from "../.wundergraph/generated/hooks";
+import {useLiveQuery, useMutation, useQuery, useWunderGraph} from "../.wundergraph/generated/hooks";
 import {useEffect, useState} from "react";
 import type {MessagesResponseData} from "../.wundergraph/generated/models";
 import {GetServerSideProps, NextPage} from "next";
@@ -13,6 +13,7 @@ interface Props {
 }
 
 const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUser}) => {
+
     // use the serverSideUser as the default value in case the client is not yet initialized
     const {user: clientSideUser, client: {login, logout}, initialized} = useWunderGraph();
     const user = (typeof window !== 'undefined' && initialized) ? clientSideUser : serverSideUser;
@@ -20,6 +21,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
     const {mutate: addMessage, response: messageAdded} = useMutation.AddMessage({refetchMountedQueriesOnSuccess: true});
     const {response: loadMessages} = useLiveQuery.Messages();
     const [messages, setMessages] = useState<Messages>(user !== undefined && serverSideMessages || []);
+    const {response: userInfo} = useQuery.UserInfo();
     useEffect(() => {
         if (loadMessages.status === "ok") {
             setMessages((loadMessages.body.data?.findManymessages || []).reverse());
@@ -44,7 +46,8 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                         Please Login to be able to use the chat!
                     </p>
                     <br/>
-                    <button onClick={() => login.github()}>Login</button>
+                    <button onClick={() => login.github()}>Login GitHub</button><br/><br/>
+                    <button onClick={() => login.authzero()}>Login Auth0</button>
                 </div>
             ) : <div>
                 <input placeholder="message" value={message} onChange={e => setMessage(e.target.value)}/>
@@ -57,6 +60,9 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                 <p>
                     Logged in as: {user?.name}, {user?.email} , {JSON.stringify(user?.roles)}
                 </p>
+                {userInfo.status === "ok" && userInfo.body.data?.findFirstusers?.lastlogin && <p>
+                    LastLogin: {userInfo.body.data.findFirstusers.lastlogin}
+                </p>}
                 <button onClick={async () => {
                     await logout();
                     window.location.reload();

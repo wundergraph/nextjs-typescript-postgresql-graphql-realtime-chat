@@ -1,14 +1,32 @@
 import Fastify from "fastify";
+import axios from "axios";
 import {
-	AddMessageInput,
 	AddMessageResponse,
+	AddMessageInput,
+	InternalAddMessageInput,
+	InjectedAddMessageInput,
 	AllUsersResponse,
-	DeleteAllMessagesByUserEmailInput,
+	AllUsersInput,
+	InternalAllUsersInput,
+	InjectedAllUsersInput,
+	ChangeUserNameResponse,
+	ChangeUserNameInput,
+	InternalChangeUserNameInput,
+	InjectedChangeUserNameInput,
 	DeleteAllMessagesByUserEmailResponse,
+	DeleteAllMessagesByUserEmailInput,
+	InternalDeleteAllMessagesByUserEmailInput,
+	InjectedDeleteAllMessagesByUserEmailInput,
 	MessagesResponse,
 	MockQueryResponse,
+	SetLastLoginResponse,
+	SetLastLoginInput,
+	InternalSetLastLoginInput,
+	InjectedSetLastLoginInput,
+	UserInfoResponse,
+	InternalUserInfoInput,
+	InjectedUserInfoInput,
 } from "./models";
-import { InternalAddMessageInput, InternalDeleteAllMessagesByUserEmailInput } from "./models";
 import { HooksConfiguration } from "@wundergraph/sdk/dist/configure";
 
 declare module "fastify" {
@@ -56,6 +74,55 @@ export interface AuthenticationDeny {
 	message?: string;
 }
 
+const internalClientAuthorizationHeader = "Bearer internalRequestToken";
+
+const internalRequest = async (operationName: string, input?: any): Promise<any> => {
+	const url = "http://localhost:9991/internal/api/main/operations/" + operationName;
+	const res = await axios.post(url, JSON.stringify(input || {}), {
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: internalClientAuthorizationHeader,
+		},
+	});
+	return res.data;
+};
+
+interface InternalClient {
+	queries: {
+		AllUsers: (input: InternalAllUsersInput) => Promise<AllUsersResponse>;
+		Messages: () => Promise<MessagesResponse>;
+		MockQuery: () => Promise<MockQueryResponse>;
+		UserInfo: (input: InternalUserInfoInput) => Promise<UserInfoResponse>;
+	};
+	mutations: {
+		AddMessage: (input: InternalAddMessageInput) => Promise<AddMessageResponse>;
+		ChangeUserName: (input: InternalChangeUserNameInput) => Promise<ChangeUserNameResponse>;
+		DeleteAllMessagesByUserEmail: (
+			input: InternalDeleteAllMessagesByUserEmailInput
+		) => Promise<DeleteAllMessagesByUserEmailResponse>;
+		SetLastLogin: (input: InternalSetLastLoginInput) => Promise<SetLastLoginResponse>;
+	};
+}
+
+const client = {
+	queries: {
+		AllUsers: async (input: InternalAllUsersInput) => internalRequest("AllUsers", input),
+		Messages: async () => internalRequest("Messages"),
+		MockQuery: async () => internalRequest("MockQuery"),
+		UserInfo: async (input: InternalUserInfoInput) => internalRequest("UserInfo", input),
+	},
+	mutations: {
+		AddMessage: async (input: InternalAddMessageInput) => internalRequest("AddMessage", input),
+		ChangeUserName: async (input: InternalChangeUserNameInput) => internalRequest("ChangeUserName", input),
+		DeleteAllMessagesByUserEmail: async (input: InternalDeleteAllMessagesByUserEmailInput) =>
+			internalRequest("DeleteAllMessagesByUserEmail", input),
+		SetLastLogin: async (input: InternalSetLastLoginInput) => internalRequest("SetLastLogin", input),
+	},
+};
+
+export const configureWunderGraphHooksWithClient = (config: (client: InternalClient) => HooksConfig) =>
+	configureWunderGraphHooks(config(client));
+
 export interface HooksConfig {
 	authentication?: {
 		postAuthentication?: (user: User) => Promise<void>;
@@ -64,10 +131,15 @@ export interface HooksConfig {
 	};
 	queries?: {
 		AllUsers?: {
-			mockResolve?: (ctx: Context) => Promise<AllUsersResponse>;
-			preResolve?: (ctx: Context) => Promise<void>;
-			postResolve?: (ctx: Context, response: AllUsersResponse) => Promise<void>;
-			mutatingPostResolve?: (ctx: Context, response: AllUsersResponse) => Promise<AllUsersResponse>;
+			mockResolve?: (ctx: Context, input: InjectedAllUsersInput) => Promise<AllUsersResponse>;
+			preResolve?: (ctx: Context, input: InjectedAllUsersInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InjectedAllUsersInput) => Promise<InjectedAllUsersInput>;
+			postResolve?: (ctx: Context, input: InjectedAllUsersInput, response: AllUsersResponse) => Promise<void>;
+			mutatingPostResolve?: (
+				ctx: Context,
+				input: InjectedAllUsersInput,
+				response: AllUsersResponse
+			) => Promise<AllUsersResponse>;
 		};
 		Messages?: {
 			mockResolve?: (ctx: Context) => Promise<MessagesResponse>;
@@ -81,37 +153,63 @@ export interface HooksConfig {
 			postResolve?: (ctx: Context, response: MockQueryResponse) => Promise<void>;
 			mutatingPostResolve?: (ctx: Context, response: MockQueryResponse) => Promise<MockQueryResponse>;
 		};
+		UserInfo?: {
+			mockResolve?: (ctx: Context, input: InjectedUserInfoInput) => Promise<UserInfoResponse>;
+			preResolve?: (ctx: Context, input: InjectedUserInfoInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InjectedUserInfoInput) => Promise<InjectedUserInfoInput>;
+			postResolve?: (ctx: Context, input: InjectedUserInfoInput, response: UserInfoResponse) => Promise<void>;
+			mutatingPostResolve?: (
+				ctx: Context,
+				input: InjectedUserInfoInput,
+				response: UserInfoResponse
+			) => Promise<UserInfoResponse>;
+		};
 	};
 	mutations?: {
 		AddMessage?: {
-			mockResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<AddMessageResponse>;
-			preResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<void>;
-			mutatingPreResolve?: (ctx: Context, input: InternalAddMessageInput) => Promise<InternalAddMessageInput>;
-			postResolve?: (ctx: Context, input: InternalAddMessageInput, response: AddMessageResponse) => Promise<void>;
+			mockResolve?: (ctx: Context, input: InjectedAddMessageInput) => Promise<AddMessageResponse>;
+			preResolve?: (ctx: Context, input: InjectedAddMessageInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InjectedAddMessageInput) => Promise<InjectedAddMessageInput>;
+			postResolve?: (ctx: Context, input: InjectedAddMessageInput, response: AddMessageResponse) => Promise<void>;
 			mutatingPostResolve?: (
 				ctx: Context,
-				input: InternalAddMessageInput,
+				input: InjectedAddMessageInput,
 				response: AddMessageResponse
 			) => Promise<AddMessageResponse>;
+		};
+		ChangeUserName?: {
+			mockResolve?: (ctx: Context, input: InjectedChangeUserNameInput) => Promise<ChangeUserNameResponse>;
+			preResolve?: (ctx: Context, input: InjectedChangeUserNameInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InjectedChangeUserNameInput) => Promise<InjectedChangeUserNameInput>;
+			postResolve?: (
+				ctx: Context,
+				input: InjectedChangeUserNameInput,
+				response: ChangeUserNameResponse
+			) => Promise<void>;
+			mutatingPostResolve?: (
+				ctx: Context,
+				input: InjectedChangeUserNameInput,
+				response: ChangeUserNameResponse
+			) => Promise<ChangeUserNameResponse>;
 		};
 		DeleteAllMessagesByUserEmail?: {
 			mockResolve?: (
 				ctx: Context,
-				input: InternalDeleteAllMessagesByUserEmailInput
+				input: InjectedDeleteAllMessagesByUserEmailInput
 			) => Promise<DeleteAllMessagesByUserEmailResponse>;
-			preResolve?: (ctx: Context, input: InternalDeleteAllMessagesByUserEmailInput) => Promise<void>;
+			preResolve?: (ctx: Context, input: InjectedDeleteAllMessagesByUserEmailInput) => Promise<void>;
 			mutatingPreResolve?: (
 				ctx: Context,
-				input: InternalDeleteAllMessagesByUserEmailInput
-			) => Promise<InternalDeleteAllMessagesByUserEmailInput>;
+				input: InjectedDeleteAllMessagesByUserEmailInput
+			) => Promise<InjectedDeleteAllMessagesByUserEmailInput>;
 			postResolve?: (
 				ctx: Context,
-				input: InternalDeleteAllMessagesByUserEmailInput,
+				input: InjectedDeleteAllMessagesByUserEmailInput,
 				response: DeleteAllMessagesByUserEmailResponse
 			) => Promise<void>;
 			mutatingPostResolve?: (
 				ctx: Context,
-				input: InternalDeleteAllMessagesByUserEmailInput,
+				input: InjectedDeleteAllMessagesByUserEmailInput,
 				response: DeleteAllMessagesByUserEmailResponse
 			) => Promise<DeleteAllMessagesByUserEmailResponse>;
 		};
@@ -195,37 +293,43 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			 */
 
 			// mock
-			fastify.post("/operation/AllUsers/mockResolve", async (request, reply) => {
-				reply.type("application/json").code(200);
-				try {
-					const mutated = await config?.queries?.AllUsers?.mockResolve?.(request.ctx);
-					return { op: "AllUsers", hook: "mock", response: mutated };
-				} catch (err) {
-					request.log.error(err);
-					reply.code(500);
-					return { op: "AllUsers", hook: "mock", error: err };
+			fastify.post<{ Body: { input: InjectedAllUsersInput } }>(
+				"/operation/AllUsers/mockResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.queries?.AllUsers?.mockResolve?.(request.ctx, request.body.input);
+						return { op: "AllUsers", hook: "mock", response: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "AllUsers", hook: "mock", error: err };
+					}
 				}
-			});
+			);
 
 			// preResolve
-			fastify.post("/operation/AllUsers/preResolve", async (request, reply) => {
-				reply.type("application/json").code(200);
-				try {
-					await config?.queries?.AllUsers?.preResolve?.(request.ctx);
-					return { op: "AllUsers", hook: "preResolve" };
-				} catch (err) {
-					request.log.error(err);
-					reply.code(500);
-					return { op: "AllUsers", hook: "preResolve", error: err };
+			fastify.post<{ Body: { input: InjectedAllUsersInput } }>(
+				"/operation/AllUsers/preResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.queries?.AllUsers?.preResolve?.(request.ctx, request.body.input);
+						return { op: "AllUsers", hook: "preResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "AllUsers", hook: "preResolve", error: err };
+					}
 				}
-			});
+			);
 			// postResolve
-			fastify.post<{ Body: { response: AllUsersResponse } }>(
+			fastify.post<{ Body: { input: InjectedAllUsersInput; response: AllUsersResponse } }>(
 				"/operation/AllUsers/postResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
 					try {
-						await config?.queries?.AllUsers?.postResolve?.(request.ctx, request.body.response);
+						await config?.queries?.AllUsers?.postResolve?.(request.ctx, request.body.input, request.body.response);
 						return { op: "AllUsers", hook: "postResolve" };
 					} catch (err) {
 						request.log.error(err);
@@ -234,13 +338,32 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 					}
 				}
 			);
+			// mutatingPreResolve
+			fastify.post<{ Body: { input: InjectedAllUsersInput } }>(
+				"/operation/AllUsers/mutatingPreResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.queries?.AllUsers?.mutatingPreResolve?.(request.ctx, request.body.input);
+						return { op: "AllUsers", hook: "mutatingPreResolve", input: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "AllUsers", hook: "mutatingPreResolve", error: err };
+					}
+				}
+			);
 			// mutatingPostResolve
-			fastify.post<{ Body: { response: AllUsersResponse } }>(
+			fastify.post<{ Body: { input: InjectedAllUsersInput; response: AllUsersResponse } }>(
 				"/operation/AllUsers/mutatingPostResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
 					try {
-						const mutated = await config?.queries?.AllUsers?.mutatingPostResolve?.(request.ctx, request.body.response);
+						const mutated = await config?.queries?.AllUsers?.mutatingPostResolve?.(
+							request.ctx,
+							request.body.input,
+							request.body.response
+						);
 						return { op: "AllUsers", hook: "mutatingPostResolve", response: mutated };
 					} catch (err) {
 						request.log.error(err);
@@ -362,12 +485,93 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 
+			// mock
+			fastify.post<{ Body: { input: InjectedUserInfoInput } }>(
+				"/operation/UserInfo/mockResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.queries?.UserInfo?.mockResolve?.(request.ctx, request.body.input);
+						return { op: "UserInfo", hook: "mock", response: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UserInfo", hook: "mock", error: err };
+					}
+				}
+			);
+
+			// preResolve
+			fastify.post<{ Body: { input: InjectedUserInfoInput } }>(
+				"/operation/UserInfo/preResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.queries?.UserInfo?.preResolve?.(request.ctx, request.body.input);
+						return { op: "UserInfo", hook: "preResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UserInfo", hook: "preResolve", error: err };
+					}
+				}
+			);
+			// postResolve
+			fastify.post<{ Body: { input: InjectedUserInfoInput; response: UserInfoResponse } }>(
+				"/operation/UserInfo/postResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.queries?.UserInfo?.postResolve?.(request.ctx, request.body.input, request.body.response);
+						return { op: "UserInfo", hook: "postResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UserInfo", hook: "postResolve", error: err };
+					}
+				}
+			);
+			// mutatingPreResolve
+			fastify.post<{ Body: { input: InjectedUserInfoInput } }>(
+				"/operation/UserInfo/mutatingPreResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.queries?.UserInfo?.mutatingPreResolve?.(request.ctx, request.body.input);
+						return { op: "UserInfo", hook: "mutatingPreResolve", input: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UserInfo", hook: "mutatingPreResolve", error: err };
+					}
+				}
+			);
+			// mutatingPostResolve
+			fastify.post<{ Body: { input: InjectedUserInfoInput; response: UserInfoResponse } }>(
+				"/operation/UserInfo/mutatingPostResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.queries?.UserInfo?.mutatingPostResolve?.(
+							request.ctx,
+							request.body.input,
+							request.body.response
+						);
+						return { op: "UserInfo", hook: "mutatingPostResolve", response: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UserInfo", hook: "mutatingPostResolve", error: err };
+					}
+				}
+			);
+
 			/**
 			 * Mutations
 			 */
 
 			// mock
-			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
+			fastify.post<{ Body: { input: InjectedAddMessageInput } }>(
 				"/operation/AddMessage/mockResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -383,7 +587,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// preResolve
-			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
+			fastify.post<{ Body: { input: InjectedAddMessageInput } }>(
 				"/operation/AddMessage/preResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -398,7 +602,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 			// postResolve
-			fastify.post<{ Body: { input: InternalAddMessageInput; response: AddMessageResponse } }>(
+			fastify.post<{ Body: { input: InjectedAddMessageInput; response: AddMessageResponse } }>(
 				"/operation/AddMessage/postResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -413,7 +617,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 			// mutatingPreResolve
-			fastify.post<{ Body: { input: InternalAddMessageInput } }>(
+			fastify.post<{ Body: { input: InjectedAddMessageInput } }>(
 				"/operation/AddMessage/mutatingPreResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -428,7 +632,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			);
 			// mutatingPostResolve
-			fastify.post<{ Body: { input: InternalAddMessageInput; response: AddMessageResponse } }>(
+			fastify.post<{ Body: { input: InjectedAddMessageInput; response: AddMessageResponse } }>(
 				"/operation/AddMessage/mutatingPostResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -448,7 +652,95 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// mock
-			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InjectedChangeUserNameInput } }>(
+				"/operation/ChangeUserName/mockResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.ChangeUserName?.mockResolve?.(request.ctx, request.body.input);
+						return { op: "ChangeUserName", hook: "mock", response: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "ChangeUserName", hook: "mock", error: err };
+					}
+				}
+			);
+
+			// preResolve
+			fastify.post<{ Body: { input: InjectedChangeUserNameInput } }>(
+				"/operation/ChangeUserName/preResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.mutations?.ChangeUserName?.preResolve?.(request.ctx, request.body.input);
+						return { op: "ChangeUserName", hook: "preResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "ChangeUserName", hook: "preResolve", error: err };
+					}
+				}
+			);
+			// postResolve
+			fastify.post<{ Body: { input: InjectedChangeUserNameInput; response: ChangeUserNameResponse } }>(
+				"/operation/ChangeUserName/postResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.mutations?.ChangeUserName?.postResolve?.(
+							request.ctx,
+							request.body.input,
+							request.body.response
+						);
+						return { op: "ChangeUserName", hook: "postResolve" };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "ChangeUserName", hook: "postResolve", error: err };
+					}
+				}
+			);
+			// mutatingPreResolve
+			fastify.post<{ Body: { input: InjectedChangeUserNameInput } }>(
+				"/operation/ChangeUserName/mutatingPreResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.ChangeUserName?.mutatingPreResolve?.(
+							request.ctx,
+							request.body.input
+						);
+						return { op: "ChangeUserName", hook: "mutatingPreResolve", input: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "ChangeUserName", hook: "mutatingPreResolve", error: err };
+					}
+				}
+			);
+			// mutatingPostResolve
+			fastify.post<{ Body: { input: InjectedChangeUserNameInput; response: ChangeUserNameResponse } }>(
+				"/operation/ChangeUserName/mutatingPostResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.ChangeUserName?.mutatingPostResolve?.(
+							request.ctx,
+							request.body.input,
+							request.body.response
+						);
+						return { op: "ChangeUserName", hook: "mutatingPostResolve", response: mutated };
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "ChangeUserName", hook: "mutatingPostResolve", error: err };
+					}
+				}
+			);
+
+			// mock
+			fastify.post<{ Body: { input: InjectedDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/mockResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -467,7 +759,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 
 			// preResolve
-			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InjectedDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/preResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -483,7 +775,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 			// postResolve
 			fastify.post<{
-				Body: { input: InternalDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
+				Body: { input: InjectedDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
 			}>("/operation/DeleteAllMessagesByUserEmail/postResolve", async (request, reply) => {
 				reply.type("application/json").code(200);
 				try {
@@ -500,7 +792,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			});
 			// mutatingPreResolve
-			fastify.post<{ Body: { input: InternalDeleteAllMessagesByUserEmailInput } }>(
+			fastify.post<{ Body: { input: InjectedDeleteAllMessagesByUserEmailInput } }>(
 				"/operation/DeleteAllMessagesByUserEmail/mutatingPreResolve",
 				async (request, reply) => {
 					reply.type("application/json").code(200);
@@ -519,7 +811,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			);
 			// mutatingPostResolve
 			fastify.post<{
-				Body: { input: InternalDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
+				Body: { input: InjectedDeleteAllMessagesByUserEmailInput; response: DeleteAllMessagesByUserEmailResponse };
 			}>("/operation/DeleteAllMessagesByUserEmail/mutatingPostResolve", async (request, reply) => {
 				reply.type("application/json").code(200);
 				try {

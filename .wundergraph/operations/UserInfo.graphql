@@ -1,0 +1,10 @@
+query (
+    $email: String! @fromClaim(name: EMAIL)
+) {
+    findFirstusers: db_findFirstusers(where: {email: {equals: $email}}){
+        id
+        email
+        name
+        lastlogin
+    }
+}

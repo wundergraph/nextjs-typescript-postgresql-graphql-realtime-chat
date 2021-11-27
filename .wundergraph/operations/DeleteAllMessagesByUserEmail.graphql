@@ -4,7 +4,7 @@ mutation ($email: String!)
         requireMatchAll: [superadmin]
     )
 {
-    deleteManymessages(where: {users: {is: {email: {equals: $email}}}}){
+    deleteManymessages: db_deleteManymessages(where: {users: {is: {email: {equals: $email}}}}){
         count
     }
 }

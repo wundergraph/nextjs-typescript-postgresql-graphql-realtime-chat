@@ -9,7 +9,7 @@
     "enableGraphqlEndpoint": false,
     "operations": [
       {
-        "content": "mutation AddMessage($email: String! @fromClaim(name: EMAIL), $name: String! @fromClaim(name: NAME), $message: String!) {\n  createOnemessages(\n    data: {message: $message, users: {connectOrCreate: {create: {name: $name, email: $email}, where: {email: $email}}}}\n  ) {\n    id\n    message\n  }\n}\n",
+        "content": "mutation AddMessage($email: String! @fromClaim(name: EMAIL), $name: String! @fromClaim(name: NAME), $message: String!) {\n  createOnemessages: db_createOnemessages(\n    data: {message: $message, users: {connectOrCreate: {create: {name: $name, email: $email}, where: {email: $email}}}}\n  ) {\n    id\n    message\n  }\n}\n",
         "name": "AddMessage",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"createOnemessages\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"message\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
         "variablesSchema": "{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"message\"]}",
@@ -50,13 +50,17 @@
             "enable": false,
             "subscriptionPollingIntervalMillis": 0
           }
-        }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
       },
       {
-        "content": "query AllUsers {\n  findManyusers {\n    id\n    email\n    name\n    messages(take: 5, orderBy: [{id: desc}]) {\n      id\n      message\n    }\n  }\n}\n",
+        "content": "query AllUsers($email: String!) {\n  findManyusers: db_findManyusers(where: {email: {equals: $email}}) {\n    id\n    email\n    name\n    messages(take: 5, orderBy: [{id: desc}]) {\n      id\n      message\n    }\n  }\n}\n",
         "name": "AllUsers",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findManyusers\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"messages\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"message\"]}}},\"additionalProperties\":false,\"required\":[\"id\",\"email\",\"name\"]}}},\"additionalProperties\":false,\"required\":[\"findManyusers\"]}},\"additionalProperties\":false}",
-        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"email\"]}",
         "operationType": 0,
         "cacheConfig": {
           "enable": false,
@@ -89,10 +93,64 @@
             "enable": false,
             "subscriptionPollingIntervalMillis": 0
           }
-        }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
       },
       {
-        "content": "mutation DeleteAllMessagesByUserEmail($email: String!) @rbac(requireMatchAll: [superadmin]) {\n  deleteManymessages(where: {users: {is: {email: {equals: $email}}}}) {\n    count\n  }\n}\n",
+        "content": "mutation ChangeUserName($newName: String!, $email: String! @fromClaim(name: EMAIL), $updatedAt: DateTime_db! @injectCurrentDateTime) {\n  updateOneusers: db_updateOneusers(\n    data: {name: {set: $newName}, updatedat: {set: $updatedAt}}\n    where: {email: $email}\n  ) {\n    id\n    email\n    name\n    updatedat\n  }\n}\n",
+        "name": "ChangeUserName",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"updateOneusers\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"updatedat\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"email\",\"name\",\"updatedat\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{\"newName\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"newName\"]}",
+        "operationType": 1,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 0,
+          "public": false,
+          "staleWhileRevalidate": 0
+        },
+        "authenticationConfig": {
+          "authRequired": true
+        },
+        "authorizationConfig": {
+          "claims": [
+            {
+              "variableName": "email",
+              "claim": 0
+            }
+          ],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          }
+        },
+        "variablesConfiguration": {
+          "injectVariables": [
+            {
+              "variableName": "updatedAt",
+              "dateFormat": "2006-01-02T15:04:05Z07:00",
+              "variableKind": 1
+            }
+          ]
+        },
+        "internal": false
+      },
+      {
+        "content": "mutation DeleteAllMessagesByUserEmail($email: String!) @rbac(requireMatchAll: [superadmin]) {\n  deleteManymessages: db_deleteManymessages(\n    where: {users: {is: {email: {equals: $email}}}}\n  ) {\n    count\n  }\n}\n",
         "name": "DeleteAllMessagesByUserEmail",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"deleteManymessages\":{\"type\":\"object\",\"properties\":{\"count\":{\"type\":\"integer\"}},\"additionalProperties\":false,\"required\":[\"count\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
         "variablesSchema": "{\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"email\"]}",
@@ -126,10 +184,14 @@
             "enable": false,
             "subscriptionPollingIntervalMillis": 0
           }
-        }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
       },
       {
-        "content": "query Messages {\n  findManymessages(take: 20, orderBy: [{id: desc}]) {\n    id\n    message\n    users {\n      id\n      name\n    }\n  }\n}\n",
+        "content": "query Messages {\n  findManymessages: db_findManymessages(take: 20, orderBy: [{id: desc}]) {\n    id\n    message\n    users {\n      id\n      name\n    }\n  }\n}\n",
         "name": "Messages",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findManymessages\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"},\"users\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"name\"]}},\"additionalProperties\":false,\"required\":[\"id\",\"message\",\"users\"]}}},\"additionalProperties\":false,\"required\":[\"findManymessages\"]}},\"additionalProperties\":false}",
         "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
@@ -165,10 +227,14 @@
             "enable": false,
             "subscriptionPollingIntervalMillis": 0
           }
-        }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
       },
       {
-        "content": "query MockQuery {\n  findFirstusers {\n    id\n    email\n    name\n  }\n}\n",
+        "content": "query MockQuery {\n  findFirstusers: db_findFirstusers {\n    id\n    email\n    name\n  }\n}\n",
         "name": "MockQuery",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findFirstusers\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"email\",\"name\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
         "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
@@ -204,12 +270,109 @@
             "enable": true,
             "subscriptionPollingIntervalMillis": 0
           }
-        }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
+      },
+      {
+        "content": "mutation SetLastLogin($email: String!, $now: DateTime_db! @injectCurrentDateTime) @internalOperation {\n  updateOneusers: db_updateOneusers(\n    where: {email: $email}\n    data: {lastlogin: {set: $now}}\n  ) {\n    id\n    lastlogin\n  }\n}\n",
+        "name": "SetLastLogin",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"updateOneusers\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"lastlogin\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"lastlogin\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"email\"]}",
+        "operationType": 1,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 0,
+          "public": false,
+          "staleWhileRevalidate": 0
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": [],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          }
+        },
+        "variablesConfiguration": {
+          "injectVariables": [
+            {
+              "variableName": "now",
+              "dateFormat": "2006-01-02T15:04:05Z07:00",
+              "variableKind": 1
+            }
+          ]
+        },
+        "internal": true
+      },
+      {
+        "content": "query UserInfo($email: String! @fromClaim(name: EMAIL)) {\n  findFirstusers: db_findFirstusers(where: {email: {equals: $email}}) {\n    id\n    email\n    name\n    lastlogin\n  }\n}\n",
+        "name": "UserInfo",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"findFirstusers\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"lastlogin\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"email\",\"name\",\"lastlogin\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false}",
+        "operationType": 0,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": true
+        },
+        "authorizationConfig": {
+          "claims": [
+            {
+              "variableName": "email",
+              "claim": 0
+            }
+          ],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 1
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          }
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false
       }
     ],
     "engineConfiguration": {
       "defaultFlushInterval": 500,
-      "graphqlSchema": "directive @fromClaim(name: Claim) on VARIABLE_DEFINITION\n\ndirective @hooksVariable on VARIABLE_DEFINITION\n\ndirective @jsonSchema(\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  title: String\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  description: String\n  \"\"\"\n  The value of \"multipleOf\" MUST be a number, strictly greater than 0.\n  \n  A numeric instance is valid only if division by this keyword's value\n  results in an integer.\n  \"\"\"\n  multipleOf: Int\n  \"\"\"\n  The value of \"maximum\" MUST be a number, representing an inclusive\n  upper limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is less than or exactly equal to \"maximum\".\n  \"\"\"\n  maximum: Int\n  \"\"\"\n  The value of \"exclusiveMaximum\" MUST be number, representing an\n  exclusive upper limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly less than (not equal to) \"exclusiveMaximum\".\n  \"\"\"\n  exclusiveMaximum: Int\n  \"\"\"\n  The value of \"minimum\" MUST be a number, representing an inclusive\n  lower limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is greater than or exactly equal to \"minimum\".\n  \"\"\"\n  minimum: Int\n  \"\"\"\n  The value of \"exclusiveMinimum\" MUST be number, representing an\n  exclusive lower limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly greater than (not equal to) \"exclusiveMinimum\".\n  \"\"\"\n  exclusiveMinimum: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is less\n  than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \"\"\"\n  maxLength: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is\n  greater than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minLength: Int\n  \"\"\"\n  The value of this keyword MUST be a string.  This string SHOULD be a\n  valid regular expression, according to the ECMA 262 regular\n  expression dialect.\n  \n  A string instance is considered valid if the regular expression\n  matches the instance successfully.  Recall: regular expressions are\n  not implicitly anchored.\n  \"\"\"\n  pattern: String\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"maxItems\" if its size is less\n  than, or equal to, the value of this keyword.\n  \"\"\"\n  maxItems: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"minItems\" if its size is greater\n  than, or equal to, the value of this keyword.\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minItems: Int\n  \"\"\"\n  The value of this keyword MUST be a boolean.\n  \n  If this keyword has boolean value false, the instance validates\n  successfully.  If it has boolean value true, the instance validates\n  successfully if all of its elements are unique.\n  \n  Omitting this keyword has the same behavior as a value of false.\n  \"\"\"\n  uniqueItems: Boolean\n  commonPattern: COMMON_REGEX_PATTERN\n) on VARIABLE_DEFINITION\n\ndirective @rbac(\n  \"\"\"the user must match all roles\"\"\"\n  requireMatchAll: [WG_ROLE]\n  \"\"\"the user must match at least one of the roles\"\"\"\n  requireMatchAny: [WG_ROLE]\n  \"\"\"the user must not match all of the roles\"\"\"\n  denyMatchAll: [WG_ROLE]\n  \"\"\"the user must not match any of the roles\"\"\"\n  denyMatchAny: [WG_ROLE]\n) on QUERY | MUTATION | SUBSCRIPTION\n\ninput NestedIntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\ninput IntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\nenum QueryMode {\n  default\n  insensitive\n}\n\ninput NestedStringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringFilter\n}\n\ninput StringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringFilter\n}\n\ninput MessagesListRelationFilter {\n  every: messagesWhereInput\n  some: messagesWhereInput\n  none: messagesWhereInput\n}\n\ninput usersWhereInput {\n  AND: usersWhereInput\n  OR: [usersWhereInput]\n  NOT: usersWhereInput\n  id: IntFilter\n  email: StringFilter\n  name: StringFilter\n  messages: MessagesListRelationFilter\n}\n\ninput UsersRelationFilter {\n  is: usersWhereInput\n  isNot: usersWhereInput\n}\n\ninput messagesWhereInput {\n  AND: messagesWhereInput\n  OR: [messagesWhereInput]\n  NOT: messagesWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n  users: UsersRelationFilter\n}\n\nenum SortOrder {\n  asc\n  desc\n}\n\ninput messagesOrderByRelationAggregateInput {\n  _count: SortOrder\n}\n\ninput usersOrderByWithRelationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  messages: messagesOrderByRelationAggregateInput\n}\n\ninput messagesOrderByWithRelationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  users: usersOrderByWithRelationInput\n}\n\ninput messagesWhereUniqueInput {\n  id: Int\n}\n\nenum MessagesScalarFieldEnum {\n  id\n  user_id\n  message\n}\n\ntype UsersCountOutputType {\n  messages: Int!\n}\n\ntype users {\n  id: Int!\n  email: String!\n  name: String!\n  messages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]\n  _count: UsersCountOutputType\n}\n\ntype messages {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: users!\n}\n\ntype MessagesCountAggregateOutputType {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n}\n\ntype MessagesAvgAggregateOutputType {\n  id: Float\n  user_id: Float\n}\n\ntype MessagesSumAggregateOutputType {\n  id: Int\n  user_id: Int\n}\n\ntype MessagesMinAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype MessagesMaxAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype AggregateMessages {\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput messagesCountOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesAvgOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesMaxOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesMinOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesSumOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesOrderByWithAggregationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  _count: messagesCountOrderByAggregateInput\n  _avg: messagesAvgOrderByAggregateInput\n  _max: messagesMaxOrderByAggregateInput\n  _min: messagesMinOrderByAggregateInput\n  _sum: messagesSumOrderByAggregateInput\n}\n\ninput NestedFloatFilter {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: NestedFloatFilter\n}\n\ninput NestedIntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput IntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput NestedStringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput StringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput messagesScalarWhereWithAggregatesInput {\n  AND: messagesScalarWhereWithAggregatesInput\n  OR: [messagesScalarWhereWithAggregatesInput]\n  NOT: messagesScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  user_id: IntWithAggregatesFilter\n  message: StringWithAggregatesFilter\n}\n\ntype MessagesGroupByOutputType {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput usersWhereUniqueInput {\n  id: Int\n  email: String\n}\n\nenum UsersScalarFieldEnum {\n  id\n  email\n  name\n}\n\ntype UsersCountAggregateOutputType {\n  id: Int!\n  email: Int!\n  name: Int!\n  _all: Int!\n}\n\ntype UsersAvgAggregateOutputType {\n  id: Float\n}\n\ntype UsersSumAggregateOutputType {\n  id: Int\n}\n\ntype UsersMinAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n}\n\ntype UsersMaxAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n}\n\ntype AggregateUsers {\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ninput usersCountOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersAvgOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersMaxOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersMinOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersSumOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersOrderByWithAggregationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  _count: usersCountOrderByAggregateInput\n  _avg: usersAvgOrderByAggregateInput\n  _max: usersMaxOrderByAggregateInput\n  _min: usersMinOrderByAggregateInput\n  _sum: usersSumOrderByAggregateInput\n}\n\ninput usersScalarWhereWithAggregatesInput {\n  AND: usersScalarWhereWithAggregatesInput\n  OR: [usersScalarWhereWithAggregatesInput]\n  NOT: usersScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  email: StringWithAggregatesFilter\n  name: StringWithAggregatesFilter\n}\n\ntype UsersGroupByOutputType {\n  id: Int!\n  email: String!\n  name: String!\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ntype Query {\n  findFirstmessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): messages\n  findManymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]!\n  aggregatemessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int): AggregateMessages!\n  groupBymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithAggregationInput], by: [MessagesScalarFieldEnum]!, having: messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [MessagesGroupByOutputType]!\n  findUniquemessages(where: messagesWhereUniqueInput!): messages\n  findFirstusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): users\n  findManyusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): [users]!\n  aggregateusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int): AggregateUsers!\n  groupByusers(where: usersWhereInput, orderBy: [usersOrderByWithAggregationInput], by: [UsersScalarFieldEnum]!, having: usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [UsersGroupByOutputType]!\n  findUniqueusers(where: usersWhereUniqueInput!): users\n}\n\ninput usersCreateWithoutMessagesInput {\n  email: String!\n  name: String!\n}\n\ninput usersCreateOrConnectWithoutMessagesInput {\n  where: usersWhereUniqueInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersCreateNestedOneWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  connect: usersWhereUniqueInput\n}\n\ninput messagesCreateInput {\n  message: String!\n  users: usersCreateNestedOneWithoutMessagesInput!\n}\n\ninput StringFieldUpdateOperationsInput {\n  set: String\n}\n\ninput usersUpdateWithoutMessagesInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n}\n\ninput usersUpsertWithoutMessagesInput {\n  update: usersUpdateWithoutMessagesInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersUpdateOneRequiredWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  upsert: usersUpsertWithoutMessagesInput\n  connect: usersWhereUniqueInput\n  update: usersUpdateWithoutMessagesInput\n}\n\ninput messagesUpdateInput {\n  message: StringFieldUpdateOperationsInput\n  users: usersUpdateOneRequiredWithoutMessagesInput\n}\n\ninput messagesCreateManyInput {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype AffectedRowsOutput {\n  count: Int!\n}\n\ninput messagesUpdateManyMutationInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesCreateWithoutUsersInput {\n  message: String!\n}\n\ninput messagesCreateOrConnectWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesCreateManyUsersInput {\n  id: Int\n  message: String!\n}\n\ninput messagesCreateManyUsersInputEnvelope {\n  data: [messagesCreateManyUsersInput]!\n  skipDuplicates: Boolean\n}\n\ninput messagesCreateNestedManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n}\n\ninput usersCreateInput {\n  email: String!\n  name: String!\n  messages: messagesCreateNestedManyWithoutUsersInput\n}\n\ninput messagesUpdateWithoutUsersInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesUpsertWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  update: messagesUpdateWithoutUsersInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesUpdateWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  data: messagesUpdateWithoutUsersInput!\n}\n\ninput messagesScalarWhereInput {\n  AND: messagesScalarWhereInput\n  OR: [messagesScalarWhereInput]\n  NOT: messagesScalarWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n}\n\ninput messagesUpdateManyWithWhereWithoutUsersInput {\n  where: messagesScalarWhereInput!\n  data: messagesUpdateManyMutationInput!\n}\n\ninput messagesUpdateManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  upsert: messagesUpsertWithWhereUniqueWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n  set: messagesWhereUniqueInput\n  disconnect: messagesWhereUniqueInput\n  delete: messagesWhereUniqueInput\n  update: messagesUpdateWithWhereUniqueWithoutUsersInput\n  updateMany: messagesUpdateManyWithWhereWithoutUsersInput\n  deleteMany: messagesScalarWhereInput\n}\n\ninput usersUpdateInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n  messages: messagesUpdateManyWithoutUsersInput\n}\n\ninput usersCreateManyInput {\n  id: Int\n  email: String!\n  name: String!\n}\n\ninput usersUpdateManyMutationInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n}\n\ntype Mutation {\n  createOnemessages(data: messagesCreateInput!): messages\n  upsertOnemessages(where: messagesWhereUniqueInput!, create: messagesCreateInput!, update: messagesUpdateInput!): messages\n  createManymessages(data: [messagesCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOnemessages(where: messagesWhereUniqueInput!): messages\n  updateOnemessages(data: messagesUpdateInput!, where: messagesWhereUniqueInput!): messages\n  updateManymessages(data: messagesUpdateManyMutationInput!, where: messagesWhereInput): AffectedRowsOutput\n  deleteManymessages(where: messagesWhereInput): AffectedRowsOutput\n  createOneusers(data: usersCreateInput!): users\n  upsertOneusers(where: usersWhereUniqueInput!, create: usersCreateInput!, update: usersUpdateInput!): users\n  createManyusers(data: [usersCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOneusers(where: usersWhereUniqueInput!): users\n  updateOneusers(data: usersUpdateInput!, where: usersWhereUniqueInput!): users\n  updateManyusers(data: usersUpdateManyMutationInput!, where: usersWhereInput): AffectedRowsOutput\n  deleteManyusers(where: usersWhereInput): AffectedRowsOutput\n}\n\nscalar DateTime\n\nscalar Json\n\nscalar UUID\n\nscalar BigInt\n\nenum Claim {\n  EMAIL\n  EMAIL_VERIFIED\n  NAME\n  NICKNAME\n  LOCATION\n  PROVIDER\n}\n\nenum COMMON_REGEX_PATTERN {\n  EMAIL\n  DOMAIN\n}\n\nenum WG_ROLE {\n  user\n  superadmin\n}\n",
+      "graphqlSchema": "directive @fromClaim(name: Claim) on VARIABLE_DEFINITION\n\ndirective @hooksVariable on VARIABLE_DEFINITION\n\ndirective @jsonSchema(\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  title: String\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  description: String\n  \"\"\"\n  The value of \"multipleOf\" MUST be a number, strictly greater than 0.\n  \n  A numeric instance is valid only if division by this keyword's value\n  results in an integer.\n  \"\"\"\n  multipleOf: Int\n  \"\"\"\n  The value of \"maximum\" MUST be a number, representing an inclusive\n  upper limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is less than or exactly equal to \"maximum\".\n  \"\"\"\n  maximum: Int\n  \"\"\"\n  The value of \"exclusiveMaximum\" MUST be number, representing an\n  exclusive upper limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly less than (not equal to) \"exclusiveMaximum\".\n  \"\"\"\n  exclusiveMaximum: Int\n  \"\"\"\n  The value of \"minimum\" MUST be a number, representing an inclusive\n  lower limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is greater than or exactly equal to \"minimum\".\n  \"\"\"\n  minimum: Int\n  \"\"\"\n  The value of \"exclusiveMinimum\" MUST be number, representing an\n  exclusive lower limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly greater than (not equal to) \"exclusiveMinimum\".\n  \"\"\"\n  exclusiveMinimum: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is less\n  than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \"\"\"\n  maxLength: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is\n  greater than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minLength: Int\n  \"\"\"\n  The value of this keyword MUST be a string.  This string SHOULD be a\n  valid regular expression, according to the ECMA 262 regular\n  expression dialect.\n  \n  A string instance is considered valid if the regular expression\n  matches the instance successfully.  Recall: regular expressions are\n  not implicitly anchored.\n  \"\"\"\n  pattern: String\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"maxItems\" if its size is less\n  than, or equal to, the value of this keyword.\n  \"\"\"\n  maxItems: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"minItems\" if its size is greater\n  than, or equal to, the value of this keyword.\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minItems: Int\n  \"\"\"\n  The value of this keyword MUST be a boolean.\n  \n  If this keyword has boolean value false, the instance validates\n  successfully.  If it has boolean value true, the instance validates\n  successfully if all of its elements are unique.\n  \n  Omitting this keyword has the same behavior as a value of false.\n  \"\"\"\n  uniqueItems: Boolean\n  commonPattern: COMMON_REGEX_PATTERN\n) on VARIABLE_DEFINITION\n\ndirective @rbac(\n  \"\"\"the user must match all roles\"\"\"\n  requireMatchAll: [WG_ROLE]\n  \"\"\"the user must match at least one of the roles\"\"\"\n  requireMatchAny: [WG_ROLE]\n  \"\"\"the user must not match all of the roles\"\"\"\n  denyMatchAll: [WG_ROLE]\n  \"\"\"the user must not match any of the roles\"\"\"\n  denyMatchAny: [WG_ROLE]\n) on QUERY | MUTATION | SUBSCRIPTION\n\n\"\"\"\nThe directive @injectCurrentDateTime injects a DateTime string of the current date and time into the variable.\nThis variable MUST be a string compatible scalar. \n\nThe default format, is: ISO 8601\nIf no format is chosen, the default format is used.\nCustom formats are allowed by specifying a format conforming to the Golang specification for specifying a date time format.\n\"\"\"\ndirective @injectCurrentDateTime(\n  format: WunderGraphDateTimeFormat = ISO8601\n  \"\"\"customFormat must conform to the Golang specification for specifying a date time format\"\"\"\n  customFormat: String\n) on VARIABLE_DEFINITION\n\n\"\"\"\nThe directive @injectGeneratedUUID injects a generated UUID into the variable.\nThis variable MUST be a string.\nAt the same time, it removes the variable from the input definition,\ndisallowing the user to supply it.\n\nThis means, the UUID is 100% generated server-side and can be considered untempered.\n\"\"\"\ndirective @injectGeneratedUUID on VARIABLE_DEFINITION\n\n\"\"\"\nThe @internalOperation Directive marks an Operation as internal.\nBy doing so, the Operation is no longer accessible from the public API.\nIt can only be accessed by internal services, like hooks.\n\"\"\"\ndirective @internalOperation on QUERY | MUTATION | SUBSCRIPTION\n\ninput NestedIntFilter_db {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter_db\n}\n\ninput IntFilter_db {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter_db\n}\n\nenum QueryMode_db {\n  default\n  insensitive\n}\n\ninput NestedStringFilter_db {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringFilter_db\n}\n\ninput StringFilter_db {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode_db\n  not: NestedStringFilter_db\n}\n\ninput NestedDateTimeFilter_db {\n  equals: DateTime_db\n  in: [DateTime_db]\n  notIn: [DateTime_db]\n  lt: DateTime_db\n  lte: DateTime_db\n  gt: DateTime_db\n  gte: DateTime_db\n  not: NestedDateTimeFilter_db\n}\n\ninput DateTimeFilter_db {\n  equals: DateTime_db\n  in: [DateTime_db]\n  notIn: [DateTime_db]\n  lt: DateTime_db\n  lte: DateTime_db\n  gt: DateTime_db\n  gte: DateTime_db\n  not: NestedDateTimeFilter_db\n}\n\ninput MessagesListRelationFilter_db {\n  every: messagesWhereInput_db\n  some: messagesWhereInput_db\n  none: messagesWhereInput_db\n}\n\ninput usersWhereInput_db {\n  AND: usersWhereInput_db\n  OR: [usersWhereInput_db]\n  NOT: usersWhereInput_db\n  id: IntFilter_db\n  email: StringFilter_db\n  name: StringFilter_db\n  updatedat: DateTimeFilter_db\n  lastlogin: DateTimeFilter_db\n  messages: MessagesListRelationFilter_db\n}\n\ninput UsersRelationFilter_db {\n  is: usersWhereInput_db\n  isNot: usersWhereInput_db\n}\n\ninput messagesWhereInput_db {\n  AND: messagesWhereInput_db\n  OR: [messagesWhereInput_db]\n  NOT: messagesWhereInput_db\n  id: IntFilter_db\n  user_id: IntFilter_db\n  message: StringFilter_db\n  users: UsersRelationFilter_db\n}\n\nenum SortOrder_db {\n  asc\n  desc\n}\n\ninput messagesOrderByRelationAggregateInput_db {\n  _count: SortOrder_db\n}\n\ninput usersOrderByWithRelationInput_db {\n  id: SortOrder_db\n  email: SortOrder_db\n  name: SortOrder_db\n  updatedat: SortOrder_db\n  lastlogin: SortOrder_db\n  messages: messagesOrderByRelationAggregateInput_db\n}\n\ninput messagesOrderByWithRelationInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n  message: SortOrder_db\n  users: usersOrderByWithRelationInput_db\n}\n\ninput messagesWhereUniqueInput_db {\n  id: Int\n}\n\nenum MessagesScalarFieldEnum_db {\n  id\n  user_id\n  message\n}\n\ntype UsersCountOutputType_db {\n  messages: Int!\n}\n\ntype users_db {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime_db!\n  lastlogin: DateTime_db!\n  messages(where: messagesWhereInput_db, orderBy: [messagesOrderByWithRelationInput_db], cursor: messagesWhereUniqueInput_db, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum_db]): [messages_db]\n  _count: UsersCountOutputType_db\n}\n\ntype messages_db {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: users_db!\n}\n\ntype MessagesCountAggregateOutputType_db {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n}\n\ntype MessagesAvgAggregateOutputType_db {\n  id: Float\n  user_id: Float\n}\n\ntype MessagesSumAggregateOutputType_db {\n  id: Int\n  user_id: Int\n}\n\ntype MessagesMinAggregateOutputType_db {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype MessagesMaxAggregateOutputType_db {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype AggregateMessages_db {\n  _count: MessagesCountAggregateOutputType_db\n  _avg: MessagesAvgAggregateOutputType_db\n  _sum: MessagesSumAggregateOutputType_db\n  _min: MessagesMinAggregateOutputType_db\n  _max: MessagesMaxAggregateOutputType_db\n}\n\ninput messagesCountOrderByAggregateInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n  message: SortOrder_db\n}\n\ninput messagesAvgOrderByAggregateInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n}\n\ninput messagesMaxOrderByAggregateInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n  message: SortOrder_db\n}\n\ninput messagesMinOrderByAggregateInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n  message: SortOrder_db\n}\n\ninput messagesSumOrderByAggregateInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n}\n\ninput messagesOrderByWithAggregationInput_db {\n  id: SortOrder_db\n  user_id: SortOrder_db\n  message: SortOrder_db\n  _count: messagesCountOrderByAggregateInput_db\n  _avg: messagesAvgOrderByAggregateInput_db\n  _max: messagesMaxOrderByAggregateInput_db\n  _min: messagesMinOrderByAggregateInput_db\n  _sum: messagesSumOrderByAggregateInput_db\n}\n\ninput NestedFloatFilter_db {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: NestedFloatFilter_db\n}\n\ninput NestedIntWithAggregatesFilter_db {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _avg: NestedFloatFilter_db\n  _sum: NestedIntFilter_db\n  _min: NestedIntFilter_db\n  _max: NestedIntFilter_db\n}\n\ninput IntWithAggregatesFilter_db {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _avg: NestedFloatFilter_db\n  _sum: NestedIntFilter_db\n  _min: NestedIntFilter_db\n  _max: NestedIntFilter_db\n}\n\ninput NestedStringWithAggregatesFilter_db {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _min: NestedStringFilter_db\n  _max: NestedStringFilter_db\n}\n\ninput StringWithAggregatesFilter_db {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode_db\n  not: NestedStringWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _min: NestedStringFilter_db\n  _max: NestedStringFilter_db\n}\n\ninput messagesScalarWhereWithAggregatesInput_db {\n  AND: messagesScalarWhereWithAggregatesInput_db\n  OR: [messagesScalarWhereWithAggregatesInput_db]\n  NOT: messagesScalarWhereWithAggregatesInput_db\n  id: IntWithAggregatesFilter_db\n  user_id: IntWithAggregatesFilter_db\n  message: StringWithAggregatesFilter_db\n}\n\ntype MessagesGroupByOutputType_db {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: MessagesCountAggregateOutputType_db\n  _avg: MessagesAvgAggregateOutputType_db\n  _sum: MessagesSumAggregateOutputType_db\n  _min: MessagesMinAggregateOutputType_db\n  _max: MessagesMaxAggregateOutputType_db\n}\n\ninput usersWhereUniqueInput_db {\n  id: Int\n  email: String\n}\n\nenum UsersScalarFieldEnum_db {\n  id\n  email\n  name\n  updatedat\n  lastlogin\n}\n\ntype UsersCountAggregateOutputType_db {\n  id: Int!\n  email: Int!\n  name: Int!\n  updatedat: Int!\n  lastlogin: Int!\n  _all: Int!\n}\n\ntype UsersAvgAggregateOutputType_db {\n  id: Float\n}\n\ntype UsersSumAggregateOutputType_db {\n  id: Int\n}\n\ntype UsersMinAggregateOutputType_db {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime_db\n  lastlogin: DateTime_db\n}\n\ntype UsersMaxAggregateOutputType_db {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime_db\n  lastlogin: DateTime_db\n}\n\ntype AggregateUsers_db {\n  _count: UsersCountAggregateOutputType_db\n  _avg: UsersAvgAggregateOutputType_db\n  _sum: UsersSumAggregateOutputType_db\n  _min: UsersMinAggregateOutputType_db\n  _max: UsersMaxAggregateOutputType_db\n}\n\ninput usersCountOrderByAggregateInput_db {\n  id: SortOrder_db\n  email: SortOrder_db\n  name: SortOrder_db\n  updatedat: SortOrder_db\n  lastlogin: SortOrder_db\n}\n\ninput usersAvgOrderByAggregateInput_db {\n  id: SortOrder_db\n}\n\ninput usersMaxOrderByAggregateInput_db {\n  id: SortOrder_db\n  email: SortOrder_db\n  name: SortOrder_db\n  updatedat: SortOrder_db\n  lastlogin: SortOrder_db\n}\n\ninput usersMinOrderByAggregateInput_db {\n  id: SortOrder_db\n  email: SortOrder_db\n  name: SortOrder_db\n  updatedat: SortOrder_db\n  lastlogin: SortOrder_db\n}\n\ninput usersSumOrderByAggregateInput_db {\n  id: SortOrder_db\n}\n\ninput usersOrderByWithAggregationInput_db {\n  id: SortOrder_db\n  email: SortOrder_db\n  name: SortOrder_db\n  updatedat: SortOrder_db\n  lastlogin: SortOrder_db\n  _count: usersCountOrderByAggregateInput_db\n  _avg: usersAvgOrderByAggregateInput_db\n  _max: usersMaxOrderByAggregateInput_db\n  _min: usersMinOrderByAggregateInput_db\n  _sum: usersSumOrderByAggregateInput_db\n}\n\ninput NestedDateTimeWithAggregatesFilter_db {\n  equals: DateTime_db\n  in: [DateTime_db]\n  notIn: [DateTime_db]\n  lt: DateTime_db\n  lte: DateTime_db\n  gt: DateTime_db\n  gte: DateTime_db\n  not: NestedDateTimeWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _min: NestedDateTimeFilter_db\n  _max: NestedDateTimeFilter_db\n}\n\ninput DateTimeWithAggregatesFilter_db {\n  equals: DateTime_db\n  in: [DateTime_db]\n  notIn: [DateTime_db]\n  lt: DateTime_db\n  lte: DateTime_db\n  gt: DateTime_db\n  gte: DateTime_db\n  not: NestedDateTimeWithAggregatesFilter_db\n  _count: NestedIntFilter_db\n  _min: NestedDateTimeFilter_db\n  _max: NestedDateTimeFilter_db\n}\n\ninput usersScalarWhereWithAggregatesInput_db {\n  AND: usersScalarWhereWithAggregatesInput_db\n  OR: [usersScalarWhereWithAggregatesInput_db]\n  NOT: usersScalarWhereWithAggregatesInput_db\n  id: IntWithAggregatesFilter_db\n  email: StringWithAggregatesFilter_db\n  name: StringWithAggregatesFilter_db\n  updatedat: DateTimeWithAggregatesFilter_db\n  lastlogin: DateTimeWithAggregatesFilter_db\n}\n\ntype UsersGroupByOutputType_db {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime_db!\n  lastlogin: DateTime_db!\n  _count: UsersCountAggregateOutputType_db\n  _avg: UsersAvgAggregateOutputType_db\n  _sum: UsersSumAggregateOutputType_db\n  _min: UsersMinAggregateOutputType_db\n  _max: UsersMaxAggregateOutputType_db\n}\n\ntype Query {\n  db_findFirstmessages(where: messagesWhereInput_db, orderBy: [messagesOrderByWithRelationInput_db], cursor: messagesWhereUniqueInput_db, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum_db]): messages_db\n  db_findManymessages(where: messagesWhereInput_db, orderBy: [messagesOrderByWithRelationInput_db], cursor: messagesWhereUniqueInput_db, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum_db]): [messages_db]!\n  db_aggregatemessages(where: messagesWhereInput_db, orderBy: [messagesOrderByWithRelationInput_db], cursor: messagesWhereUniqueInput_db, take: Int, skip: Int): AggregateMessages_db!\n  db_groupBymessages(where: messagesWhereInput_db, orderBy: [messagesOrderByWithAggregationInput_db], by: [MessagesScalarFieldEnum_db]!, having: messagesScalarWhereWithAggregatesInput_db, take: Int, skip: Int): [MessagesGroupByOutputType_db]!\n  db_findUniquemessages(where: messagesWhereUniqueInput_db!): messages_db\n  db_findFirstusers(where: usersWhereInput_db, orderBy: [usersOrderByWithRelationInput_db], cursor: usersWhereUniqueInput_db, take: Int, skip: Int, distinct: [UsersScalarFieldEnum_db]): users_db\n  db_findManyusers(where: usersWhereInput_db, orderBy: [usersOrderByWithRelationInput_db], cursor: usersWhereUniqueInput_db, take: Int, skip: Int, distinct: [UsersScalarFieldEnum_db]): [users_db]!\n  db_aggregateusers(where: usersWhereInput_db, orderBy: [usersOrderByWithRelationInput_db], cursor: usersWhereUniqueInput_db, take: Int, skip: Int): AggregateUsers_db!\n  db_groupByusers(where: usersWhereInput_db, orderBy: [usersOrderByWithAggregationInput_db], by: [UsersScalarFieldEnum_db]!, having: usersScalarWhereWithAggregatesInput_db, take: Int, skip: Int): [UsersGroupByOutputType_db]!\n  db_findUniqueusers(where: usersWhereUniqueInput_db!): users_db\n}\n\ninput usersCreateWithoutMessagesInput_db {\n  email: String!\n  name: String!\n  updatedat: DateTime_db\n  lastlogin: DateTime_db\n}\n\ninput usersCreateOrConnectWithoutMessagesInput_db {\n  where: usersWhereUniqueInput_db!\n  create: usersCreateWithoutMessagesInput_db!\n}\n\ninput usersCreateNestedOneWithoutMessagesInput_db {\n  create: usersCreateWithoutMessagesInput_db\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput_db\n  connect: usersWhereUniqueInput_db\n}\n\ninput messagesCreateInput_db {\n  message: String!\n  users: usersCreateNestedOneWithoutMessagesInput_db!\n}\n\ninput StringFieldUpdateOperationsInput_db {\n  set: String\n}\n\ninput DateTimeFieldUpdateOperationsInput_db {\n  set: DateTime_db\n}\n\ninput usersUpdateWithoutMessagesInput_db {\n  email: StringFieldUpdateOperationsInput_db\n  name: StringFieldUpdateOperationsInput_db\n  updatedat: DateTimeFieldUpdateOperationsInput_db\n  lastlogin: DateTimeFieldUpdateOperationsInput_db\n}\n\ninput usersUpsertWithoutMessagesInput_db {\n  update: usersUpdateWithoutMessagesInput_db!\n  create: usersCreateWithoutMessagesInput_db!\n}\n\ninput usersUpdateOneRequiredWithoutMessagesInput_db {\n  create: usersCreateWithoutMessagesInput_db\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput_db\n  upsert: usersUpsertWithoutMessagesInput_db\n  connect: usersWhereUniqueInput_db\n  update: usersUpdateWithoutMessagesInput_db\n}\n\ninput messagesUpdateInput_db {\n  message: StringFieldUpdateOperationsInput_db\n  users: usersUpdateOneRequiredWithoutMessagesInput_db\n}\n\ninput messagesCreateManyInput_db {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype AffectedRowsOutput_db {\n  count: Int!\n}\n\ninput messagesUpdateManyMutationInput_db {\n  message: StringFieldUpdateOperationsInput_db\n}\n\ninput messagesCreateWithoutUsersInput_db {\n  message: String!\n}\n\ninput messagesCreateOrConnectWithoutUsersInput_db {\n  where: messagesWhereUniqueInput_db!\n  create: messagesCreateWithoutUsersInput_db!\n}\n\ninput messagesCreateManyUsersInput_db {\n  id: Int\n  message: String!\n}\n\ninput messagesCreateManyUsersInputEnvelope_db {\n  data: [messagesCreateManyUsersInput_db]!\n  skipDuplicates: Boolean\n}\n\ninput messagesCreateNestedManyWithoutUsersInput_db {\n  create: messagesCreateWithoutUsersInput_db\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput_db\n  createMany: messagesCreateManyUsersInputEnvelope_db\n  connect: messagesWhereUniqueInput_db\n}\n\ninput usersCreateInput_db {\n  email: String!\n  name: String!\n  updatedat: DateTime_db\n  lastlogin: DateTime_db\n  messages: messagesCreateNestedManyWithoutUsersInput_db\n}\n\ninput messagesUpdateWithoutUsersInput_db {\n  message: StringFieldUpdateOperationsInput_db\n}\n\ninput messagesUpsertWithWhereUniqueWithoutUsersInput_db {\n  where: messagesWhereUniqueInput_db!\n  update: messagesUpdateWithoutUsersInput_db!\n  create: messagesCreateWithoutUsersInput_db!\n}\n\ninput messagesUpdateWithWhereUniqueWithoutUsersInput_db {\n  where: messagesWhereUniqueInput_db!\n  data: messagesUpdateWithoutUsersInput_db!\n}\n\ninput messagesScalarWhereInput_db {\n  AND: messagesScalarWhereInput_db\n  OR: [messagesScalarWhereInput_db]\n  NOT: messagesScalarWhereInput_db\n  id: IntFilter_db\n  user_id: IntFilter_db\n  message: StringFilter_db\n}\n\ninput messagesUpdateManyWithWhereWithoutUsersInput_db {\n  where: messagesScalarWhereInput_db!\n  data: messagesUpdateManyMutationInput_db!\n}\n\ninput messagesUpdateManyWithoutUsersInput_db {\n  create: messagesCreateWithoutUsersInput_db\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput_db\n  upsert: messagesUpsertWithWhereUniqueWithoutUsersInput_db\n  createMany: messagesCreateManyUsersInputEnvelope_db\n  connect: messagesWhereUniqueInput_db\n  set: messagesWhereUniqueInput_db\n  disconnect: messagesWhereUniqueInput_db\n  delete: messagesWhereUniqueInput_db\n  update: messagesUpdateWithWhereUniqueWithoutUsersInput_db\n  updateMany: messagesUpdateManyWithWhereWithoutUsersInput_db\n  deleteMany: messagesScalarWhereInput_db\n}\n\ninput usersUpdateInput_db {\n  email: StringFieldUpdateOperationsInput_db\n  name: StringFieldUpdateOperationsInput_db\n  updatedat: DateTimeFieldUpdateOperationsInput_db\n  lastlogin: DateTimeFieldUpdateOperationsInput_db\n  messages: messagesUpdateManyWithoutUsersInput_db\n}\n\ninput usersCreateManyInput_db {\n  id: Int\n  email: String!\n  name: String!\n  updatedat: DateTime_db\n  lastlogin: DateTime_db\n}\n\ninput usersUpdateManyMutationInput_db {\n  email: StringFieldUpdateOperationsInput_db\n  name: StringFieldUpdateOperationsInput_db\n  updatedat: DateTimeFieldUpdateOperationsInput_db\n  lastlogin: DateTimeFieldUpdateOperationsInput_db\n}\n\ntype Mutation {\n  db_createOnemessages(data: messagesCreateInput_db!): messages_db\n  db_upsertOnemessages(where: messagesWhereUniqueInput_db!, create: messagesCreateInput_db!, update: messagesUpdateInput_db!): messages_db\n  db_createManymessages(data: [messagesCreateManyInput_db]!, skipDuplicates: Boolean): AffectedRowsOutput_db\n  db_deleteOnemessages(where: messagesWhereUniqueInput_db!): messages_db\n  db_updateOnemessages(data: messagesUpdateInput_db!, where: messagesWhereUniqueInput_db!): messages_db\n  db_updateManymessages(data: messagesUpdateManyMutationInput_db!, where: messagesWhereInput_db): AffectedRowsOutput_db\n  db_deleteManymessages(where: messagesWhereInput_db): AffectedRowsOutput_db\n  db_createOneusers(data: usersCreateInput_db!): users_db\n  db_upsertOneusers(where: usersWhereUniqueInput_db!, create: usersCreateInput_db!, update: usersUpdateInput_db!): users_db\n  db_createManyusers(data: [usersCreateManyInput_db]!, skipDuplicates: Boolean): AffectedRowsOutput_db\n  db_deleteOneusers(where: usersWhereUniqueInput_db!): users_db\n  db_updateOneusers(data: usersUpdateInput_db!, where: usersWhereUniqueInput_db!): users_db\n  db_updateManyusers(data: usersUpdateManyMutationInput_db!, where: usersWhereInput_db): AffectedRowsOutput_db\n  db_deleteManyusers(where: usersWhereInput_db): AffectedRowsOutput_db\n}\n\nscalar DateTime_db\n\nscalar Json_db\n\nscalar UUID_db\n\nscalar BigInt_db\n\nenum Claim {\n  EMAIL\n  EMAIL_VERIFIED\n  NAME\n  NICKNAME\n  LOCATION\n  PROVIDER\n}\n\nenum COMMON_REGEX_PATTERN {\n  EMAIL\n  DOMAIN\n}\n\nenum WG_ROLE {\n  user\n  superadmin\n}\n\nenum WunderGraphDateTimeFormat {\n  \"\"\"2006-01-02T15:04:05-0700\"\"\"\n  ISO8601\n  \"\"\"Mon Jan _2 15:04:05 2006\"\"\"\n  ANSIC\n  \"\"\"Mon Jan _2 15:04:05 MST 2006\"\"\"\n  UnixDate\n  \"\"\"Mon Jan 02 15:04:05 -0700 2006\"\"\"\n  RubyDate\n  \"\"\"02 Jan 06 15:04 MST\"\"\"\n  RFC822\n  \"\"\"02 Jan 06 15:04 -0700\"\"\"\n  RFC822Z\n  \"\"\"Monday, 02-Jan-06 15:04:05 MST\"\"\"\n  RFC850\n  \"\"\"Mon, 02 Jan 2006 15:04:05 MST\"\"\"\n  RFC1123\n  \"\"\"Mon, 02 Jan 2006 15:04:05 -0700\"\"\"\n  RFC1123Z\n  \"\"\"2006-01-02T15:04:05Z07:00\"\"\"\n  RFC3339\n  \"\"\"2006-01-02T15:04:05.999999999Z07:00\"\"\"\n  RFC3339Nano\n  \"\"\"3:04PM\"\"\"\n  Kitchen\n  \"\"\"Jan _2 15:04:05\"\"\"\n  Stamp\n  \"\"\"Jan _2 15:04:05.000\"\"\"\n  StampMilli\n  \"\"\"Jan _2 15:04:05.000000\"\"\"\n  StampMicro\n  \"\"\"Jan _2 15:04:05.000000000\"\"\"\n  StampNano\n}\n",
       "datasourceConfigurations": [
         {
           "kind": 3,
@@ -217,57 +380,59 @@
             {
               "typeName": "Query",
               "fieldNames": [
-                "findFirstmessages",
-                "findManymessages",
-                "aggregatemessages",
-                "groupBymessages",
-                "findUniquemessages",
-                "findFirstusers",
-                "findManyusers",
-                "aggregateusers",
-                "groupByusers",
-                "findUniqueusers"
+                "db_findFirstmessages",
+                "db_findManymessages",
+                "db_aggregatemessages",
+                "db_groupBymessages",
+                "db_findUniquemessages",
+                "db_findFirstusers",
+                "db_findManyusers",
+                "db_aggregateusers",
+                "db_groupByusers",
+                "db_findUniqueusers"
               ]
             },
             {
               "typeName": "Mutation",
               "fieldNames": [
-                "createOnemessages",
-                "upsertOnemessages",
-                "createManymessages",
-                "deleteOnemessages",
-                "updateOnemessages",
-                "updateManymessages",
-                "deleteManymessages",
-                "createOneusers",
-                "upsertOneusers",
-                "createManyusers",
-                "deleteOneusers",
-                "updateOneusers",
-                "updateManyusers",
-                "deleteManyusers"
+                "db_createOnemessages",
+                "db_upsertOnemessages",
+                "db_createManymessages",
+                "db_deleteOnemessages",
+                "db_updateOnemessages",
+                "db_updateManymessages",
+                "db_deleteManymessages",
+                "db_createOneusers",
+                "db_upsertOneusers",
+                "db_createManyusers",
+                "db_deleteOneusers",
+                "db_updateOneusers",
+                "db_updateManyusers",
+                "db_deleteManyusers"
               ]
             }
           ],
           "childNodes": [
             {
-              "typeName": "UsersCountOutputType",
+              "typeName": "UsersCountOutputType_db",
               "fieldNames": [
                 "messages"
               ]
             },
             {
-              "typeName": "users",
+              "typeName": "users_db",
               "fieldNames": [
                 "id",
                 "email",
                 "name",
+                "updatedat",
+                "lastlogin",
                 "messages",
                 "_count"
               ]
             },
             {
-              "typeName": "messages",
+              "typeName": "messages_db",
               "fieldNames": [
                 "id",
                 "user_id",
@@ -276,7 +441,7 @@
               ]
             },
             {
-              "typeName": "MessagesCountAggregateOutputType",
+              "typeName": "MessagesCountAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id",
@@ -285,21 +450,21 @@
               ]
             },
             {
-              "typeName": "MessagesAvgAggregateOutputType",
+              "typeName": "MessagesAvgAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id"
               ]
             },
             {
-              "typeName": "MessagesSumAggregateOutputType",
+              "typeName": "MessagesSumAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id"
               ]
             },
             {
-              "typeName": "MessagesMinAggregateOutputType",
+              "typeName": "MessagesMinAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id",
@@ -307,7 +472,7 @@
               ]
             },
             {
-              "typeName": "MessagesMaxAggregateOutputType",
+              "typeName": "MessagesMaxAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id",
@@ -315,7 +480,7 @@
               ]
             },
             {
-              "typeName": "AggregateMessages",
+              "typeName": "AggregateMessages_db",
               "fieldNames": [
                 "_count",
                 "_avg",
@@ -325,7 +490,7 @@
               ]
             },
             {
-              "typeName": "MessagesGroupByOutputType",
+              "typeName": "MessagesGroupByOutputType_db",
               "fieldNames": [
                 "id",
                 "user_id",
@@ -338,58 +503,51 @@
               ]
             },
             {
-              "typeName": "UsersCountAggregateOutputType",
+              "typeName": "UsersCountAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "email",
                 "name",
+                "updatedat",
+                "lastlogin",
                 "_all"
               ]
             },
             {
-              "typeName": "UsersAvgAggregateOutputType",
+              "typeName": "UsersAvgAggregateOutputType_db",
               "fieldNames": [
                 "id"
               ]
             },
             {
-              "typeName": "UsersSumAggregateOutputType",
+              "typeName": "UsersSumAggregateOutputType_db",
               "fieldNames": [
                 "id"
               ]
             },
             {
-              "typeName": "UsersMinAggregateOutputType",
-              "fieldNames": [
-                "id",
-                "email",
-                "name"
-              ]
-            },
-            {
-              "typeName": "UsersMaxAggregateOutputType",
-              "fieldNames": [
-                "id",
-                "email",
-                "name"
-              ]
-            },
-            {
-              "typeName": "AggregateUsers",
-              "fieldNames": [
-                "_count",
-                "_avg",
-                "_sum",
-                "_min",
-                "_max"
-              ]
-            },
-            {
-              "typeName": "UsersGroupByOutputType",
+              "typeName": "UsersMinAggregateOutputType_db",
               "fieldNames": [
                 "id",
                 "email",
                 "name",
+                "updatedat",
+                "lastlogin"
+              ]
+            },
+            {
+              "typeName": "UsersMaxAggregateOutputType_db",
+              "fieldNames": [
+                "id",
+                "email",
+                "name",
+                "updatedat",
+                "lastlogin"
+              ]
+            },
+            {
+              "typeName": "AggregateUsers_db",
+              "fieldNames": [
                 "_count",
                 "_avg",
                 "_sum",
@@ -398,7 +556,22 @@
               ]
             },
             {
-              "typeName": "AffectedRowsOutput",
+              "typeName": "UsersGroupByOutputType_db",
+              "fieldNames": [
+                "id",
+                "email",
+                "name",
+                "updatedat",
+                "lastlogin",
+                "_count",
+                "_avg",
+                "_sum",
+                "_min",
+                "_max"
+              ]
+            },
+            {
+              "typeName": "AffectedRowsOutput_db",
               "fieldNames": [
                 "count"
               ]
@@ -407,14 +580,14 @@
           "overrideFieldPathFromAlias": false,
           "customDatabase": {
             "databaseQuerystring": "postgresql://admin:admin@localhost:54322/example?schema=public",
-            "prismaSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://admin:admin@localhost:54322/example?schema=public\"\n}\n\nmodel messages {\n  id      Int    @id @default(autoincrement())\n  user_id Int\n  message String\n  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)\n}\n\nmodel users {\n  id       Int        @id @default(autoincrement())\n  email    String     @unique\n  name     String\n  messages messages[]\n}\n",
-            "graphqlSchema": "schema {\n  query: Query\n  mutation: Mutation\n}\n\ninput NestedIntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\ninput IntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\nenum QueryMode {\n  default\n  insensitive\n}\n\ninput NestedStringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringFilter\n}\n\ninput StringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringFilter\n}\n\ninput MessagesListRelationFilter {\n  every: messagesWhereInput\n  some: messagesWhereInput\n  none: messagesWhereInput\n}\n\ninput usersWhereInput {\n  AND: usersWhereInput\n  OR: [usersWhereInput]\n  NOT: usersWhereInput\n  id: IntFilter\n  email: StringFilter\n  name: StringFilter\n  messages: MessagesListRelationFilter\n}\n\ninput UsersRelationFilter {\n  is: usersWhereInput\n  isNot: usersWhereInput\n}\n\ninput messagesWhereInput {\n  AND: messagesWhereInput\n  OR: [messagesWhereInput]\n  NOT: messagesWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n  users: UsersRelationFilter\n}\n\nenum SortOrder {\n  asc\n  desc\n}\n\ninput messagesOrderByRelationAggregateInput {\n  _count: SortOrder\n}\n\ninput usersOrderByWithRelationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  messages: messagesOrderByRelationAggregateInput\n}\n\ninput messagesOrderByWithRelationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  users: usersOrderByWithRelationInput\n}\n\ninput messagesWhereUniqueInput {\n  id: Int\n}\n\nenum MessagesScalarFieldEnum {\n  id\n  user_id\n  message\n}\n\ntype UsersCountOutputType {\n  messages: Int!\n}\n\ntype users {\n  id: Int!\n  email: String!\n  name: String!\n  messages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]\n  _count: UsersCountOutputType\n}\n\ntype messages {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: users!\n}\n\ntype MessagesCountAggregateOutputType {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n}\n\ntype MessagesAvgAggregateOutputType {\n  id: Float\n  user_id: Float\n}\n\ntype MessagesSumAggregateOutputType {\n  id: Int\n  user_id: Int\n}\n\ntype MessagesMinAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype MessagesMaxAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype AggregateMessages {\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput messagesCountOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesAvgOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesMaxOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesMinOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesSumOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesOrderByWithAggregationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  _count: messagesCountOrderByAggregateInput\n  _avg: messagesAvgOrderByAggregateInput\n  _max: messagesMaxOrderByAggregateInput\n  _min: messagesMinOrderByAggregateInput\n  _sum: messagesSumOrderByAggregateInput\n}\n\ninput NestedFloatFilter {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: NestedFloatFilter\n}\n\ninput NestedIntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput IntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput NestedStringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput StringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput messagesScalarWhereWithAggregatesInput {\n  AND: messagesScalarWhereWithAggregatesInput\n  OR: [messagesScalarWhereWithAggregatesInput]\n  NOT: messagesScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  user_id: IntWithAggregatesFilter\n  message: StringWithAggregatesFilter\n}\n\ntype MessagesGroupByOutputType {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput usersWhereUniqueInput {\n  id: Int\n  email: String\n}\n\nenum UsersScalarFieldEnum {\n  id\n  email\n  name\n}\n\ntype UsersCountAggregateOutputType {\n  id: Int!\n  email: Int!\n  name: Int!\n  _all: Int!\n}\n\ntype UsersAvgAggregateOutputType {\n  id: Float\n}\n\ntype UsersSumAggregateOutputType {\n  id: Int\n}\n\ntype UsersMinAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n}\n\ntype UsersMaxAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n}\n\ntype AggregateUsers {\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ninput usersCountOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersAvgOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersMaxOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersMinOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n}\n\ninput usersSumOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersOrderByWithAggregationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  _count: usersCountOrderByAggregateInput\n  _avg: usersAvgOrderByAggregateInput\n  _max: usersMaxOrderByAggregateInput\n  _min: usersMinOrderByAggregateInput\n  _sum: usersSumOrderByAggregateInput\n}\n\ninput usersScalarWhereWithAggregatesInput {\n  AND: usersScalarWhereWithAggregatesInput\n  OR: [usersScalarWhereWithAggregatesInput]\n  NOT: usersScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  email: StringWithAggregatesFilter\n  name: StringWithAggregatesFilter\n}\n\ntype UsersGroupByOutputType {\n  id: Int!\n  email: String!\n  name: String!\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ntype Query {\n  findFirstmessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): messages\n  findManymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]!\n  aggregatemessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int): AggregateMessages!\n  groupBymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithAggregationInput], by: [MessagesScalarFieldEnum]!, having: messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [MessagesGroupByOutputType]!\n  findUniquemessages(where: messagesWhereUniqueInput!): messages\n  findFirstusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): users\n  findManyusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): [users]!\n  aggregateusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int): AggregateUsers!\n  groupByusers(where: usersWhereInput, orderBy: [usersOrderByWithAggregationInput], by: [UsersScalarFieldEnum]!, having: usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [UsersGroupByOutputType]!\n  findUniqueusers(where: usersWhereUniqueInput!): users\n}\n\ninput usersCreateWithoutMessagesInput {\n  email: String!\n  name: String!\n}\n\ninput usersCreateOrConnectWithoutMessagesInput {\n  where: usersWhereUniqueInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersCreateNestedOneWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  connect: usersWhereUniqueInput\n}\n\ninput messagesCreateInput {\n  message: String!\n  users: usersCreateNestedOneWithoutMessagesInput!\n}\n\ninput StringFieldUpdateOperationsInput {\n  set: String\n}\n\ninput usersUpdateWithoutMessagesInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n}\n\ninput usersUpsertWithoutMessagesInput {\n  update: usersUpdateWithoutMessagesInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersUpdateOneRequiredWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  upsert: usersUpsertWithoutMessagesInput\n  connect: usersWhereUniqueInput\n  update: usersUpdateWithoutMessagesInput\n}\n\ninput messagesUpdateInput {\n  message: StringFieldUpdateOperationsInput\n  users: usersUpdateOneRequiredWithoutMessagesInput\n}\n\ninput messagesCreateManyInput {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype AffectedRowsOutput {\n  count: Int!\n}\n\ninput messagesUpdateManyMutationInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesCreateWithoutUsersInput {\n  message: String!\n}\n\ninput messagesCreateOrConnectWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesCreateManyUsersInput {\n  id: Int\n  message: String!\n}\n\ninput messagesCreateManyUsersInputEnvelope {\n  data: [messagesCreateManyUsersInput]!\n  skipDuplicates: Boolean\n}\n\ninput messagesCreateNestedManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n}\n\ninput usersCreateInput {\n  email: String!\n  name: String!\n  messages: messagesCreateNestedManyWithoutUsersInput\n}\n\ninput messagesUpdateWithoutUsersInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesUpsertWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  update: messagesUpdateWithoutUsersInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesUpdateWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  data: messagesUpdateWithoutUsersInput!\n}\n\ninput messagesScalarWhereInput {\n  AND: messagesScalarWhereInput\n  OR: [messagesScalarWhereInput]\n  NOT: messagesScalarWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n}\n\ninput messagesUpdateManyWithWhereWithoutUsersInput {\n  where: messagesScalarWhereInput!\n  data: messagesUpdateManyMutationInput!\n}\n\ninput messagesUpdateManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  upsert: messagesUpsertWithWhereUniqueWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n  set: messagesWhereUniqueInput\n  disconnect: messagesWhereUniqueInput\n  delete: messagesWhereUniqueInput\n  update: messagesUpdateWithWhereUniqueWithoutUsersInput\n  updateMany: messagesUpdateManyWithWhereWithoutUsersInput\n  deleteMany: messagesScalarWhereInput\n}\n\ninput usersUpdateInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n  messages: messagesUpdateManyWithoutUsersInput\n}\n\ninput usersCreateManyInput {\n  id: Int\n  email: String!\n  name: String!\n}\n\ninput usersUpdateManyMutationInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n}\n\ntype Mutation {\n  createOnemessages(data: messagesCreateInput!): messages\n  upsertOnemessages(where: messagesWhereUniqueInput!, create: messagesCreateInput!, update: messagesUpdateInput!): messages\n  createManymessages(data: [messagesCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOnemessages(where: messagesWhereUniqueInput!): messages\n  updateOnemessages(data: messagesUpdateInput!, where: messagesWhereUniqueInput!): messages\n  updateManymessages(data: messagesUpdateManyMutationInput!, where: messagesWhereInput): AffectedRowsOutput\n  deleteManymessages(where: messagesWhereInput): AffectedRowsOutput\n  createOneusers(data: usersCreateInput!): users\n  upsertOneusers(where: usersWhereUniqueInput!, create: usersCreateInput!, update: usersUpdateInput!): users\n  createManyusers(data: [usersCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOneusers(where: usersWhereUniqueInput!): users\n  updateOneusers(data: usersUpdateInput!, where: usersWhereUniqueInput!): users\n  updateManyusers(data: usersUpdateManyMutationInput!, where: usersWhereInput): AffectedRowsOutput\n  deleteManyusers(where: usersWhereInput): AffectedRowsOutput\n}\n\nscalar DateTime\n\nscalar Json\n\nscalar UUID\n\nscalar BigInt\n"
+            "prismaSchema": "datasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://admin:admin@localhost:54322/example?schema=public\"\n}\n\nmodel messages {\n  id      Int    @id @default(autoincrement())\n  user_id Int\n  message String\n  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)\n}\n\nmodel users {\n  id        Int        @id @default(autoincrement())\n  email     String     @unique\n  name      String\n  updatedat DateTime   @default(now()) @db.Timestamptz(6)\n  lastlogin DateTime   @default(now()) @db.Timestamptz(6)\n  messages  messages[]\n}\n",
+            "graphqlSchema": "schema {\n  query: Query\n  mutation: Mutation\n}\n\ninput NestedIntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\ninput IntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntFilter\n}\n\nenum QueryMode {\n  default\n  insensitive\n}\n\ninput NestedStringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringFilter\n}\n\ninput StringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringFilter\n}\n\ninput NestedDateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: NestedDateTimeFilter\n}\n\ninput DateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: NestedDateTimeFilter\n}\n\ninput MessagesListRelationFilter {\n  every: messagesWhereInput\n  some: messagesWhereInput\n  none: messagesWhereInput\n}\n\ninput usersWhereInput {\n  AND: usersWhereInput\n  OR: [usersWhereInput]\n  NOT: usersWhereInput\n  id: IntFilter\n  email: StringFilter\n  name: StringFilter\n  updatedat: DateTimeFilter\n  lastlogin: DateTimeFilter\n  messages: MessagesListRelationFilter\n}\n\ninput UsersRelationFilter {\n  is: usersWhereInput\n  isNot: usersWhereInput\n}\n\ninput messagesWhereInput {\n  AND: messagesWhereInput\n  OR: [messagesWhereInput]\n  NOT: messagesWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n  users: UsersRelationFilter\n}\n\nenum SortOrder {\n  asc\n  desc\n}\n\ninput messagesOrderByRelationAggregateInput {\n  _count: SortOrder\n}\n\ninput usersOrderByWithRelationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  updatedat: SortOrder\n  lastlogin: SortOrder\n  messages: messagesOrderByRelationAggregateInput\n}\n\ninput messagesOrderByWithRelationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  users: usersOrderByWithRelationInput\n}\n\ninput messagesWhereUniqueInput {\n  id: Int\n}\n\nenum MessagesScalarFieldEnum {\n  id\n  user_id\n  message\n}\n\ntype UsersCountOutputType {\n  messages: Int!\n}\n\ntype users {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  messages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]\n  _count: UsersCountOutputType\n}\n\ntype messages {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: users!\n}\n\ntype MessagesCountAggregateOutputType {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n}\n\ntype MessagesAvgAggregateOutputType {\n  id: Float\n  user_id: Float\n}\n\ntype MessagesSumAggregateOutputType {\n  id: Int\n  user_id: Int\n}\n\ntype MessagesMinAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype MessagesMaxAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n}\n\ntype AggregateMessages {\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput messagesCountOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesAvgOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesMaxOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesMinOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n}\n\ninput messagesSumOrderByAggregateInput {\n  id: SortOrder\n  user_id: SortOrder\n}\n\ninput messagesOrderByWithAggregationInput {\n  id: SortOrder\n  user_id: SortOrder\n  message: SortOrder\n  _count: messagesCountOrderByAggregateInput\n  _avg: messagesAvgOrderByAggregateInput\n  _max: messagesMaxOrderByAggregateInput\n  _min: messagesMinOrderByAggregateInput\n  _sum: messagesSumOrderByAggregateInput\n}\n\ninput NestedFloatFilter {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: NestedFloatFilter\n}\n\ninput NestedIntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput IntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: NestedIntWithAggregatesFilter\n  _count: NestedIntFilter\n  _avg: NestedFloatFilter\n  _sum: NestedIntFilter\n  _min: NestedIntFilter\n  _max: NestedIntFilter\n}\n\ninput NestedStringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput StringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: QueryMode\n  not: NestedStringWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedStringFilter\n  _max: NestedStringFilter\n}\n\ninput messagesScalarWhereWithAggregatesInput {\n  AND: messagesScalarWhereWithAggregatesInput\n  OR: [messagesScalarWhereWithAggregatesInput]\n  NOT: messagesScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  user_id: IntWithAggregatesFilter\n  message: StringWithAggregatesFilter\n}\n\ntype MessagesGroupByOutputType {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: MessagesCountAggregateOutputType\n  _avg: MessagesAvgAggregateOutputType\n  _sum: MessagesSumAggregateOutputType\n  _min: MessagesMinAggregateOutputType\n  _max: MessagesMaxAggregateOutputType\n}\n\ninput usersWhereUniqueInput {\n  id: Int\n  email: String\n}\n\nenum UsersScalarFieldEnum {\n  id\n  email\n  name\n  updatedat\n  lastlogin\n}\n\ntype UsersCountAggregateOutputType {\n  id: Int!\n  email: Int!\n  name: Int!\n  updatedat: Int!\n  lastlogin: Int!\n  _all: Int!\n}\n\ntype UsersAvgAggregateOutputType {\n  id: Float\n}\n\ntype UsersSumAggregateOutputType {\n  id: Int\n}\n\ntype UsersMinAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ntype UsersMaxAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ntype AggregateUsers {\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ninput usersCountOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  updatedat: SortOrder\n  lastlogin: SortOrder\n}\n\ninput usersAvgOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersMaxOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  updatedat: SortOrder\n  lastlogin: SortOrder\n}\n\ninput usersMinOrderByAggregateInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  updatedat: SortOrder\n  lastlogin: SortOrder\n}\n\ninput usersSumOrderByAggregateInput {\n  id: SortOrder\n}\n\ninput usersOrderByWithAggregationInput {\n  id: SortOrder\n  email: SortOrder\n  name: SortOrder\n  updatedat: SortOrder\n  lastlogin: SortOrder\n  _count: usersCountOrderByAggregateInput\n  _avg: usersAvgOrderByAggregateInput\n  _max: usersMaxOrderByAggregateInput\n  _min: usersMinOrderByAggregateInput\n  _sum: usersSumOrderByAggregateInput\n}\n\ninput NestedDateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: NestedDateTimeWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedDateTimeFilter\n  _max: NestedDateTimeFilter\n}\n\ninput DateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: NestedDateTimeWithAggregatesFilter\n  _count: NestedIntFilter\n  _min: NestedDateTimeFilter\n  _max: NestedDateTimeFilter\n}\n\ninput usersScalarWhereWithAggregatesInput {\n  AND: usersScalarWhereWithAggregatesInput\n  OR: [usersScalarWhereWithAggregatesInput]\n  NOT: usersScalarWhereWithAggregatesInput\n  id: IntWithAggregatesFilter\n  email: StringWithAggregatesFilter\n  name: StringWithAggregatesFilter\n  updatedat: DateTimeWithAggregatesFilter\n  lastlogin: DateTimeWithAggregatesFilter\n}\n\ntype UsersGroupByOutputType {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  _count: UsersCountAggregateOutputType\n  _avg: UsersAvgAggregateOutputType\n  _sum: UsersSumAggregateOutputType\n  _min: UsersMinAggregateOutputType\n  _max: UsersMaxAggregateOutputType\n}\n\ntype Query {\n  findFirstmessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): messages\n  findManymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int, distinct: [MessagesScalarFieldEnum]): [messages]!\n  aggregatemessages(where: messagesWhereInput, orderBy: [messagesOrderByWithRelationInput], cursor: messagesWhereUniqueInput, take: Int, skip: Int): AggregateMessages!\n  groupBymessages(where: messagesWhereInput, orderBy: [messagesOrderByWithAggregationInput], by: [MessagesScalarFieldEnum]!, having: messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [MessagesGroupByOutputType]!\n  findUniquemessages(where: messagesWhereUniqueInput!): messages\n  findFirstusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): users\n  findManyusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int, distinct: [UsersScalarFieldEnum]): [users]!\n  aggregateusers(where: usersWhereInput, orderBy: [usersOrderByWithRelationInput], cursor: usersWhereUniqueInput, take: Int, skip: Int): AggregateUsers!\n  groupByusers(where: usersWhereInput, orderBy: [usersOrderByWithAggregationInput], by: [UsersScalarFieldEnum]!, having: usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [UsersGroupByOutputType]!\n  findUniqueusers(where: usersWhereUniqueInput!): users\n}\n\ninput usersCreateWithoutMessagesInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput usersCreateOrConnectWithoutMessagesInput {\n  where: usersWhereUniqueInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersCreateNestedOneWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  connect: usersWhereUniqueInput\n}\n\ninput messagesCreateInput {\n  message: String!\n  users: usersCreateNestedOneWithoutMessagesInput!\n}\n\ninput StringFieldUpdateOperationsInput {\n  set: String\n}\n\ninput DateTimeFieldUpdateOperationsInput {\n  set: DateTime\n}\n\ninput usersUpdateWithoutMessagesInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n  updatedat: DateTimeFieldUpdateOperationsInput\n  lastlogin: DateTimeFieldUpdateOperationsInput\n}\n\ninput usersUpsertWithoutMessagesInput {\n  update: usersUpdateWithoutMessagesInput!\n  create: usersCreateWithoutMessagesInput!\n}\n\ninput usersUpdateOneRequiredWithoutMessagesInput {\n  create: usersCreateWithoutMessagesInput\n  connectOrCreate: usersCreateOrConnectWithoutMessagesInput\n  upsert: usersUpsertWithoutMessagesInput\n  connect: usersWhereUniqueInput\n  update: usersUpdateWithoutMessagesInput\n}\n\ninput messagesUpdateInput {\n  message: StringFieldUpdateOperationsInput\n  users: usersUpdateOneRequiredWithoutMessagesInput\n}\n\ninput messagesCreateManyInput {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype AffectedRowsOutput {\n  count: Int!\n}\n\ninput messagesUpdateManyMutationInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesCreateWithoutUsersInput {\n  message: String!\n}\n\ninput messagesCreateOrConnectWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesCreateManyUsersInput {\n  id: Int\n  message: String!\n}\n\ninput messagesCreateManyUsersInputEnvelope {\n  data: [messagesCreateManyUsersInput]!\n  skipDuplicates: Boolean\n}\n\ninput messagesCreateNestedManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n}\n\ninput usersCreateInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n  messages: messagesCreateNestedManyWithoutUsersInput\n}\n\ninput messagesUpdateWithoutUsersInput {\n  message: StringFieldUpdateOperationsInput\n}\n\ninput messagesUpsertWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  update: messagesUpdateWithoutUsersInput!\n  create: messagesCreateWithoutUsersInput!\n}\n\ninput messagesUpdateWithWhereUniqueWithoutUsersInput {\n  where: messagesWhereUniqueInput!\n  data: messagesUpdateWithoutUsersInput!\n}\n\ninput messagesScalarWhereInput {\n  AND: messagesScalarWhereInput\n  OR: [messagesScalarWhereInput]\n  NOT: messagesScalarWhereInput\n  id: IntFilter\n  user_id: IntFilter\n  message: StringFilter\n}\n\ninput messagesUpdateManyWithWhereWithoutUsersInput {\n  where: messagesScalarWhereInput!\n  data: messagesUpdateManyMutationInput!\n}\n\ninput messagesUpdateManyWithoutUsersInput {\n  create: messagesCreateWithoutUsersInput\n  connectOrCreate: messagesCreateOrConnectWithoutUsersInput\n  upsert: messagesUpsertWithWhereUniqueWithoutUsersInput\n  createMany: messagesCreateManyUsersInputEnvelope\n  connect: messagesWhereUniqueInput\n  set: messagesWhereUniqueInput\n  disconnect: messagesWhereUniqueInput\n  delete: messagesWhereUniqueInput\n  update: messagesUpdateWithWhereUniqueWithoutUsersInput\n  updateMany: messagesUpdateManyWithWhereWithoutUsersInput\n  deleteMany: messagesScalarWhereInput\n}\n\ninput usersUpdateInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n  updatedat: DateTimeFieldUpdateOperationsInput\n  lastlogin: DateTimeFieldUpdateOperationsInput\n  messages: messagesUpdateManyWithoutUsersInput\n}\n\ninput usersCreateManyInput {\n  id: Int\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput usersUpdateManyMutationInput {\n  email: StringFieldUpdateOperationsInput\n  name: StringFieldUpdateOperationsInput\n  updatedat: DateTimeFieldUpdateOperationsInput\n  lastlogin: DateTimeFieldUpdateOperationsInput\n}\n\ntype Mutation {\n  createOnemessages(data: messagesCreateInput!): messages\n  upsertOnemessages(where: messagesWhereUniqueInput!, create: messagesCreateInput!, update: messagesUpdateInput!): messages\n  createManymessages(data: [messagesCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOnemessages(where: messagesWhereUniqueInput!): messages\n  updateOnemessages(data: messagesUpdateInput!, where: messagesWhereUniqueInput!): messages\n  updateManymessages(data: messagesUpdateManyMutationInput!, where: messagesWhereInput): AffectedRowsOutput\n  deleteManymessages(where: messagesWhereInput): AffectedRowsOutput\n  createOneusers(data: usersCreateInput!): users\n  upsertOneusers(where: usersWhereUniqueInput!, create: usersCreateInput!, update: usersUpdateInput!): users\n  createManyusers(data: [usersCreateManyInput]!, skipDuplicates: Boolean): AffectedRowsOutput\n  deleteOneusers(where: usersWhereUniqueInput!): users\n  updateOneusers(data: usersUpdateInput!, where: usersWhereUniqueInput!): users\n  updateManyusers(data: usersUpdateManyMutationInput!, where: usersWhereInput): AffectedRowsOutput\n  deleteManyusers(where: usersWhereInput): AffectedRowsOutput\n}\n\nscalar DateTime\n\nscalar Json\n\nscalar UUID\n\nscalar BigInt\n"
           }
         }
       ],
       "fieldConfigurations": [
         {
-          "typeName": "users",
+          "typeName": "users_db",
           "fieldName": "messages",
           "argumentsConfiguration": [
             {
@@ -456,12 +629,11 @@
           ],
           "disableDefaultFieldMapping": false,
           "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "findFirstmessages",
+          "fieldName": "db_findFirstmessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -501,13 +673,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "findFirstmessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "findManymessages",
+          "fieldName": "db_findManymessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -547,13 +720,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "findManymessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "aggregatemessages",
+          "fieldName": "db_aggregatemessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -587,13 +761,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "aggregatemessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "groupBymessages",
+          "fieldName": "db_groupBymessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -633,13 +808,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "groupBymessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "findUniquemessages",
+          "fieldName": "db_findUniquemessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -649,59 +825,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
-        },
-        {
-          "typeName": "Query",
-          "fieldName": "findFirstusers",
-          "argumentsConfiguration": [
-            {
-              "name": "where",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "orderBy",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "cursor",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "take",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "skip",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "distinct",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            }
+          "path": [
+            "findUniquemessages"
           ],
-          "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "findManyusers",
+          "fieldName": "db_findFirstusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -741,13 +872,61 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "findFirstusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "aggregateusers",
+          "fieldName": "db_findManyusers",
+          "argumentsConfiguration": [
+            {
+              "name": "where",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "orderBy",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "cursor",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "take",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "skip",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "distinct",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "findManyusers"
+          ],
+          "requiresFields": []
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "db_aggregateusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -781,13 +960,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "aggregateusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "groupByusers",
+          "fieldName": "db_groupByusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -827,13 +1007,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "groupByusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Query",
-          "fieldName": "findUniqueusers",
+          "fieldName": "db_findUniqueusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -843,13 +1024,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "findUniqueusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "createOnemessages",
+          "fieldName": "db_createOnemessages",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -859,13 +1041,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "createOnemessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "upsertOnemessages",
+          "fieldName": "db_upsertOnemessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -887,13 +1070,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "upsertOnemessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "createManymessages",
+          "fieldName": "db_createManymessages",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -909,13 +1093,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "createManymessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "deleteOnemessages",
+          "fieldName": "db_deleteOnemessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -925,13 +1110,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "deleteOnemessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "updateOnemessages",
+          "fieldName": "db_updateOnemessages",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -947,13 +1133,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "updateOnemessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "updateManymessages",
+          "fieldName": "db_updateManymessages",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -969,13 +1156,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "updateManymessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "deleteManymessages",
+          "fieldName": "db_deleteManymessages",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -985,13 +1173,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "deleteManymessages"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "createOneusers",
+          "fieldName": "db_createOneusers",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -1001,13 +1190,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "createOneusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "upsertOneusers",
+          "fieldName": "db_upsertOneusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -1029,13 +1219,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "upsertOneusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "createManyusers",
+          "fieldName": "db_createManyusers",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -1051,13 +1242,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "createManyusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "deleteOneusers",
+          "fieldName": "db_deleteOneusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -1067,35 +1259,14 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
-        },
-        {
-          "typeName": "Mutation",
-          "fieldName": "updateOneusers",
-          "argumentsConfiguration": [
-            {
-              "name": "data",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            },
-            {
-              "name": "where",
-              "sourceType": 1,
-              "sourcePath": [],
-              "renderConfiguration": 0
-            }
+          "path": [
+            "deleteOneusers"
           ],
-          "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "updateManyusers",
+          "fieldName": "db_updateOneusers",
           "argumentsConfiguration": [
             {
               "name": "data",
@@ -1111,13 +1282,37 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "updateOneusers"
+          ],
+          "requiresFields": []
         },
         {
           "typeName": "Mutation",
-          "fieldName": "deleteManyusers",
+          "fieldName": "db_updateManyusers",
+          "argumentsConfiguration": [
+            {
+              "name": "data",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            },
+            {
+              "name": "where",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "updateManyusers"
+          ],
+          "requiresFields": []
+        },
+        {
+          "typeName": "Mutation",
+          "fieldName": "db_deleteManyusers",
           "argumentsConfiguration": [
             {
               "name": "where",
@@ -1127,9 +1322,368 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
-          "requiresFields": [],
-          "respectOverrideFieldPathFromAlias": true
+          "path": [
+            "deleteManyusers"
+          ],
+          "requiresFields": []
+        }
+      ],
+      "typeConfigurations": [
+        {
+          "typeName": "NestedIntFilter_db",
+          "renameTo": "NestedIntFilter"
+        },
+        {
+          "typeName": "IntFilter_db",
+          "renameTo": "IntFilter"
+        },
+        {
+          "typeName": "QueryMode_db",
+          "renameTo": "QueryMode"
+        },
+        {
+          "typeName": "NestedStringFilter_db",
+          "renameTo": "NestedStringFilter"
+        },
+        {
+          "typeName": "StringFilter_db",
+          "renameTo": "StringFilter"
+        },
+        {
+          "typeName": "NestedDateTimeFilter_db",
+          "renameTo": "NestedDateTimeFilter"
+        },
+        {
+          "typeName": "DateTimeFilter_db",
+          "renameTo": "DateTimeFilter"
+        },
+        {
+          "typeName": "MessagesListRelationFilter_db",
+          "renameTo": "MessagesListRelationFilter"
+        },
+        {
+          "typeName": "usersWhereInput_db",
+          "renameTo": "usersWhereInput"
+        },
+        {
+          "typeName": "UsersRelationFilter_db",
+          "renameTo": "UsersRelationFilter"
+        },
+        {
+          "typeName": "messagesWhereInput_db",
+          "renameTo": "messagesWhereInput"
+        },
+        {
+          "typeName": "SortOrder_db",
+          "renameTo": "SortOrder"
+        },
+        {
+          "typeName": "messagesOrderByRelationAggregateInput_db",
+          "renameTo": "messagesOrderByRelationAggregateInput"
+        },
+        {
+          "typeName": "usersOrderByWithRelationInput_db",
+          "renameTo": "usersOrderByWithRelationInput"
+        },
+        {
+          "typeName": "messagesOrderByWithRelationInput_db",
+          "renameTo": "messagesOrderByWithRelationInput"
+        },
+        {
+          "typeName": "messagesWhereUniqueInput_db",
+          "renameTo": "messagesWhereUniqueInput"
+        },
+        {
+          "typeName": "MessagesScalarFieldEnum_db",
+          "renameTo": "MessagesScalarFieldEnum"
+        },
+        {
+          "typeName": "UsersCountOutputType_db",
+          "renameTo": "UsersCountOutputType"
+        },
+        {
+          "typeName": "users_db",
+          "renameTo": "users"
+        },
+        {
+          "typeName": "messages_db",
+          "renameTo": "messages"
+        },
+        {
+          "typeName": "MessagesCountAggregateOutputType_db",
+          "renameTo": "MessagesCountAggregateOutputType"
+        },
+        {
+          "typeName": "MessagesAvgAggregateOutputType_db",
+          "renameTo": "MessagesAvgAggregateOutputType"
+        },
+        {
+          "typeName": "MessagesSumAggregateOutputType_db",
+          "renameTo": "MessagesSumAggregateOutputType"
+        },
+        {
+          "typeName": "MessagesMinAggregateOutputType_db",
+          "renameTo": "MessagesMinAggregateOutputType"
+        },
+        {
+          "typeName": "MessagesMaxAggregateOutputType_db",
+          "renameTo": "MessagesMaxAggregateOutputType"
+        },
+        {
+          "typeName": "AggregateMessages_db",
+          "renameTo": "AggregateMessages"
+        },
+        {
+          "typeName": "messagesCountOrderByAggregateInput_db",
+          "renameTo": "messagesCountOrderByAggregateInput"
+        },
+        {
+          "typeName": "messagesAvgOrderByAggregateInput_db",
+          "renameTo": "messagesAvgOrderByAggregateInput"
+        },
+        {
+          "typeName": "messagesMaxOrderByAggregateInput_db",
+          "renameTo": "messagesMaxOrderByAggregateInput"
+        },
+        {
+          "typeName": "messagesMinOrderByAggregateInput_db",
+          "renameTo": "messagesMinOrderByAggregateInput"
+        },
+        {
+          "typeName": "messagesSumOrderByAggregateInput_db",
+          "renameTo": "messagesSumOrderByAggregateInput"
+        },
+        {
+          "typeName": "messagesOrderByWithAggregationInput_db",
+          "renameTo": "messagesOrderByWithAggregationInput"
+        },
+        {
+          "typeName": "NestedFloatFilter_db",
+          "renameTo": "NestedFloatFilter"
+        },
+        {
+          "typeName": "NestedIntWithAggregatesFilter_db",
+          "renameTo": "NestedIntWithAggregatesFilter"
+        },
+        {
+          "typeName": "IntWithAggregatesFilter_db",
+          "renameTo": "IntWithAggregatesFilter"
+        },
+        {
+          "typeName": "NestedStringWithAggregatesFilter_db",
+          "renameTo": "NestedStringWithAggregatesFilter"
+        },
+        {
+          "typeName": "StringWithAggregatesFilter_db",
+          "renameTo": "StringWithAggregatesFilter"
+        },
+        {
+          "typeName": "messagesScalarWhereWithAggregatesInput_db",
+          "renameTo": "messagesScalarWhereWithAggregatesInput"
+        },
+        {
+          "typeName": "MessagesGroupByOutputType_db",
+          "renameTo": "MessagesGroupByOutputType"
+        },
+        {
+          "typeName": "usersWhereUniqueInput_db",
+          "renameTo": "usersWhereUniqueInput"
+        },
+        {
+          "typeName": "UsersScalarFieldEnum_db",
+          "renameTo": "UsersScalarFieldEnum"
+        },
+        {
+          "typeName": "UsersCountAggregateOutputType_db",
+          "renameTo": "UsersCountAggregateOutputType"
+        },
+        {
+          "typeName": "UsersAvgAggregateOutputType_db",
+          "renameTo": "UsersAvgAggregateOutputType"
+        },
+        {
+          "typeName": "UsersSumAggregateOutputType_db",
+          "renameTo": "UsersSumAggregateOutputType"
+        },
+        {
+          "typeName": "UsersMinAggregateOutputType_db",
+          "renameTo": "UsersMinAggregateOutputType"
+        },
+        {
+          "typeName": "UsersMaxAggregateOutputType_db",
+          "renameTo": "UsersMaxAggregateOutputType"
+        },
+        {
+          "typeName": "AggregateUsers_db",
+          "renameTo": "AggregateUsers"
+        },
+        {
+          "typeName": "usersCountOrderByAggregateInput_db",
+          "renameTo": "usersCountOrderByAggregateInput"
+        },
+        {
+          "typeName": "usersAvgOrderByAggregateInput_db",
+          "renameTo": "usersAvgOrderByAggregateInput"
+        },
+        {
+          "typeName": "usersMaxOrderByAggregateInput_db",
+          "renameTo": "usersMaxOrderByAggregateInput"
+        },
+        {
+          "typeName": "usersMinOrderByAggregateInput_db",
+          "renameTo": "usersMinOrderByAggregateInput"
+        },
+        {
+          "typeName": "usersSumOrderByAggregateInput_db",
+          "renameTo": "usersSumOrderByAggregateInput"
+        },
+        {
+          "typeName": "usersOrderByWithAggregationInput_db",
+          "renameTo": "usersOrderByWithAggregationInput"
+        },
+        {
+          "typeName": "NestedDateTimeWithAggregatesFilter_db",
+          "renameTo": "NestedDateTimeWithAggregatesFilter"
+        },
+        {
+          "typeName": "DateTimeWithAggregatesFilter_db",
+          "renameTo": "DateTimeWithAggregatesFilter"
+        },
+        {
+          "typeName": "usersScalarWhereWithAggregatesInput_db",
+          "renameTo": "usersScalarWhereWithAggregatesInput"
+        },
+        {
+          "typeName": "UsersGroupByOutputType_db",
+          "renameTo": "UsersGroupByOutputType"
+        },
+        {
+          "typeName": "usersCreateWithoutMessagesInput_db",
+          "renameTo": "usersCreateWithoutMessagesInput"
+        },
+        {
+          "typeName": "usersCreateOrConnectWithoutMessagesInput_db",
+          "renameTo": "usersCreateOrConnectWithoutMessagesInput"
+        },
+        {
+          "typeName": "usersCreateNestedOneWithoutMessagesInput_db",
+          "renameTo": "usersCreateNestedOneWithoutMessagesInput"
+        },
+        {
+          "typeName": "messagesCreateInput_db",
+          "renameTo": "messagesCreateInput"
+        },
+        {
+          "typeName": "StringFieldUpdateOperationsInput_db",
+          "renameTo": "StringFieldUpdateOperationsInput"
+        },
+        {
+          "typeName": "DateTimeFieldUpdateOperationsInput_db",
+          "renameTo": "DateTimeFieldUpdateOperationsInput"
+        },
+        {
+          "typeName": "usersUpdateWithoutMessagesInput_db",
+          "renameTo": "usersUpdateWithoutMessagesInput"
+        },
+        {
+          "typeName": "usersUpsertWithoutMessagesInput_db",
+          "renameTo": "usersUpsertWithoutMessagesInput"
+        },
+        {
+          "typeName": "usersUpdateOneRequiredWithoutMessagesInput_db",
+          "renameTo": "usersUpdateOneRequiredWithoutMessagesInput"
+        },
+        {
+          "typeName": "messagesUpdateInput_db",
+          "renameTo": "messagesUpdateInput"
+        },
+        {
+          "typeName": "messagesCreateManyInput_db",
+          "renameTo": "messagesCreateManyInput"
+        },
+        {
+          "typeName": "AffectedRowsOutput_db",
+          "renameTo": "AffectedRowsOutput"
+        },
+        {
+          "typeName": "messagesUpdateManyMutationInput_db",
+          "renameTo": "messagesUpdateManyMutationInput"
+        },
+        {
+          "typeName": "messagesCreateWithoutUsersInput_db",
+          "renameTo": "messagesCreateWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesCreateOrConnectWithoutUsersInput_db",
+          "renameTo": "messagesCreateOrConnectWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesCreateManyUsersInput_db",
+          "renameTo": "messagesCreateManyUsersInput"
+        },
+        {
+          "typeName": "messagesCreateManyUsersInputEnvelope_db",
+          "renameTo": "messagesCreateManyUsersInputEnvelope"
+        },
+        {
+          "typeName": "messagesCreateNestedManyWithoutUsersInput_db",
+          "renameTo": "messagesCreateNestedManyWithoutUsersInput"
+        },
+        {
+          "typeName": "usersCreateInput_db",
+          "renameTo": "usersCreateInput"
+        },
+        {
+          "typeName": "messagesUpdateWithoutUsersInput_db",
+          "renameTo": "messagesUpdateWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesUpsertWithWhereUniqueWithoutUsersInput_db",
+          "renameTo": "messagesUpsertWithWhereUniqueWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesUpdateWithWhereUniqueWithoutUsersInput_db",
+          "renameTo": "messagesUpdateWithWhereUniqueWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesScalarWhereInput_db",
+          "renameTo": "messagesScalarWhereInput"
+        },
+        {
+          "typeName": "messagesUpdateManyWithWhereWithoutUsersInput_db",
+          "renameTo": "messagesUpdateManyWithWhereWithoutUsersInput"
+        },
+        {
+          "typeName": "messagesUpdateManyWithoutUsersInput_db",
+          "renameTo": "messagesUpdateManyWithoutUsersInput"
+        },
+        {
+          "typeName": "usersUpdateInput_db",
+          "renameTo": "usersUpdateInput"
+        },
+        {
+          "typeName": "usersCreateManyInput_db",
+          "renameTo": "usersCreateManyInput"
+        },
+        {
+          "typeName": "usersUpdateManyMutationInput_db",
+          "renameTo": "usersUpdateManyMutationInput"
+        },
+        {
+          "typeName": "DateTime_db",
+          "renameTo": "DateTime"
+        },
+        {
+          "typeName": "Json_db",
+          "renameTo": "Json"
+        },
+        {
+          "typeName": "UUID_db",
+          "renameTo": "UUID"
+        },
+        {
+          "typeName": "BigInt_db",
+          "renameTo": "BigInt"
         }
       ]
     },
@@ -1161,6 +1715,15 @@
               "clientSecret": "demo"
             },
             "id": "github"
+          },
+          {
+            "kind": 1,
+            "oidcConfig": {
+              "clientId": "1HWiYYYAWnpWIzrYajzP5wf34RyEEIbt",
+              "clientSecret": "UDSDtvb2wtuSuClEiI3JNIDteb_PJHsMudc6bK033_VZlwcpqf-boKdtsgJqgpVG",
+              "issuer": "https://cosmicrocks.auth0.com/"
+            },
+            "id": "authzero"
           }
         ],
         "authorizedRedirectUris": [
@@ -1168,7 +1731,7 @@
         ]
       },
       "hooks": {
-        "postAuthentication": false,
+        "postAuthentication": true,
         "mutatingPostAuthentication": true,
         "revalidateAuthentication": false
       }

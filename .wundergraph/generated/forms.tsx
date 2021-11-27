@@ -3,10 +3,14 @@ import { Response } from "./client";
 import {
 	AddMessageInput,
 	AddMessageResponse,
+	AllUsersInput,
+	AllUsersResponse,
+	ChangeUserNameInput,
+	ChangeUserNameResponse,
 	DeleteAllMessagesByUserEmailInput,
 	DeleteAllMessagesByUserEmailResponse,
 } from "./models";
-import { useMutation } from "./hooks";
+import { useQuery, useLiveQuery, useMutation } from "./hooks";
 import jsonSchema from "./jsonschema";
 import Form from "@rjsf/core";
 
@@ -48,6 +52,35 @@ export const AddMessageForm: React.FC<MutationFormProps<Response<AddMessageRespo
 		</div>
 	);
 };
+export const ChangeUserNameForm: React.FC<MutationFormProps<Response<ChangeUserNameResponse>>> = ({
+	onResult,
+	refetchMountedQueriesOnSuccess,
+	liveValidate,
+}) => {
+	const [formData, setFormData] = useState<ChangeUserNameInput>();
+	const { mutate, response } = useMutation.ChangeUserName({ refetchMountedQueriesOnSuccess });
+	useEffect(() => {
+		if (onResult) {
+			onResult(response);
+		}
+	}, [response]);
+	return (
+		<div>
+			<Form
+				schema={jsonSchema.ChangeUserName.input}
+				formData={formData}
+				liveValidate={liveValidate}
+				onChange={(e) => {
+					setFormData(e.formData);
+				}}
+				onSubmit={async (e) => {
+					await mutate({ input: e.formData, refetchMountedQueriesOnSuccess });
+					setFormData(undefined);
+				}}
+			/>
+		</div>
+	);
+};
 export const DeleteAllMessagesByUserEmailForm: React.FC<
 	MutationFormProps<Response<DeleteAllMessagesByUserEmailResponse>>
 > = ({ onResult, refetchMountedQueriesOnSuccess, liveValidate }) => {
@@ -71,6 +104,54 @@ export const DeleteAllMessagesByUserEmailForm: React.FC<
 					await mutate({ input: e.formData, refetchMountedQueriesOnSuccess });
 					setFormData(undefined);
 				}}
+			/>
+		</div>
+	);
+};
+
+export const AllUsersForm: React.FC<FormProps<Response<AllUsersResponse>>> = ({ onResult, liveValidate }) => {
+	const [formData, setFormData] = useState<AllUsersInput>();
+	const { response, refetch } = useQuery.AllUsers({ input: formData });
+	useEffect(() => {
+		if (onResult) {
+			onResult(response);
+		}
+	}, [response]);
+	return (
+		<div>
+			<Form
+				schema={jsonSchema.AllUsers.input}
+				formData={formData}
+				liveValidate={liveValidate}
+				onChange={(e) => {
+					setFormData(e.formData);
+				}}
+				onSubmit={async (e) => {
+					await refetch({ input: formData });
+				}}
+			/>
+		</div>
+	);
+};
+
+export const AllUsersLiveForm: React.FC<FormProps<Response<AllUsersResponse>>> = ({ onResult, liveValidate }) => {
+	const [formData, setFormData] = useState<AllUsersInput>();
+	const { response } = useLiveQuery.AllUsers({ input: formData });
+	useEffect(() => {
+		if (onResult) {
+			onResult(response);
+		}
+	}, [response]);
+	return (
+		<div>
+			<Form
+				schema={jsonSchema.AllUsers.input}
+				formData={formData}
+				liveValidate={liveValidate}
+				onChange={(e) => {
+					setFormData(e.formData);
+				}}
+				children={<></>}
 			/>
 		</div>
 	);

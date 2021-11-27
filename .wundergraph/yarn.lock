@@ -167,20 +167,20 @@
   resolved "https://registry.yarnpkg.com/@types/strip-json-comments/-/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
   integrity sha512-7NQmHra/JILCd1QqpSzl8+mJRc8ZHz3uDm8YV1Ks9IhK0epEiTw8aIErbvH9PI+6XbqhyIQy3462nEsn7UVzjQ==
 
-"@wundergraph/protobuf@0.34.0":
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/@wundergraph/protobuf/-/protobuf-0.34.0.tgz#fd251fd30733461ab71c7523c02639b9a342b695"
-  integrity sha512-FZq+fh7jMv/+NE5C/we39ACi1jziV3jObJF7jzawkW8OPq2g2V0H6MzCalor4H2KJOM6vUBoT5OJLUE14leIMQ==
+"@wundergraph/protobuf@0.38.0":
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/@wundergraph/protobuf/-/protobuf-0.38.0.tgz#9a04ce30816bf4136a7559803607d23bdd89333a"
+  integrity sha512-VUVR/5jOHOJV6amSZ/Jr7wrjpSLM30aa+bBJspU2EHxppRFmBqlKxGId4MUVcGFaoWQsrS9OQNFc2AgE7feqog==
   dependencies:
     ts-proto "^1.65.0"
 
-"@wundergraph/sdk@0.43.3":
-  version "0.43.3"
-  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.43.3.tgz#f4255156a129c354284456a9ecbff355185d64ad"
-  integrity sha512-X7IQT4kPEeCiSmsv28dyRPXUBHBBjLYkbwboep2kKFa0JdKWK4ZRKpzUrLQxrkQYX9Uxx8MfFKHg6fomewb+VA==
+"@wundergraph/sdk@0.48.1":
+  version "0.48.1"
+  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.48.1.tgz#56c91c3c60faf97d948fe87e623db38f09bfd393"
+  integrity sha512-4+QcWk0KH6TmC2GNFCv0sCpfWv0nrCEqyUVjH4NGevrCfSkCZwUHatrMGbxjsLIy2D+ma/vsMzDf7AinrtClaA==
   dependencies:
     "@graphql-tools/merge" "^6.2.6"
-    "@wundergraph/protobuf" "0.34.0"
+    "@wundergraph/protobuf" "0.38.0"
     axios "^0.21.0"
     cross-spawn "^7.0.3"
     fastify "^3.12.0"

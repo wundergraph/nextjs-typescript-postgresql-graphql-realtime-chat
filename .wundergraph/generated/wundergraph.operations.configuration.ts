@@ -15,9 +15,12 @@ export interface OperationsConfiguration {
 	custom?: {
 		AddMessage?: CustomizeMutation;
 		AllUsers?: CustomizeQuery;
+		ChangeUserName?: CustomizeMutation;
 		DeleteAllMessagesByUserEmail?: CustomizeMutation;
 		Messages?: CustomizeQuery;
 		MockQuery?: CustomizeQuery;
+		SetLastLogin?: CustomizeMutation;
+		UserInfo?: CustomizeQuery;
 	};
 }
 

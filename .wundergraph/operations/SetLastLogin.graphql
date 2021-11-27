@@ -1,0 +1,9 @@
+mutation (
+    $email: String!
+    $now: DateTime_db! @injectCurrentDateTime
+) @internalOperation {
+    updateOneusers: db_updateOneusers(where: {email: $email} data: {lastlogin: {set: $now}}){
+        id
+        lastlogin
+    }
+}

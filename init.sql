@@ -13,3 +13,7 @@ create table if not exists Messages (
 
 insert into Users (email, name) VALUES ('jens@wundergraph.com','Jens@WunderGraph');
 insert into Messages (user_id, message) VALUES ((select id from Users where email = 'jens@wundergraph.com'),'Hey, welcome to the WunderChat! =)');
+
+alter table Users add column updatedAt timestamptz not null default now();
+
+alter table Users add column lastLogin timestamptz not null default now();

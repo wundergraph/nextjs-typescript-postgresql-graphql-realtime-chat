@@ -1,11 +1,15 @@
 import {
-	AddMessageInput,
 	AddMessageResponse,
+	AddMessageInput,
 	AllUsersResponse,
-	DeleteAllMessagesByUserEmailInput,
+	AllUsersInput,
+	ChangeUserNameResponse,
+	ChangeUserNameInput,
 	DeleteAllMessagesByUserEmailResponse,
+	DeleteAllMessagesByUserEmailInput,
 	MessagesResponse,
 	MockQueryResponse,
+	UserInfoResponse,
 } from "./models";
 
 export const WUNDERGRAPH_S3_ENABLED = false;
@@ -107,6 +111,7 @@ export interface ClientConfig {
 
 export enum AuthProviderId {
 	"github" = "github",
+	"authzero" = "authzero",
 }
 
 export interface AuthProvider {
@@ -129,9 +134,9 @@ export class Client {
 	};
 	private extraHeaders?: HeadersInit;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "e6b49e3f";
+	private readonly applicationHash: string = "71b8caa0";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.43.3";
+	private readonly sdkVersion: string = "0.48.1";
 	private csrfToken: string | undefined;
 	private user: User | null;
 	private userListener: UserListener | undefined;
@@ -151,7 +156,7 @@ export class Client {
 		}
 	};
 	public query = {
-		AllUsers: async (options: RequestOptions<never, AllUsersResponse>) => {
+		AllUsers: async (options: RequestOptions<AllUsersInput, AllUsersResponse>) => {
 			return await this.doFetch<AllUsersResponse>({
 				method: "GET",
 				path: "AllUsers",
@@ -175,12 +180,28 @@ export class Client {
 				abortSignal: options.abortSignal,
 			});
 		},
+		UserInfo: async (options: RequestOptions<never, UserInfoResponse>) => {
+			return await this.doFetch<UserInfoResponse>({
+				method: "GET",
+				path: "UserInfo",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
 	};
 	public mutation = {
 		AddMessage: async (options: RequestOptions<AddMessageInput, AddMessageResponse>) => {
 			return await this.doFetch<AddMessageResponse>({
 				method: "POST",
 				path: "AddMessage",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
+		ChangeUserName: async (options: RequestOptions<ChangeUserNameInput, ChangeUserNameResponse>) => {
+			return await this.doFetch<ChangeUserNameResponse>({
+				method: "POST",
+				path: "ChangeUserName",
 				input: options.input,
 				abortSignal: options.abortSignal,
 			});
@@ -198,7 +219,7 @@ export class Client {
 	};
 	public liveQuery = {
 		AllUsers: (
-			options: RequestOptions<never, AllUsersResponse>,
+			options: RequestOptions<AllUsersInput, AllUsersResponse>,
 			cb: (response: Response<AllUsersResponse>) => void
 		) => {
 			return this.startSubscription<AllUsersResponse>(
@@ -235,6 +256,21 @@ export class Client {
 				{
 					method: "GET",
 					path: "MockQuery",
+					input: options.input,
+					abortSignal: options.abortSignal,
+					liveQuery: true,
+				},
+				cb
+			);
+		},
+		UserInfo: (
+			options: RequestOptions<never, UserInfoResponse>,
+			cb: (response: Response<UserInfoResponse>) => void
+		) => {
+			return this.startSubscription<UserInfoResponse>(
+				{
+					method: "GET",
+					path: "UserInfo",
 					input: options.input,
 					abortSignal: options.abortSignal,
 					liveQuery: true,
@@ -425,11 +461,18 @@ export class Client {
 		github: (redirectURI?: string): void => {
 			this.startLogin(AuthProviderId.github, redirectURI);
 		},
+		authzero: (redirectURI?: string): void => {
+			this.startLogin(AuthProviderId.authzero, redirectURI);
+		},
 	};
 	public authProviders: Array<AuthProvider> = [
 		{
 			id: AuthProviderId.github,
 			login: this.login[AuthProviderId.github],
+		},
+		{
+			id: AuthProviderId.authzero,
+			login: this.login[AuthProviderId.authzero],
 		},
 	];
 	public logout = async (): Promise<boolean> => {

@@ -2,9 +2,9 @@
   "item": [
     {
       "_": {
-        "postman_id": "b701d340-52c2-4cdb-942a-80696e8186ea"
+        "postman_id": "92219dcf-9dfa-46a2-81dc-6b204f9b818c"
       },
-      "id": "b701d340-52c2-4cdb-942a-80696e8186ea",
+      "id": "92219dcf-9dfa-46a2-81dc-6b204f9b818c",
       "name": "Queries",
       "description": {
         "content": "All your query operations",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "80d2d82a-9fe6-4e30-b00e-af99129d582c",
+          "id": "460f8a61-2b17-4a67-a507-f2c44f4080f0",
           "name": "AllUsers",
           "request": {
             "url": {
@@ -25,7 +25,17 @@
               "host": [
                 "{{apiBaseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "email",
+                  "value": ""
+                }
+              ],
               "variable": []
             },
             "header": [
@@ -40,7 +50,7 @@
           "event": []
         },
         {
-          "id": "ea870baa-8240-4473-a314-2ce62ded8d2e",
+          "id": "8c20a897-8da0-4930-a2e6-27e12e22af1e",
           "name": "Messages",
           "request": {
             "url": {
@@ -68,7 +78,7 @@
           "event": []
         },
         {
-          "id": "4d65e632-8bfa-4084-b85c-c19a7ccb1b38",
+          "id": "d7f4a5ad-a9b7-442e-ad4c-eae79a9501f2",
           "name": "MockQuery",
           "request": {
             "url": {
@@ -94,15 +104,43 @@
           },
           "response": [],
           "event": []
+        },
+        {
+          "id": "18e18801-7fc8-4ed8-9581-22ad23891151",
+          "name": "UserInfo",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "UserInfo"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
         }
       ],
       "event": []
     },
     {
       "_": {
-        "postman_id": "90cca54d-cfb9-480e-baf1-ebfb082d0f21"
+        "postman_id": "8a3ead58-1c67-4e06-98e5-f6b7769512ad"
       },
-      "id": "90cca54d-cfb9-480e-baf1-ebfb082d0f21",
+      "id": "8a3ead58-1c67-4e06-98e5-f6b7769512ad",
       "name": "Mutations",
       "description": {
         "content": "All your mutation operations",
@@ -110,7 +148,7 @@
       },
       "item": [
         {
-          "id": "0d5427b6-fdb8-4580-ae12-9b2155c63eb9",
+          "id": "650649ce-4239-4645-bef1-e8f3b0a3f5c2",
           "name": "AddMessage",
           "request": {
             "url": {
@@ -146,7 +184,43 @@
           "event": []
         },
         {
-          "id": "ca4c8355-0798-4bfe-90c4-99d25c5b92bc",
+          "id": "2680330f-0147-42fc-850b-a66d7c20ae58",
+          "name": "ChangeUserName",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "ChangeUserName"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "newName",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "2fb2b34c-9fa8-42b2-82a0-d85eef3fe715",
           "name": "DeleteAllMessagesByUserEmail",
           "request": {
             "url": {
@@ -155,6 +229,42 @@
                 "main",
                 "operations",
                 "DeleteAllMessagesByUserEmail"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type string, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "email",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "01e69d7b-99af-4d99-92e9-73f38d77945d",
+          "name": "SetLastLogin",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "SetLastLogin"
               ],
               "host": [
                 "{{apiBaseUrl}}"
@@ -194,7 +304,7 @@
     }
   ],
   "info": {
-    "_postman_id": "ce01f95d-b590-4ce7-9e85-9cc556dce497",
+    "_postman_id": "efcd2c4c-7244-4760-9fa7-f1b22ea7fe66",
     "name": "Wundergraph",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {

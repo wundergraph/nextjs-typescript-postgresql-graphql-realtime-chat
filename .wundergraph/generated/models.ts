@@ -2,7 +2,19 @@ export interface AddMessageInput {
 	message: string;
 }
 
+export interface AllUsersInput {
+	email: string;
+}
+
+export interface ChangeUserNameInput {
+	newName: string;
+}
+
 export interface DeleteAllMessagesByUserEmailInput {
+	email: string;
+}
+
+export interface SetLastLoginInput {
 	email: string;
 }
 
@@ -12,7 +24,53 @@ export interface InternalAddMessageInput {
 	message: string;
 }
 
+export interface InternalAllUsersInput {
+	email: string;
+}
+
+export interface InternalChangeUserNameInput {
+	newName: string;
+	email: string;
+}
+
 export interface InternalDeleteAllMessagesByUserEmailInput {
+	email: string;
+}
+
+export interface InternalSetLastLoginInput {
+	email: string;
+}
+
+export interface InternalUserInfoInput {
+	email: string;
+}
+
+export interface InjectedAddMessageInput {
+	email: string;
+	name: string;
+	message: string;
+}
+
+export interface InjectedAllUsersInput {
+	email: string;
+}
+
+export interface InjectedChangeUserNameInput {
+	newName: string;
+	email: string;
+	updatedAt: string;
+}
+
+export interface InjectedDeleteAllMessagesByUserEmailInput {
+	email: string;
+}
+
+export interface InjectedSetLastLoginInput {
+	email: string;
+	now: string;
+}
+
+export interface InjectedUserInfoInput {
 	email: string;
 }
 
@@ -42,6 +100,18 @@ export interface AllUsersResponse {
 				message: string;
 			}[];
 		}[];
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
+export interface ChangeUserNameResponse {
+	data?: {
+		updateOneusers?: {
+			id: number;
+			email: string;
+			name: string;
+			updatedat: string;
+		};
 	};
 	errors?: ReadonlyArray<GraphQLError>;
 }
@@ -80,6 +150,28 @@ export interface MockQueryResponse {
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
+export interface SetLastLoginResponse {
+	data?: {
+		updateOneusers?: {
+			id: number;
+			lastlogin: string;
+		};
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
+export interface UserInfoResponse {
+	data?: {
+		findFirstusers?: {
+			id: number;
+			email: string;
+			name: string;
+			lastlogin: string;
+		};
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
 export interface GraphQLError {
 	message: string;
 	path?: ReadonlyArray<string | number>;
@@ -104,6 +196,15 @@ export interface AllUsersResponseData {
 	}[];
 }
 
+export interface ChangeUserNameResponseData {
+	updateOneusers?: {
+		id: number;
+		email: string;
+		name: string;
+		updatedat: string;
+	};
+}
+
 export interface DeleteAllMessagesByUserEmailResponseData {
 	deleteManymessages?: {
 		count: number;
@@ -126,5 +227,21 @@ export interface MockQueryResponseData {
 		id: number;
 		email: string;
 		name: string;
+	};
+}
+
+export interface SetLastLoginResponseData {
+	updateOneusers?: {
+		id: number;
+		lastlogin: string;
+	};
+}
+
+export interface UserInfoResponseData {
+	findFirstusers?: {
+		id: number;
+		email: string;
+		name: string;
+		lastlogin: string;
 	};
 }

@@ -1,5 +1,5 @@
 {
-    findManymessages(take: 20 orderBy: [{id: desc}]){
+    findManymessages: db_findManymessages(take: 20 orderBy: [{id: desc}]){
         id
         message
         users {

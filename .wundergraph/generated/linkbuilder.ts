@@ -71,28 +71,38 @@ const targetStep = <T, F extends keyof T, R>(field: F) => ({
 });
 
 interface TargetTypes {
-	UsersCountOutputType: "messages";
-	users: "id" | "email" | "name" | "messages" | "_count";
-	messages: "id" | "user_id" | "message" | "users";
-	MessagesCountAggregateOutputType: "id" | "user_id" | "message" | "_all";
-	MessagesAvgAggregateOutputType: "id" | "user_id";
-	MessagesSumAggregateOutputType: "id" | "user_id";
-	MessagesMinAggregateOutputType: "id" | "user_id" | "message";
-	MessagesMaxAggregateOutputType: "id" | "user_id" | "message";
-	AggregateMessages: "_count" | "_avg" | "_sum" | "_min" | "_max";
-	MessagesGroupByOutputType: "id" | "user_id" | "message" | "_count" | "_avg" | "_sum" | "_min" | "_max";
-	UsersCountAggregateOutputType: "id" | "email" | "name" | "_all";
-	UsersAvgAggregateOutputType: "id";
-	UsersSumAggregateOutputType: "id";
-	UsersMinAggregateOutputType: "id" | "email" | "name";
-	UsersMaxAggregateOutputType: "id" | "email" | "name";
-	AggregateUsers: "_count" | "_avg" | "_sum" | "_min" | "_max";
-	UsersGroupByOutputType: "id" | "email" | "name" | "_count" | "_avg" | "_sum" | "_min" | "_max";
-	AffectedRowsOutput: "count";
+	UsersCountOutputType_db: "messages";
+	users_db: "id" | "email" | "name" | "updatedat" | "lastlogin" | "messages" | "_count";
+	messages_db: "id" | "user_id" | "message" | "users";
+	MessagesCountAggregateOutputType_db: "id" | "user_id" | "message" | "_all";
+	MessagesAvgAggregateOutputType_db: "id" | "user_id";
+	MessagesSumAggregateOutputType_db: "id" | "user_id";
+	MessagesMinAggregateOutputType_db: "id" | "user_id" | "message";
+	MessagesMaxAggregateOutputType_db: "id" | "user_id" | "message";
+	AggregateMessages_db: "_count" | "_avg" | "_sum" | "_min" | "_max";
+	MessagesGroupByOutputType_db: "id" | "user_id" | "message" | "_count" | "_avg" | "_sum" | "_min" | "_max";
+	UsersCountAggregateOutputType_db: "id" | "email" | "name" | "updatedat" | "lastlogin" | "_all";
+	UsersAvgAggregateOutputType_db: "id";
+	UsersSumAggregateOutputType_db: "id";
+	UsersMinAggregateOutputType_db: "id" | "email" | "name" | "updatedat" | "lastlogin";
+	UsersMaxAggregateOutputType_db: "id" | "email" | "name" | "updatedat" | "lastlogin";
+	AggregateUsers_db: "_count" | "_avg" | "_sum" | "_min" | "_max";
+	UsersGroupByOutputType_db:
+		| "id"
+		| "email"
+		| "name"
+		| "updatedat"
+		| "lastlogin"
+		| "_count"
+		| "_avg"
+		| "_sum"
+		| "_min"
+		| "_max";
+	AffectedRowsOutput_db: "count";
 }
 
 interface SourceFields {
-	findFirstmessages: {
+	db_findFirstmessages: {
 		where: null;
 		orderBy: null;
 		cursor: null;
@@ -100,7 +110,7 @@ interface SourceFields {
 		skip: null;
 		distinct: null;
 	};
-	findManymessages: {
+	db_findManymessages: {
 		where: null;
 		orderBy: null;
 		cursor: null;
@@ -108,14 +118,14 @@ interface SourceFields {
 		skip: null;
 		distinct: null;
 	};
-	aggregatemessages: {
+	db_aggregatemessages: {
 		where: null;
 		orderBy: null;
 		cursor: null;
 		take: null;
 		skip: null;
 	};
-	groupBymessages: {
+	db_groupBymessages: {
 		where: null;
 		orderBy: null;
 		by: null;
@@ -123,18 +133,10 @@ interface SourceFields {
 		take: null;
 		skip: null;
 	};
-	findUniquemessages: {
+	db_findUniquemessages: {
 		where: null;
 	};
-	findFirstusers: {
-		where: null;
-		orderBy: null;
-		cursor: null;
-		take: null;
-		skip: null;
-		distinct: null;
-	};
-	findManyusers: {
+	db_findFirstusers: {
 		where: null;
 		orderBy: null;
 		cursor: null;
@@ -142,14 +144,22 @@ interface SourceFields {
 		skip: null;
 		distinct: null;
 	};
-	aggregateusers: {
+	db_findManyusers: {
+		where: null;
+		orderBy: null;
+		cursor: null;
+		take: null;
+		skip: null;
+		distinct: null;
+	};
+	db_aggregateusers: {
 		where: null;
 		orderBy: null;
 		cursor: null;
 		take: null;
 		skip: null;
 	};
-	groupByusers: {
+	db_groupByusers: {
 		where: null;
 		orderBy: null;
 		by: null;
@@ -157,7 +167,7 @@ interface SourceFields {
 		take: null;
 		skip: null;
 	};
-	findUniqueusers: {
+	db_findUniqueusers: {
 		where: null;
 	};
 }

@@ -9,6 +9,10 @@ interface Schema {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
+	ChangeUserName: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
 	DeleteAllMessagesByUserEmail: {
 		input: JSONSchema7;
 		response: JSONSchema7;
@@ -18,6 +22,14 @@ interface Schema {
 		response: JSONSchema7;
 	};
 	MockQuery: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
+	SetLastLogin: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
+	UserInfo: {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
@@ -51,7 +63,12 @@ const jsonSchema: Schema = {
 		},
 	},
 	AllUsers: {
-		input: { type: "object", properties: {}, additionalProperties: false },
+		input: {
+			type: "object",
+			properties: { email: { type: "string" } },
+			additionalProperties: false,
+			required: ["email"],
+		},
 		response: {
 			type: "object",
 			properties: {
@@ -83,6 +100,37 @@ const jsonSchema: Schema = {
 					},
 					additionalProperties: false,
 					required: ["findManyusers"],
+				},
+			},
+			additionalProperties: false,
+		},
+	},
+	ChangeUserName: {
+		input: {
+			type: "object",
+			properties: { newName: { type: "string" } },
+			additionalProperties: false,
+			required: ["newName"],
+		},
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						updateOneusers: {
+							type: "object",
+							properties: {
+								id: { type: "integer" },
+								email: { type: "string" },
+								name: { type: "string" },
+								updatedat: { type: "string" },
+							},
+							additionalProperties: false,
+							required: ["id", "email", "name", "updatedat"],
+						},
+					},
+					additionalProperties: false,
 				},
 			},
 			additionalProperties: false,
@@ -161,6 +209,58 @@ const jsonSchema: Schema = {
 							properties: { id: { type: "integer" }, email: { type: "string" }, name: { type: "string" } },
 							additionalProperties: false,
 							required: ["id", "email", "name"],
+						},
+					},
+					additionalProperties: false,
+				},
+			},
+			additionalProperties: false,
+		},
+	},
+	SetLastLogin: {
+		input: {
+			type: "object",
+			properties: { email: { type: "string" } },
+			additionalProperties: false,
+			required: ["email"],
+		},
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						updateOneusers: {
+							type: "object",
+							properties: { id: { type: "integer" }, lastlogin: { type: "string" } },
+							additionalProperties: false,
+							required: ["id", "lastlogin"],
+						},
+					},
+					additionalProperties: false,
+				},
+			},
+			additionalProperties: false,
+		},
+	},
+	UserInfo: {
+		input: { type: "object", properties: {}, additionalProperties: false },
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						findFirstusers: {
+							type: "object",
+							properties: {
+								id: { type: "integer" },
+								email: { type: "string" },
+								name: { type: "string" },
+								lastlogin: { type: "string" },
+							},
+							additionalProperties: false,
+							required: ["id", "email", "name", "lastlogin"],
 						},
 					},
 					additionalProperties: false,
