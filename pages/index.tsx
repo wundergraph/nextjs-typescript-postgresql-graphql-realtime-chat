@@ -46,8 +46,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                         Please Login to be able to use the chat!
                     </p>
                     <br/>
-                    <button onClick={() => login.github()}>Login GitHub</button><br/><br/>
-                    <button onClick={() => login.authzero()}>Login Auth0</button>
+                    <button onClick={() => login.github()}>Login GitHub</button><br/>
                 </div>
             ) : <div>
                 <input placeholder="message" value={message} onChange={e => setMessage(e.target.value)}/>

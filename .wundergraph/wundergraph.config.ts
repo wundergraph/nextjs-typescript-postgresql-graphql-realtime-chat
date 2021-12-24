@@ -2,7 +2,7 @@ import {
     Application,
     authProviders,
     configureWunderGraphApplication,
-    cors,
+    cors, EnvironmentVariable,
     introspect,
     templates
 } from "@wundergraph/sdk";
@@ -19,7 +19,7 @@ const myApplication = new Application({
     apis: [
         db,
     ],
-})
+});
 
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
@@ -56,9 +56,9 @@ configureWunderGraphApplication({
                 authProviders.demo(),
             ],
             authorizedRedirectUris: [
-                "http://localhost:3000/"
+                "http://localhost:3000"
             ]
-        }
+        },
     },
     operations,
     hooks: wunderGraphHooks.config,

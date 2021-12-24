@@ -22,7 +22,7 @@ const AdminPage: NextPage = () => {
             </h2>
             <DeleteAllMessagesByUserEmailForm liveValidate={true} onResult={e=>{
                 if (e.status === "ok"){
-                    setDeletedMessages(e.body.data.deleteManymessages.count);
+                    setDeletedMessages(e.body.data?.deleteManymessages?.count);
                     return
                 }
                 setDeletedMessages(undefined);

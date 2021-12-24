@@ -5,22 +5,25 @@ import {
 // replace or add your own github email address
 // to make yourself a super admin as well
 const superAdmins = [
-    "jens.neuse@gmx.de"
+    "jens@wundergraph.com",
 ]
 
 const wunderGraphHooks = configureWunderGraphHooksWithClient(client => ({
     authentication: {
         postAuthentication: async user => {
             if (user.email){
-                await client.mutations.SetLastLogin({email: user.email});
+                try {
+                    await client.mutations.SetLastLogin({email: user.email});
+                } catch (e) {
+                    console.log(e)
+                }
             }
         },
         mutatingPostAuthentication: async user => {
 
-            if (user.email_verified !== true) {
+            if (!user.email){
                 return {
-                    status: "deny",
-                    message: "email not verified"
+                    status: "deny"
                 }
             }
 
