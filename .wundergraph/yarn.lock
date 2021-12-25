@@ -160,10 +160,10 @@
   dependencies:
     ts-proto "^1.65.0"
 
-"@wundergraph/sdk@0.60.0":
-  version "0.60.0"
-  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.60.0.tgz#3dbf370eb95a0ba4a08a71ca32983acd5e459b05"
-  integrity sha512-Vv+M+yhnczYr5JCDe+dbOhDYXgcxwNWZ1PIWT8eNcq3bSyrVZaaWOl++NdEp1y7PcO9CPpoy0IwdsHrGTn6PNw==
+"@wundergraph/sdk@0.60.1":
+  version "0.60.1"
+  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.60.1.tgz#7ab7bc42ddfbc79a936d601ed7361d727a0f9395"
+  integrity sha512-YfSh8tvEN+ekuihnZkh0Aj1qB9f+3VfW7kS+lXTtw/Q+JVef8bPghcUabVZzVfgRyiTcoDxRl/Kg8BRigbVutA==
   dependencies:
     "@graphql-tools/schema" "^8.3.1"
     "@wundergraph/protobuf" "0.46.0"
