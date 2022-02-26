@@ -103,12 +103,16 @@ export interface User {
 	user_id: string;
 	avatar_url: string;
 	location: string;
-	roles: string[];
+	roles?: string[];
+	custom_claims?: { [key: string]: any };
+	custom_attributes?: string[];
 }
+
+export type Headers = { [key: string]: string };
 
 export interface ClientConfig {
 	baseURL?: string;
-	extraHeaders?: HeadersInit;
+	extraHeaders?: Headers;
 }
 
 export enum AuthProviderId {
@@ -130,14 +134,14 @@ export class Client {
 	public setLogoutCallback(cb: () => void) {
 		this.logoutCallback = cb;
 	}
-	public setExtraHeaders = (headers: HeadersInit) => {
+	public setExtraHeaders = (headers: Headers) => {
 		this.extraHeaders = headers;
 	};
-	private extraHeaders?: HeadersInit;
+	private extraHeaders?: Headers;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "89bba9a6";
+	private readonly applicationHash: string = "44888210";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.60.0";
+	private readonly sdkVersion: string = "0.76.1";
 	private csrfToken: string | undefined;
 	private user: User | null;
 	private userListener: UserListener | undefined;
@@ -218,6 +222,7 @@ export class Client {
 			});
 		},
 	};
+
 	public liveQuery = {
 		AllUsers: (
 			options: RequestOptions<AllUsersInput, AllUsersResponse>,
@@ -280,6 +285,7 @@ export class Client {
 			);
 		},
 	};
+
 	private doFetch = async <T>(fetchConfig: FetchConfig): Promise<Response<T>> => {
 		try {
 			const params =
@@ -296,14 +302,14 @@ export class Client {
 				});
 				this.csrfToken = await res.text();
 			}
-			const headers: Headers = new Headers({
+			const headers: Headers = {
 				...this.extraHeaders,
 				Accept: "application/json",
 				"WG-SDK-Version": this.sdkVersion,
-			});
+			};
 			if (fetchConfig.method === "POST") {
 				if (this.csrfToken) {
-					headers.set("X-CSRF-Token", this.csrfToken);
+					headers["X-CSRF-Token"] = this.csrfToken;
 				}
 			}
 			const body = fetchConfig.method === "POST" ? JSON.stringify(fetchConfig.input) : undefined;
@@ -349,7 +355,9 @@ export class Client {
 				if (res.status === 200) {
 					const json = await res.json();
 					delete this.inflight[key];
-					process.nextTick(() => inflight.forEach((cb) => cb.resolve(json)));
+					setTimeout(() => {
+						inflight.forEach((cb) => cb.resolve(json));
+					}, 0);
 				}
 				if (res.status >= 401 && res.status <= 499) {
 					this.csrfToken = undefined;
@@ -364,6 +372,7 @@ export class Client {
 			}
 		});
 	};
+
 	private startSubscription = <T>(fetchConfig: FetchConfig, cb: (response: Response<T>) => void) => {
 		(async () => {
 			try {
@@ -416,6 +425,7 @@ export class Client {
 			}
 		})();
 	};
+
 	private queryString = (input?: Object): string => {
 		if (!input) {
 			return "";

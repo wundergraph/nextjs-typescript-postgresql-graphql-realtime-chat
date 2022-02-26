@@ -73,22 +73,22 @@ const targetStep = <T, F extends keyof T, R>(field: F) => ({
 });
 
 interface TargetTypes {
-	db_UsersCountOutputType: "messages";
-	db_users: "id" | "email" | "name" | "updatedat" | "lastlogin" | "messages" | "_count";
-	db_messages: "id" | "user_id" | "message" | "users";
-	db_MessagesCountAggregateOutputType: "id" | "user_id" | "message" | "_all";
-	db_MessagesAvgAggregateOutputType: "id" | "user_id";
-	db_MessagesSumAggregateOutputType: "id" | "user_id";
-	db_MessagesMinAggregateOutputType: "id" | "user_id" | "message";
-	db_MessagesMaxAggregateOutputType: "id" | "user_id" | "message";
-	db_AggregateMessages: "_count" | "_avg" | "_sum" | "_min" | "_max";
-	db_MessagesGroupByOutputType: "id" | "user_id" | "message" | "_count" | "_avg" | "_sum" | "_min" | "_max";
-	db_UsersCountAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin" | "_all";
-	db_UsersAvgAggregateOutputType: "id";
-	db_UsersSumAggregateOutputType: "id";
-	db_UsersMinAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin";
-	db_UsersMaxAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin";
-	db_AggregateUsers: "_count" | "_avg" | "_sum" | "_min" | "_max";
+	db_UsersCountOutputType: "messages" | "_join";
+	db_users: "id" | "email" | "name" | "updatedat" | "lastlogin" | "messages" | "_count" | "_join";
+	db_messages: "id" | "user_id" | "message" | "users" | "_join";
+	db_MessagesCountAggregateOutputType: "id" | "user_id" | "message" | "_all" | "_join";
+	db_MessagesAvgAggregateOutputType: "id" | "user_id" | "_join";
+	db_MessagesSumAggregateOutputType: "id" | "user_id" | "_join";
+	db_MessagesMinAggregateOutputType: "id" | "user_id" | "message" | "_join";
+	db_MessagesMaxAggregateOutputType: "id" | "user_id" | "message" | "_join";
+	db_AggregateMessages: "_count" | "_avg" | "_sum" | "_min" | "_max" | "_join";
+	db_MessagesGroupByOutputType: "id" | "user_id" | "message" | "_count" | "_avg" | "_sum" | "_min" | "_max" | "_join";
+	db_UsersCountAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin" | "_all" | "_join";
+	db_UsersAvgAggregateOutputType: "id" | "_join";
+	db_UsersSumAggregateOutputType: "id" | "_join";
+	db_UsersMinAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin" | "_join";
+	db_UsersMaxAggregateOutputType: "id" | "email" | "name" | "updatedat" | "lastlogin" | "_join";
+	db_AggregateUsers: "_count" | "_avg" | "_sum" | "_min" | "_max" | "_join";
 	db_UsersGroupByOutputType:
 		| "id"
 		| "email"
@@ -99,8 +99,9 @@ interface TargetTypes {
 		| "_avg"
 		| "_sum"
 		| "_min"
-		| "_max";
-	db_AffectedRowsOutput: "count";
+		| "_max"
+		| "_join";
+	db_AffectedRowsOutput: "count" | "_join";
 }
 
 interface SourceFields {

@@ -1,7 +1,7 @@
 mutation (
     $newName: String!
     $email: String! @fromClaim(name: EMAIL)
-    $updatedAt: db_DateTime! @injectCurrentDateTime
+    $updatedAt: DateTime! @injectCurrentDateTime
 ) {
     updateOneusers: db_updateOneusers(data: {name: {set: $newName} updatedat: {set: $updatedAt}} where: {email: $email}) {
         id

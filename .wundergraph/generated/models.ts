@@ -76,11 +76,6 @@ export interface InjectedUserInfoInput {
 	email: string;
 }
 
-export interface GraphQLError {
-	message: string;
-	path?: ReadonlyArray<string | number>;
-}
-
 export interface AddMessageResponse {
 	data?: {
 		createOnemessages?: {
@@ -174,11 +169,6 @@ export interface UserInfoResponse {
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
-export interface GraphQLError {
-	message: string;
-	path?: ReadonlyArray<string | number>;
-}
-
 export interface AddMessageResponseData {
 	createOnemessages?: {
 		id: number;
@@ -246,4 +236,13 @@ export interface UserInfoResponseData {
 		name: string;
 		lastlogin: string;
 	};
+}
+
+export type JSONValue = string | number | boolean | JSONObject | Array<JSONValue>;
+
+export type JSONObject = { [key: string]: JSONValue };
+
+export interface GraphQLError {
+	message: string;
+	path?: ReadonlyArray<string | number>;
 }

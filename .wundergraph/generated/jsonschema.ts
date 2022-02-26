@@ -43,6 +43,7 @@ const jsonSchema: Schema = {
 			type: "object",
 			properties: { message: { type: "string" } },
 			additionalProperties: false,
+			definitions: {},
 			required: ["message"],
 		},
 		response: {
@@ -69,6 +70,7 @@ const jsonSchema: Schema = {
 			type: "object",
 			properties: { email: { type: "string" } },
 			additionalProperties: false,
+			definitions: {},
 			required: ["email"],
 		},
 		response: {
@@ -112,6 +114,7 @@ const jsonSchema: Schema = {
 			type: "object",
 			properties: { newName: { type: "string" } },
 			additionalProperties: false,
+			definitions: {},
 			required: ["newName"],
 		},
 		response: {
@@ -143,6 +146,7 @@ const jsonSchema: Schema = {
 			type: "object",
 			properties: { email: { type: "string" } },
 			additionalProperties: false,
+			definitions: {},
 			required: ["email"],
 		},
 		response: {
@@ -165,7 +169,7 @@ const jsonSchema: Schema = {
 		},
 	},
 	Messages: {
-		input: { type: "object", properties: {}, additionalProperties: false },
+		input: { type: "object", properties: {}, additionalProperties: false, definitions: {} },
 		response: {
 			type: "object",
 			properties: {
@@ -199,7 +203,7 @@ const jsonSchema: Schema = {
 		},
 	},
 	MockQuery: {
-		input: { type: "object", properties: {}, additionalProperties: false },
+		input: { type: "object", properties: {}, additionalProperties: false, definitions: {} },
 		response: {
 			type: "object",
 			properties: {
@@ -224,6 +228,7 @@ const jsonSchema: Schema = {
 			type: "object",
 			properties: { email: { type: "string" } },
 			additionalProperties: false,
+			definitions: {},
 			required: ["email"],
 		},
 		response: {
@@ -246,7 +251,7 @@ const jsonSchema: Schema = {
 		},
 	},
 	UserInfo: {
-		input: { type: "object", properties: {}, additionalProperties: false },
+		input: { type: "object", properties: {}, additionalProperties: false, definitions: {} },
 		response: {
 			type: "object",
 			properties: {

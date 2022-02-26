@@ -40,6 +40,12 @@ declare module "fastify" {
 	}
 }
 
+export interface WunderGraphRequestContext {
+	user?: User;
+	operationName: string;
+	operationType: "mutation" | "query" | "subscription";
+}
+
 export interface Context {
 	user?: User;
 	setClientRequestHeader: (name: string, value: string) => void;
@@ -59,6 +65,10 @@ export interface User {
 	avatar_url?: string;
 	location?: string;
 	roles?: Role[];
+	custom_attributes?: string[];
+	custom_claims?: {
+		[key: string]: any;
+	};
 }
 
 export type Role = "user" | "superadmin";
@@ -130,11 +140,87 @@ const client = {
 export const configureWunderGraphHooksWithClient = (config: (client: InternalClient) => HooksConfig) =>
 	configureWunderGraphHooks(config(client));
 
+export interface WunderGraphRequest {
+	method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS" | "CONNECT" | "TRACE";
+	requestURI: string;
+	headers: {
+		[key: string]: string;
+	};
+	body: any;
+}
+
+export interface WunderGraphResponse extends WunderGraphRequest {
+	status: string;
+	statusCode: number;
+}
+
+// use SKIP to skip the hook and continue the request / response chain without modifying the request / response
+export type SKIP = "skip";
+
+// use CANCEL to skip the hook and cancel the request / response chain
+// this is semantically equal to throwing an error (500)
+export type CANCEL = "cancel";
+
+export type WUNDERGRAPH_OPERATION =
+	| "AddMessage"
+	| "AllUsers"
+	| "ChangeUserName"
+	| "DeleteAllMessagesByUserEmail"
+	| "Messages"
+	| "MockQuery"
+	| "SetLastLogin"
+	| "UserInfo";
+
+export interface GlobalHooksConfig {
+	httpTransport?: {
+		// onRequest is called right before the request is sent
+		// it can be used to modify the request
+		// you can return SKIP to skip the hook and continue the request chain without modifying the request
+		// you can return CANCEL to cancel the request chain and return a 500 error
+		// not returning anything or undefined has the same effect as returning SKIP
+		onRequest?: {
+			hook: (
+				ctx: WunderGraphRequestContext,
+				request: WunderGraphRequest
+			) => Promise<WunderGraphRequest | SKIP | CANCEL | void>;
+			// calling the httpTransport hooks has a case, because the custom httpTransport hooks have to be called for each request
+			// for this reason, you have to explicitly enable the hook for each Operation
+			enableForOperations?: WUNDERGRAPH_OPERATION[];
+			// enableForAllOperations will disregard the enableForOperations property and enable the hook for all operations
+			enableForAllOperations?: boolean;
+		};
+		// onResponse is called right after the response is received
+		// it can be used to modify the response
+		// you can return SKIP to skip the hook and continue the response chain without modifying the response
+		// you can return CANCEL to cancel the response chain and return a 500 error
+		// not returning anything or undefined has the same effect as returning SKIP
+		onResponse?: {
+			hook: (
+				ctx: WunderGraphRequestContext,
+				response: WunderGraphResponse
+			) => Promise<WunderGraphResponse | SKIP | CANCEL | void>;
+			// calling the httpTransport hooks has a case, because the custom httpTransport hooks have to be called for each request
+			// for this reason, you have to explicitly enable the hook for each Operation
+			enableForOperations?: WUNDERGRAPH_OPERATION[];
+			// enableForAllOperations will disregard the enableForOperations property and enable the hook for all operations
+			enableForAllOperations?: boolean;
+		};
+	};
+}
+export type JSONValue = string | number | boolean | JSONObject | Array<JSONValue>;
+
+export type JSONObject = { [key: string]: JSONValue };
+
 export interface HooksConfig {
+	global?: GlobalHooksConfig;
 	authentication?: {
-		postAuthentication?: (user: User) => Promise<void>;
-		mutatingPostAuthentication?: (user: User) => Promise<AuthenticationResponse>;
-		revalidate?: (user: User) => Promise<AuthenticationResponse>;
+		postAuthentication?: (user: User, accessToken: JSONObject, idToken: JSONObject) => Promise<void>;
+		mutatingPostAuthentication?: (
+			user: User,
+			accessToken: JSONObject,
+			idToken: JSONObject
+		) => Promise<AuthenticationResponse>;
+		revalidate?: (user: User, accessToken: JSONObject, idToken: JSONObject) => Promise<AuthenticationResponse>;
 	};
 	queries?: {
 		AllUsers?: {
@@ -228,6 +314,7 @@ export interface HooksConfig {
 // hooks reference docs: https://wundergraph.com/docs/reference/wundergraph_config_ts/overview
 export const configureWunderGraphHooks = (config: HooksConfig) => {
 	const hooksConfig: HooksConfiguration = {
+		global: config.global,
 		queries: config.queries as { [name: string]: { preResolve: any; postResolve: any; mutatingPostResolve: any } },
 		mutations: config.mutations as { [name: string]: { preResolve: any; postResolve: any; mutatingPostResolve: any } },
 		authentication: config.authentication as {
@@ -246,59 +333,152 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 			fastify.addHook<{ Body: { user: User } }>("preHandler", async (req, reply) => {
 				req.setClientRequestHeaders = {};
 				req.ctx = {
-					user: req.body.user,
+					user: req?.body?.user,
 					setClientRequestHeader: (name, value) => (req.setClientRequestHeaders[name] = value),
 				};
 			});
 
 			// authentication
-			fastify.post("/authentication/postAuthentication", async (request, reply) => {
-				reply.type("application/json").code(200);
-				if (config.authentication?.postAuthentication !== undefined && request.ctx.user !== undefined) {
-					try {
-						await config.authentication.postAuthentication(request.ctx.user);
-					} catch (err) {
-						request.log.error(err);
-						reply.code(500);
-						return { hook: "postAuthentication", error: err };
+			fastify.post<{ Body: { access_token: any; id_token: any } }>(
+				"/authentication/postAuthentication",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					if (config.authentication?.postAuthentication !== undefined && request.ctx.user !== undefined) {
+						try {
+							await config.authentication.postAuthentication(
+								request.ctx.user,
+								request.body.access_token || {},
+								request.body.id_token || {}
+							);
+						} catch (err) {
+							request.log.error(err);
+							reply.code(500);
+							return { hook: "postAuthentication", error: err };
+						}
+					}
+					return {
+						hook: "postAuthentication",
+					};
+				}
+			);
+			fastify.post<{ Body: { access_token: any; id_token: any } }>(
+				"/authentication/mutatingPostAuthentication",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					if (config.authentication?.mutatingPostAuthentication !== undefined && request.ctx.user !== undefined) {
+						try {
+							const out = await config.authentication.mutatingPostAuthentication(
+								request.ctx.user,
+								request.body.access_token || {},
+								request.body.id_token || {}
+							);
+							return {
+								hook: "mutatingPostAuthentication",
+								response: out,
+								setClientRequestHeaders: request.setClientRequestHeaders,
+							};
+						} catch (err) {
+							request.log.error(err);
+							reply.code(500);
+							return { hook: "mutatingPostAuthentication", error: err };
+						}
 					}
 				}
-				return {
-					hook: "postAuthentication",
+			);
+			fastify.post<{ Body: { access_token: any; id_token: any } }>(
+				"/authentication/revalidateAuthentication",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					if (config.authentication?.revalidate !== undefined && request.ctx.user !== undefined) {
+						try {
+							const out = await config.authentication.revalidate(
+								request.ctx.user,
+								request.body.access_token || {},
+								request.body.id_token || {}
+							);
+							return {
+								hook: "revalidateAuthentication",
+								response: out,
+								setClientRequestHeaders: request.setClientRequestHeaders,
+							};
+						} catch (err) {
+							request.log.error(err);
+							reply.code(500);
+							return { hook: "revalidateAuthentication", error: err };
+						}
+					}
+				}
+			);
+
+			// global hooks
+
+			// httpTransport
+
+			fastify.post<{
+				Body: {
+					request: WunderGraphRequest;
+					operationName: string;
+					operationType: "query" | "mutation" | "subscription";
 				};
-			});
-			fastify.post("/authentication/mutatingPostAuthentication", async (request, reply) => {
+			}>("/global/httpTransport/onRequest", async (request, reply) => {
 				reply.type("application/json").code(200);
-				if (config.authentication?.mutatingPostAuthentication !== undefined && request.ctx.user !== undefined) {
-					try {
-						const out = await config.authentication.mutatingPostAuthentication(request.ctx.user);
-						return {
-							hook: "mutatingPostAuthentication",
-							response: out,
-							setClientRequestHeaders: request.setClientRequestHeaders,
-						};
-					} catch (err) {
-						request.log.error(err);
-						reply.code(500);
-						return { hook: "mutatingPostAuthentication", error: err };
-					}
+				try {
+					const maybeHookOut = await config.global?.httpTransport?.onRequest?.hook(
+						{
+							user: request.ctx.user,
+							operationName: request.body.operationName,
+							operationType: request.body.operationType,
+						},
+						request.body.request
+					);
+					const hookOut = maybeHookOut || "skip";
+					return {
+						op: request.body.operationName,
+						hook: "onRequest",
+						response: {
+							skip: hookOut === "skip",
+							cancel: hookOut === "cancel",
+							request: hookOut !== "skip" && hookOut !== "cancel" ? hookOut : undefined,
+						},
+					};
+				} catch (err) {
+					request.log.error(err);
+					reply.code(500);
+					return { op: "Messages", hook: "postResolve", error: err };
 				}
 			});
-			fastify.post("/authentication/revalidateAuthentication", async (request, reply) => {
+
+			fastify.post<{
+				Body: {
+					response: WunderGraphResponse;
+					operationName: string;
+					operationType: "query" | "mutation" | "subscription";
+				};
+			}>("/global/httpTransport/onResponse", async (request, reply) => {
 				reply.type("application/json").code(200);
-				if (config.authentication?.revalidate !== undefined && request.ctx.user !== undefined) {
-					try {
-						const out = await config.authentication.revalidate(request.ctx.user);
-						return {
-							hook: "revalidateAuthentication",
-							response: out,
-							setClientRequestHeaders: request.setClientRequestHeaders,
-						};
-					} catch (err) {
-						request.log.error(err);
-						reply.code(500);
-						return { hook: "revalidateAuthentication", error: err };
-					}
+				try {
+					const maybeHookOut = await config.global?.httpTransport?.onResponse?.hook(
+						{
+							user: request.ctx.user,
+							operationName: request.body.operationName,
+							operationType: request.body.operationType,
+						},
+						request.body.response
+					);
+					const hookOut = maybeHookOut || "skip";
+					return {
+						op: request.body.operationName,
+						hook: "onResponse",
+						response: {
+							skip: hookOut === "skip",
+							cancel: hookOut === "cancel",
+							response: hookOut !== "skip" && hookOut !== "cancel" ? hookOut : undefined,
+						},
+					};
+				} catch (err) {
+					request.log.error(err);
+					reply.code(500);
+					return { op: "Messages", hook: "postResolve", error: err };
 				}
 			});
 
@@ -993,7 +1173,7 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 				}
 			});
 
-			fastify.listen(9992, (err, address) => {
+			fastify.listen(9992, "127.0.0.1", (err, address) => {
 				if (err) {
 					console.error(err);
 					process.exit(0);

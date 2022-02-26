@@ -39,23 +39,6 @@ export const WunderGraphProvider: FunctionComponent<Props> = ({ endpoint, childr
 	}, [endpoint]);
 	const [onWindowBlur, setOnWindowBlur] = useState(new Date());
 	const [onWindowFocus, setOnWindowFocus] = useState(new Date());
-	useEffect(() => {
-		setInitialized(true);
-		const onFocus = async () => {
-			setOnWindowFocus(new Date());
-			setInitialized(true);
-		};
-		const onBlur = () => {
-			setOnWindowBlur(new Date());
-			setInitialized(false);
-		};
-		window.addEventListener("focus", onFocus);
-		window.addEventListener("blur", onBlur);
-		return () => {
-			window.removeEventListener("focus", onFocus);
-			window.removeEventListener("blur", onBlur);
-		};
-	}, [client]);
 	const [user, setUser] = useState<User | undefined>();
 	const userListener = useMemo<UserListener>(() => {
 		return (userOrNull) => {
