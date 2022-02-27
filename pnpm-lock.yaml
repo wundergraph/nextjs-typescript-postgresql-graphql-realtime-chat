@@ -6,7 +6,7 @@ importers:
     specifiers:
       '@rjsf/core': ^3.2.0
       '@types/react': ^17.0.3
-      '@wundergraph/wunderctl': ^0.64.2
+      '@wundergraph/wunderctl': ^0.64.3
       concurrently: ^6.5.1
       next: 10.2.3
       open-cli: ^7.0.1
@@ -16,7 +16,7 @@ importers:
       wait-on: ^6.0.1
     dependencies:
       '@rjsf/core': 3.2.1_react@17.0.2
-      '@wundergraph/wunderctl': 0.64.2
+      '@wundergraph/wunderctl': 0.64.3
       next: 10.2.3_3a6359ff0dae16692fd6f0778ea71593
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -30,13 +30,13 @@ importers:
   .wundergraph:
     specifiers:
       '@types/node': ^14.14.37
-      '@wundergraph/sdk': 0.76.1
+      '@wundergraph/sdk': ^0.77.0
       concurrently: ^6.5.1
       ts-node-dev: ^1.1.8
       typescript: ^4.5.5
     dependencies:
       '@types/node': 14.18.12
-      '@wundergraph/sdk': 0.76.1
+      '@wundergraph/sdk': 0.77.0
       concurrently: 6.5.1
       ts-node-dev: 1.1.8_typescript@4.5.5
       typescript: 4.5.5
@@ -390,8 +390,8 @@ packages:
       ts-proto: 1.106.1
     dev: false
 
-  /@wundergraph/sdk/0.76.1:
-    resolution: {integrity: sha512-pUq3zTUeOdq9DrFXwQThivdW274GySSkU8sYclKjZhu/MllydmlnWJ0J/0O9r8pE3HYCYOqoRQDog4HmAu/2wg==}
+  /@wundergraph/sdk/0.77.0:
+    resolution: {integrity: sha512-Enjd8crAMfMCVrJJFjPXdW6Cfwcai4rPrjeOV9hU7xzq+9o0OjYIPCTIB0yv4NwdYY/K0GMhC6rwRv7o9FDRaA==}
     dependencies:
       '@graphql-tools/schema': 8.3.2_graphql@15.8.0
       '@prisma/generator-helper': 3.10.0
@@ -421,8 +421,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@wundergraph/wunderctl/0.64.2:
-    resolution: {integrity: sha512-BP/0panloHh5AgK08NPKwsmnKGS08fVGQ3gbw187JaRGQP0FT2hASV4zCQWqrWRr5U0NhpLNbEj8gd5/VJQpMQ==}
+  /@wundergraph/wunderctl/0.64.3:
+    resolution: {integrity: sha512-aBADhNPhkE39kpR5SO9igtPF5NmhRKSBFrakKSWmn3e93eV1TTWAohCju1BANFeACM4gvU1o6UHa9+9zi3lnPQ==}
     hasBin: true
     requiresBuild: true
     dev: false
