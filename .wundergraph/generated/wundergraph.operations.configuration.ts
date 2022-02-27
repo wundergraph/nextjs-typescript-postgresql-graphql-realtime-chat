@@ -22,6 +22,7 @@ export interface OperationsConfiguration {
 		Messages?: CustomizeQuery;
 		MockQuery?: CustomizeQuery;
 		SetLastLogin?: CustomizeMutation;
+		UpdateUser?: CustomizeMutation;
 		UserInfo?: CustomizeQuery;
 	};
 }

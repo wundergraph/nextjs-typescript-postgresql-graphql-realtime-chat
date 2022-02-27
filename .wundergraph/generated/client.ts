@@ -11,6 +11,8 @@ import {
 	DeleteAllMessagesByUserEmailInput,
 	MessagesResponse,
 	MockQueryResponse,
+	UpdateUserResponse,
+	UpdateUserInput,
 	UserInfoResponse,
 } from "./models";
 
@@ -139,9 +141,9 @@ export class Client {
 	};
 	private extraHeaders?: Headers;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "44888210";
+	private readonly applicationHash: string = "e7fbd9c4";
 	private readonly applicationPath: string = "api/main";
-	private readonly sdkVersion: string = "0.76.1";
+	private readonly sdkVersion: string = "0.77.0";
 	private csrfToken: string | undefined;
 	private user: User | null;
 	private userListener: UserListener | undefined;
@@ -217,6 +219,14 @@ export class Client {
 			return await this.doFetch<DeleteAllMessagesByUserEmailResponse>({
 				method: "POST",
 				path: "DeleteAllMessagesByUserEmail",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
+		UpdateUser: async (options: RequestOptions<UpdateUserInput, UpdateUserResponse>) => {
+			return await this.doFetch<UpdateUserResponse>({
+				method: "POST",
+				path: "UpdateUser",
 				input: options.input,
 				abortSignal: options.abortSignal,
 			});

@@ -25,6 +25,10 @@ import {
 	SetLastLoginInput,
 	InternalSetLastLoginInput,
 	InjectedSetLastLoginInput,
+	UpdateUserResponse,
+	UpdateUserInput,
+	InternalUpdateUserInput,
+	InjectedUpdateUserInput,
 	UserInfoResponse,
 	InternalUserInfoInput,
 	InjectedUserInfoInput,
@@ -114,6 +118,7 @@ interface InternalClient {
 			input: InternalDeleteAllMessagesByUserEmailInput
 		) => Promise<DeleteAllMessagesByUserEmailResponse>;
 		SetLastLogin: (input: InternalSetLastLoginInput) => Promise<SetLastLoginResponse>;
+		UpdateUser: (input: InternalUpdateUserInput) => Promise<UpdateUserResponse>;
 	};
 }
 
@@ -130,6 +135,7 @@ const client = {
 		DeleteAllMessagesByUserEmail: async (input: InternalDeleteAllMessagesByUserEmailInput) =>
 			internalRequest("DeleteAllMessagesByUserEmail", input),
 		SetLastLogin: async (input: InternalSetLastLoginInput) => internalRequest("SetLastLogin", input),
+		UpdateUser: async (input: InternalUpdateUserInput) => internalRequest("UpdateUser", input),
 	},
 };
 
@@ -169,6 +175,7 @@ export type WUNDERGRAPH_OPERATION =
 	| "Messages"
 	| "MockQuery"
 	| "SetLastLogin"
+	| "UpdateUser"
 	| "UserInfo";
 
 export interface GlobalHooksConfig {
@@ -305,6 +312,17 @@ export interface HooksConfig {
 				input: InjectedDeleteAllMessagesByUserEmailInput,
 				response: DeleteAllMessagesByUserEmailResponse
 			) => Promise<DeleteAllMessagesByUserEmailResponse>;
+		};
+		UpdateUser?: {
+			mockResolve?: (ctx: Context, input: InjectedUpdateUserInput) => Promise<UpdateUserResponse>;
+			preResolve?: (ctx: Context, input: InjectedUpdateUserInput) => Promise<void>;
+			mutatingPreResolve?: (ctx: Context, input: InjectedUpdateUserInput) => Promise<InjectedUpdateUserInput>;
+			postResolve?: (ctx: Context, input: InjectedUpdateUserInput, response: UpdateUserResponse) => Promise<void>;
+			mutatingPostResolve?: (
+				ctx: Context,
+				input: InjectedUpdateUserInput,
+				response: UpdateUserResponse
+			) => Promise<UpdateUserResponse>;
 		};
 	};
 }
@@ -1172,6 +1190,110 @@ export const configureWunderGraphHooks = (config: HooksConfig) => {
 					return { op: "DeleteAllMessagesByUserEmail", hook: "mutatingPostResolve", error: err };
 				}
 			});
+
+			// mock
+			fastify.post<{ Body: { input: InjectedUpdateUserInput } }>(
+				"/operation/UpdateUser/mockResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.UpdateUser?.mockResolve?.(request.ctx, request.body.input);
+						return {
+							op: "UpdateUser",
+							hook: "mock",
+							response: mutated,
+							setClientRequestHeaders: request.setClientRequestHeaders,
+						};
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UpdateUser", hook: "mock", error: err };
+					}
+				}
+			);
+
+			// preResolve
+			fastify.post<{ Body: { input: InjectedUpdateUserInput } }>(
+				"/operation/UpdateUser/preResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.mutations?.UpdateUser?.preResolve?.(request.ctx, request.body.input);
+						return {
+							op: "UpdateUser",
+							hook: "preResolve",
+							setClientRequestHeaders: request.setClientRequestHeaders,
+						};
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UpdateUser", hook: "preResolve", error: err };
+					}
+				}
+			);
+			// postResolve
+			fastify.post<{ Body: { input: InjectedUpdateUserInput; response: UpdateUserResponse } }>(
+				"/operation/UpdateUser/postResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						await config?.mutations?.UpdateUser?.postResolve?.(request.ctx, request.body.input, request.body.response);
+						return {
+							op: "UpdateUser",
+							hook: "postResolve",
+							setClientRequestHeaders: request.setClientRequestHeaders,
+						};
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UpdateUser", hook: "postResolve", error: err };
+					}
+				}
+			);
+			// mutatingPreResolve
+			fastify.post<{ Body: { input: InjectedUpdateUserInput } }>(
+				"/operation/UpdateUser/mutatingPreResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.UpdateUser?.mutatingPreResolve?.(request.ctx, request.body.input);
+						return {
+							op: "UpdateUser",
+							hook: "mutatingPreResolve",
+							input: mutated,
+							setClientRequestHeaders: request.setClientRequestHeaders,
+						};
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UpdateUser", hook: "mutatingPreResolve", error: err };
+					}
+				}
+			);
+			// mutatingPostResolve
+			fastify.post<{ Body: { input: InjectedUpdateUserInput; response: UpdateUserResponse } }>(
+				"/operation/UpdateUser/mutatingPostResolve",
+				async (request, reply) => {
+					reply.type("application/json").code(200);
+					try {
+						const mutated = await config?.mutations?.UpdateUser?.mutatingPostResolve?.(
+							request.ctx,
+							request.body.input,
+							request.body.response
+						);
+						return {
+							op: "UpdateUser",
+							hook: "mutatingPostResolve",
+							response: mutated,
+							setClientRequestHeaders: request.setClientRequestHeaders,
+						};
+					} catch (err) {
+						request.log.error(err);
+						reply.code(500);
+						return { op: "UpdateUser", hook: "mutatingPostResolve", error: err };
+					}
+				}
+			);
 
 			fastify.listen(9992, "127.0.0.1", (err, address) => {
 				if (err) {

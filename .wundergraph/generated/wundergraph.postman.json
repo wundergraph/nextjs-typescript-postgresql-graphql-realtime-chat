@@ -2,9 +2,9 @@
   "item": [
     {
       "_": {
-        "postman_id": "4cb848f9-902b-437b-886b-c543641ea78b"
+        "postman_id": "c486abe0-baf5-4901-8987-c4f339a57bc4"
       },
-      "id": "4cb848f9-902b-437b-886b-c543641ea78b",
+      "id": "c486abe0-baf5-4901-8987-c4f339a57bc4",
       "name": "Queries",
       "description": {
         "content": "All your query operations",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "73e9b3e1-7742-46aa-aaee-72f88cf0ec1c",
+          "id": "e13454ec-5383-4417-8bf4-28acbeb6f7ad",
           "name": "AllUsers",
           "request": {
             "url": {
@@ -50,7 +50,7 @@
           "event": []
         },
         {
-          "id": "cc578b13-f42e-4bb4-83e9-3f98533c020f",
+          "id": "910ce4f6-5334-42b4-9def-a2417c54ec1d",
           "name": "Messages",
           "request": {
             "url": {
@@ -78,7 +78,7 @@
           "event": []
         },
         {
-          "id": "1e49bccd-eaef-4b70-a611-b0ce7bf4794d",
+          "id": "33df11c7-d72e-43c9-8cfb-b92a42cfe6df",
           "name": "MockQuery",
           "request": {
             "url": {
@@ -106,7 +106,7 @@
           "event": []
         },
         {
-          "id": "510b6b6f-c89f-4232-8e4f-f5ffd735b7f6",
+          "id": "84c6e42a-6213-457f-899c-61a036036c1b",
           "name": "UserInfo",
           "request": {
             "url": {
@@ -138,9 +138,9 @@
     },
     {
       "_": {
-        "postman_id": "6e5ef15e-031b-4626-a510-233da4aeeff3"
+        "postman_id": "df4cc4b9-de4a-4dd6-a469-00db14cd74b2"
       },
-      "id": "6e5ef15e-031b-4626-a510-233da4aeeff3",
+      "id": "df4cc4b9-de4a-4dd6-a469-00db14cd74b2",
       "name": "Mutations",
       "description": {
         "content": "All your mutation operations",
@@ -148,7 +148,7 @@
       },
       "item": [
         {
-          "id": "f3d391cb-ec23-45ca-9f1e-8fef2f825e19",
+          "id": "127022ec-a8c5-4b2e-8ddd-80de26643a1d",
           "name": "AddMessage",
           "request": {
             "url": {
@@ -184,7 +184,7 @@
           "event": []
         },
         {
-          "id": "6e1ce8c4-5562-43c2-9f5a-ed1e3b719700",
+          "id": "3c11efec-a1a8-4374-8708-c6d05831b620",
           "name": "ChangeUserName",
           "request": {
             "url": {
@@ -220,7 +220,7 @@
           "event": []
         },
         {
-          "id": "96384eeb-5e36-4d6d-af8b-07fb0684c4f4",
+          "id": "ecf2ef11-6770-4ec6-a367-fdaeebddb2a7",
           "name": "DeleteAllMessagesByUserEmail",
           "request": {
             "url": {
@@ -256,7 +256,7 @@
           "event": []
         },
         {
-          "id": "7138662f-d390-4a0a-a4fb-20d14c985bf4",
+          "id": "84109332-5965-44ae-a9fd-ecb3b0973d34",
           "name": "SetLastLogin",
           "request": {
             "url": {
@@ -290,6 +290,42 @@
           },
           "response": [],
           "event": []
+        },
+        {
+          "id": "79cc6ce5-6cfc-409f-ba35-bd663c325bbb",
+          "name": "UpdateUser",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "UpdateUser"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "POST",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": true,
+                  "description": {
+                    "content": "Type integer, Optional",
+                    "type": "text/plain"
+                  },
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": []
         }
       ],
       "event": []
@@ -304,7 +340,7 @@
     }
   ],
   "info": {
-    "_postman_id": "8bc0a58c-3292-4a6c-af7a-64720c4f5e20",
+    "_postman_id": "e5f477de-7951-4e0f-ae8a-eb5d4b1549e3",
     "name": "Wundergraph",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
