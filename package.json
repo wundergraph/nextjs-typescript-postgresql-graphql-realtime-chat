@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"$npm_execpath run nextDev\" \"$npm_execpath run wundergraph\" \"$npm_execpath run database\" \"$npm_execpath run browser\"",
-    "wundergraph": "cd .wundergraph && $npm_execpath run dev",
-    "build": "cd .wundergraph && $npm_execpath run prod && cd .. && next build",
+    "dev": "concurrently \"pnpm run nextDev\" \"pnpm run wundergraph\" \"pnpm run database\" \"pnpm run browser\"",
+    "wundergraph": "pnpm run dev --filter wundergraph-application",
+    "build": "pnpm run build --filter wundergraph-application",
     "browser": "wait-on \"http-get://localhost:3000\" && open-cli http://localhost:3000",
     "database": "docker-compose up",
     "nextDev": "next dev",
@@ -13,15 +13,16 @@
   },
   "dependencies": {
     "@rjsf/core": "^3.2.0",
-    "next": "10.1.2",
+    "@wundergraph/wunderctl": "^0.64.2",
+    "next": "10.2.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "wait-on": "^6.0.0"
+    "wait-on": "^6.0.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.3",
-    "concurrently": "^6.0.0",
-    "typescript": "^4.2.3",
-    "open-cli": "^7.0.1"
+    "concurrently": "^6.5.1",
+    "open-cli": "^7.0.1",
+    "typescript": "^4.5.5"
   }
 }

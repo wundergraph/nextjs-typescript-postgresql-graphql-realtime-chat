@@ -31,17 +31,16 @@ Features:
 
 ## Prerequisites
 
-Make sure you have docker compose installed.
-Alternatively, you can use any PostgreSQL database available on localhost.
+Make sure you have [docker compose](https://docs.docker.com/compose/install/) and [pnpm](https://pnpm.io/de/installation) installed.
+Docker is used to bootstrap the database and pnpm to work with multiple npm packages as a workspace.
 
 ## Getting Started
 
-Install the dependencies and run the example:
+This command will provision a database and start all required components to run the demo.
+After few seconds your browser will open the application.
 
 ```shell
-yarn global add @wundergraph/wunderctl@latest
-yarn
-yarn dev
+pnpm run dev
 ```
 
 ## Cleanup
