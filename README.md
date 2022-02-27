@@ -27,7 +27,7 @@ Features:
 - Server Side Rendering
 - Realtime Updates
 - Cross Tab Login/Logout
-- typesafe generated Typescript Client
+- Typesafe generated Typescript Client
 
 ## Prerequisites
 
