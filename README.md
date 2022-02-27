@@ -46,7 +46,7 @@ pnpm run dev
 ## Cleanup
 
 ```shell
-docker-compose rm -v -f
+pnpm run cleanup
 ```
 
 ## Questions?

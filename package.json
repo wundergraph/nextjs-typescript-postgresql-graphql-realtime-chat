@@ -8,6 +8,7 @@
     "build": "pnpm run build --filter wundergraph-application",
     "browser": "wait-on \"http-get://localhost:3000\" && open-cli http://localhost:3000",
     "database": "docker-compose up",
+    "cleanup": "docker-compose down -v",
     "nextDev": "next dev",
     "start": "next start"
   },
