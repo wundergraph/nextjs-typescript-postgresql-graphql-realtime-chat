@@ -2,7 +2,7 @@ import {
     Application,
     authProviders,
     configureWunderGraphApplication,
-    cors, EnvironmentVariable,
+    cors,
     introspect,
     templates
 } from "@wundergraph/sdk";
