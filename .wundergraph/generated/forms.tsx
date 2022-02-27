@@ -11,6 +11,8 @@ import {
 	ChangeUserNameResponse,
 	DeleteAllMessagesByUserEmailInput,
 	DeleteAllMessagesByUserEmailResponse,
+	UpdateUserInput,
+	UpdateUserResponse,
 } from "./models";
 import { useQuery, useLiveQuery, useMutation } from "./hooks";
 import jsonSchema from "./jsonschema";
@@ -97,6 +99,35 @@ export const DeleteAllMessagesByUserEmailForm: React.FC<
 		<div>
 			<Form
 				schema={jsonSchema.DeleteAllMessagesByUserEmail.input}
+				formData={formData}
+				liveValidate={liveValidate}
+				onChange={(e) => {
+					setFormData(e.formData);
+				}}
+				onSubmit={async (e) => {
+					await mutate({ input: e.formData, refetchMountedQueriesOnSuccess });
+					setFormData(undefined);
+				}}
+			/>
+		</div>
+	);
+};
+export const UpdateUserForm: React.FC<MutationFormProps<Response<UpdateUserResponse>>> = ({
+	onResult,
+	refetchMountedQueriesOnSuccess,
+	liveValidate,
+}) => {
+	const [formData, setFormData] = useState<UpdateUserInput>();
+	const { mutate, response } = useMutation.UpdateUser({ refetchMountedQueriesOnSuccess });
+	useEffect(() => {
+		if (onResult) {
+			onResult(response);
+		}
+	}, [response]);
+	return (
+		<div>
+			<Form
+				schema={jsonSchema.UpdateUser.input}
 				formData={formData}
 				liveValidate={liveValidate}
 				onChange={(e) => {

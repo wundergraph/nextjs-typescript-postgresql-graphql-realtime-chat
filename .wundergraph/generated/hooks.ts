@@ -8,6 +8,7 @@ import {
 	AllUsersInput,
 	ChangeUserNameInput,
 	DeleteAllMessagesByUserEmailInput,
+	UpdateUserInput,
 	AllUsersResponse,
 	MessagesResponse,
 	MockQueryResponse,
@@ -234,6 +235,10 @@ export const useMutation = {
 	DeleteAllMessagesByUserEmail: (options: MutateRequestOptions<DeleteAllMessagesByUserEmailInput>) => {
 		const { client } = useWunderGraph();
 		return Mutation(client.mutation.DeleteAllMessagesByUserEmail, { requiresAuthentication: true }, options);
+	},
+	UpdateUser: (options: MutateRequestOptions<UpdateUserInput>) => {
+		const { client } = useWunderGraph();
+		return Mutation(client.mutation.UpdateUser, { requiresAuthentication: false }, options);
 	},
 };
 

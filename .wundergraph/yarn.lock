@@ -203,10 +203,10 @@
   dependencies:
     ts-proto "^1.65.0"
 
-"@wundergraph/sdk@0.76.1":
-  version "0.76.1"
-  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.76.1.tgz#9c581aa55c4383dbd4d00bc888a77f0578a4eed7"
-  integrity sha512-pUq3zTUeOdq9DrFXwQThivdW274GySSkU8sYclKjZhu/MllydmlnWJ0J/0O9r8pE3HYCYOqoRQDog4HmAu/2wg==
+"@wundergraph/sdk@0.77.0":
+  version "0.77.0"
+  resolved "https://registry.yarnpkg.com/@wundergraph/sdk/-/sdk-0.77.0.tgz#86aee71a3570f9cc0b2cf99f216080ef14530f2b"
+  integrity sha512-Enjd8crAMfMCVrJJFjPXdW6Cfwcai4rPrjeOV9hU7xzq+9o0OjYIPCTIB0yv4NwdYY/K0GMhC6rwRv7o9FDRaA==
   dependencies:
     "@graphql-tools/schema" "^8.3.1"
     "@prisma/generator-helper" "^3.9.2"

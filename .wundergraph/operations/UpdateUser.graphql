@@ -1,0 +1,11 @@
+mutation (
+    $id: Int!
+    $create: db_usersCreateInput!
+    $update: db_usersUpdateInput!
+) {
+    db_upsertOneusers(where: {id: $id} create: $create update: $update) {
+        id
+        name
+        email
+    }
+}

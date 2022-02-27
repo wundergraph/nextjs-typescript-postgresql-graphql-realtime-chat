@@ -20,6 +20,12 @@ export interface SetLastLoginInput {
 	email: string;
 }
 
+export interface UpdateUserInput {
+	id: number;
+	create: db_usersCreateInput;
+	update: db_usersUpdateInput;
+}
+
 export interface InternalAddMessageInput {
 	email: string;
 	name: string;
@@ -41,6 +47,12 @@ export interface InternalDeleteAllMessagesByUserEmailInput {
 
 export interface InternalSetLastLoginInput {
 	email: string;
+}
+
+export interface InternalUpdateUserInput {
+	id: number;
+	create: db_usersCreateInput;
+	update: db_usersUpdateInput;
 }
 
 export interface InternalUserInfoInput {
@@ -70,6 +82,12 @@ export interface InjectedDeleteAllMessagesByUserEmailInput {
 export interface InjectedSetLastLoginInput {
 	email: string;
 	now: string;
+}
+
+export interface InjectedUpdateUserInput {
+	id: number;
+	create: db_usersCreateInput;
+	update: db_usersUpdateInput;
 }
 
 export interface InjectedUserInfoInput {
@@ -157,6 +175,17 @@ export interface SetLastLoginResponse {
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
+export interface UpdateUserResponse {
+	data?: {
+		db_upsertOneusers?: {
+			id: number;
+			name: string;
+			email: string;
+		};
+	};
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
 export interface UserInfoResponse {
 	data?: {
 		findFirstusers?: {
@@ -229,6 +258,14 @@ export interface SetLastLoginResponseData {
 	};
 }
 
+export interface UpdateUserResponseData {
+	db_upsertOneusers?: {
+		id: number;
+		name: string;
+		email: string;
+	};
+}
+
 export interface UserInfoResponseData {
 	findFirstusers?: {
 		id: number;
@@ -236,6 +273,158 @@ export interface UserInfoResponseData {
 		name: string;
 		lastlogin: string;
 	};
+}
+
+export interface db_usersCreateInput {
+	email: string;
+	name: string;
+	updatedat?: string;
+	lastlogin?: string;
+	messages?: db_messagesCreateNestedManyWithoutUsersInput;
+}
+
+export interface db_messagesCreateNestedManyWithoutUsersInput {
+	create?: db_messagesCreateWithoutUsersInput[];
+	connectOrCreate?: db_messagesCreateOrConnectWithoutUsersInput[];
+	createMany?: db_messagesCreateManyUsersInputEnvelope[];
+	connect?: db_messagesWhereUniqueInput[];
+}
+
+export interface db_messagesCreateWithoutUsersInput {
+	message: string;
+}
+
+export interface db_messagesCreateOrConnectWithoutUsersInput {
+	where: db_messagesWhereUniqueInput;
+	create?: db_messagesCreateWithoutUsersInput[];
+}
+
+export interface db_messagesWhereUniqueInput {
+	id?: number;
+}
+
+export interface db_messagesCreateManyUsersInputEnvelope {
+	data: db_messagesCreateManyUsersInput[];
+	skipDuplicates?: boolean;
+}
+
+export interface db_messagesCreateManyUsersInput {
+	id?: number;
+	message: string;
+}
+
+export interface db_usersUpdateInput {
+	email?: db_StringFieldUpdateOperationsInput;
+	name?: db_StringFieldUpdateOperationsInput;
+	updatedat?: db_DateTimeFieldUpdateOperationsInput;
+	lastlogin?: db_DateTimeFieldUpdateOperationsInput;
+	messages?: db_messagesUpdateManyWithoutUsersInput;
+}
+
+export interface db_StringFieldUpdateOperationsInput {
+	set?: string;
+}
+
+export interface db_DateTimeFieldUpdateOperationsInput {
+	set?: string;
+}
+
+export interface db_messagesUpdateManyWithoutUsersInput {
+	create?: db_messagesCreateWithoutUsersInput[];
+	connectOrCreate?: db_messagesCreateOrConnectWithoutUsersInput[];
+	upsert?: db_messagesUpsertWithWhereUniqueWithoutUsersInput[];
+	createMany?: db_messagesCreateManyUsersInputEnvelope[];
+	connect?: db_messagesWhereUniqueInput[];
+	set?: db_messagesWhereUniqueInput;
+	disconnect?: db_messagesWhereUniqueInput[];
+	delete?: db_messagesWhereUniqueInput[];
+	update?: db_messagesUpdateWithWhereUniqueWithoutUsersInput[];
+	updateMany?: db_messagesUpdateManyWithWhereWithoutUsersInput[];
+	deleteMany?: db_messagesScalarWhereInput;
+}
+
+export interface db_messagesUpsertWithWhereUniqueWithoutUsersInput {
+	where: db_messagesWhereUniqueInput;
+	update?: db_messagesUpdateWithoutUsersInput[];
+	create?: db_messagesCreateWithoutUsersInput[];
+}
+
+export interface db_messagesUpdateWithoutUsersInput {
+	message?: db_StringFieldUpdateOperationsInput;
+}
+
+export interface db_messagesUpdateWithWhereUniqueWithoutUsersInput {
+	where: db_messagesWhereUniqueInput;
+	data: db_messagesUpdateWithoutUsersInput;
+}
+
+export interface db_messagesUpdateManyWithWhereWithoutUsersInput {
+	where: db_messagesScalarWhereInput;
+	data: db_messagesUpdateManyMutationInput;
+}
+
+export interface db_messagesScalarWhereInput {
+	AND?: db_messagesScalarWhereInput;
+	OR?: db_messagesScalarWhereInput[];
+	NOT?: db_messagesScalarWhereInput;
+	id?: db_IntFilter;
+	user_id?: db_IntFilter;
+	message?: db_StringFilter;
+}
+
+export interface db_IntFilter {
+	equals?: number;
+	in?: number[];
+	notIn?: number[];
+	lt?: number;
+	lte?: number;
+	gt?: number;
+	gte?: number;
+	not?: db_NestedIntFilter;
+}
+
+export interface db_NestedIntFilter {
+	equals?: number;
+	in?: number[];
+	notIn?: number[];
+	lt?: number;
+	lte?: number;
+	gt?: number;
+	gte?: number;
+	not?: db_NestedIntFilter;
+}
+
+export interface db_StringFilter {
+	equals?: string;
+	in?: string[];
+	notIn?: string[];
+	lt?: string;
+	lte?: string;
+	gt?: string;
+	gte?: string;
+	contains?: string;
+	startsWith?: string;
+	endsWith?: string;
+	mode?: "default" | "insensitive";
+	not?: db_NestedStringFilter;
+}
+
+export interface db_NestedStringFilter {
+	equals?: string;
+	in?: string[];
+	notIn?: string[];
+	lt?: string;
+	lte?: string;
+	gt?: string;
+	gte?: string;
+	contains?: string;
+	startsWith?: string;
+	endsWith?: string;
+	not?: db_NestedStringFilter;
+}
+
+export interface db_messagesUpdateManyMutationInput {
+	message?: db_StringFieldUpdateOperationsInput;
 }
 
 export type JSONValue = string | number | boolean | JSONObject | Array<JSONValue>;

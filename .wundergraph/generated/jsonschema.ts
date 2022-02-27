@@ -31,6 +31,10 @@ interface Schema {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
+	UpdateUser: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
 	UserInfo: {
 		input: JSONSchema7;
 		response: JSONSchema7;
@@ -242,6 +246,261 @@ const jsonSchema: Schema = {
 							properties: { id: { type: "integer" }, lastlogin: { type: "string" } },
 							additionalProperties: false,
 							required: ["id", "lastlogin"],
+						},
+					},
+					additionalProperties: false,
+				},
+			},
+			additionalProperties: false,
+		},
+	},
+	UpdateUser: {
+		input: {
+			type: "object",
+			properties: {
+				id: { type: "integer" },
+				create: { $ref: "#/definitions/db_usersCreateInput" },
+				update: { $ref: "#/definitions/db_usersUpdateInput" },
+			},
+			additionalProperties: false,
+			definitions: {
+				db_usersCreateInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						email: { type: "string" },
+						name: { type: "string" },
+						updatedat: { type: "string" },
+						lastlogin: { type: "string" },
+						messages: { $ref: "#/definitions/db_messagesCreateNestedManyWithoutUsersInput" },
+					},
+					required: ["email", "name"],
+				},
+				db_messagesCreateNestedManyWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						create: { type: "array", items: { $ref: "#/definitions/db_messagesCreateWithoutUsersInput" } },
+						connectOrCreate: {
+							type: "array",
+							items: { $ref: "#/definitions/db_messagesCreateOrConnectWithoutUsersInput" },
+						},
+						createMany: { type: "array", items: { $ref: "#/definitions/db_messagesCreateManyUsersInputEnvelope" } },
+						connect: { type: "array", items: { $ref: "#/definitions/db_messagesWhereUniqueInput" } },
+					},
+				},
+				db_messagesCreateWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { message: { type: "string" } },
+					required: ["message"],
+				},
+				db_messagesCreateOrConnectWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						where: { $ref: "#/definitions/db_messagesWhereUniqueInput" },
+						create: { type: "array", minItems: 1, items: { $ref: "#/definitions/db_messagesCreateWithoutUsersInput" } },
+					},
+					required: ["where"],
+				},
+				db_messagesWhereUniqueInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { id: { type: "integer" } },
+				},
+				db_messagesCreateManyUsersInputEnvelope: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						data: { type: "array", items: { $ref: "#/definitions/db_messagesCreateManyUsersInput" } },
+						skipDuplicates: { type: "boolean" },
+					},
+					required: ["data"],
+				},
+				db_messagesCreateManyUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { id: { type: "integer" }, message: { type: "string" } },
+					required: ["message"],
+				},
+				db_usersUpdateInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						email: { $ref: "#/definitions/db_StringFieldUpdateOperationsInput" },
+						name: { $ref: "#/definitions/db_StringFieldUpdateOperationsInput" },
+						updatedat: { $ref: "#/definitions/db_DateTimeFieldUpdateOperationsInput" },
+						lastlogin: { $ref: "#/definitions/db_DateTimeFieldUpdateOperationsInput" },
+						messages: { $ref: "#/definitions/db_messagesUpdateManyWithoutUsersInput" },
+					},
+				},
+				db_StringFieldUpdateOperationsInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { set: { type: "string" } },
+				},
+				db_DateTimeFieldUpdateOperationsInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { set: { type: "string" } },
+				},
+				db_messagesUpdateManyWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						create: { type: "array", items: { $ref: "#/definitions/db_messagesCreateWithoutUsersInput" } },
+						connectOrCreate: {
+							type: "array",
+							items: { $ref: "#/definitions/db_messagesCreateOrConnectWithoutUsersInput" },
+						},
+						upsert: {
+							type: "array",
+							items: { $ref: "#/definitions/db_messagesUpsertWithWhereUniqueWithoutUsersInput" },
+						},
+						createMany: { type: "array", items: { $ref: "#/definitions/db_messagesCreateManyUsersInputEnvelope" } },
+						connect: { type: "array", items: { $ref: "#/definitions/db_messagesWhereUniqueInput" } },
+						set: { $ref: "#/definitions/db_messagesWhereUniqueInput" },
+						disconnect: { type: "array", items: { $ref: "#/definitions/db_messagesWhereUniqueInput" } },
+						delete: { type: "array", items: { $ref: "#/definitions/db_messagesWhereUniqueInput" } },
+						update: {
+							type: "array",
+							items: { $ref: "#/definitions/db_messagesUpdateWithWhereUniqueWithoutUsersInput" },
+						},
+						updateMany: {
+							type: "array",
+							items: { $ref: "#/definitions/db_messagesUpdateManyWithWhereWithoutUsersInput" },
+						},
+						deleteMany: { $ref: "#/definitions/db_messagesScalarWhereInput" },
+					},
+				},
+				db_messagesUpsertWithWhereUniqueWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						where: { $ref: "#/definitions/db_messagesWhereUniqueInput" },
+						update: { type: "array", minItems: 1, items: { $ref: "#/definitions/db_messagesUpdateWithoutUsersInput" } },
+						create: { type: "array", minItems: 1, items: { $ref: "#/definitions/db_messagesCreateWithoutUsersInput" } },
+					},
+					required: ["where"],
+				},
+				db_messagesUpdateWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { message: { $ref: "#/definitions/db_StringFieldUpdateOperationsInput" } },
+				},
+				db_messagesUpdateWithWhereUniqueWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						where: { $ref: "#/definitions/db_messagesWhereUniqueInput" },
+						data: { $ref: "#/definitions/db_messagesUpdateWithoutUsersInput" },
+					},
+					required: ["where", "data"],
+				},
+				db_messagesUpdateManyWithWhereWithoutUsersInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						where: { $ref: "#/definitions/db_messagesScalarWhereInput" },
+						data: { $ref: "#/definitions/db_messagesUpdateManyMutationInput" },
+					},
+					required: ["where", "data"],
+				},
+				db_messagesScalarWhereInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						AND: { $ref: "#/definitions/db_messagesScalarWhereInput" },
+						OR: { type: "array", items: { $ref: "#/definitions/db_messagesScalarWhereInput" } },
+						NOT: { $ref: "#/definitions/db_messagesScalarWhereInput" },
+						id: { $ref: "#/definitions/db_IntFilter" },
+						user_id: { $ref: "#/definitions/db_IntFilter" },
+						message: { $ref: "#/definitions/db_StringFilter" },
+					},
+				},
+				db_IntFilter: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						equals: { type: "integer" },
+						in: { type: "array", items: { type: "integer" } },
+						notIn: { type: "array", items: { type: "integer" } },
+						lt: { type: "integer" },
+						lte: { type: "integer" },
+						gt: { type: "integer" },
+						gte: { type: "integer" },
+						not: { $ref: "#/definitions/db_NestedIntFilter" },
+					},
+				},
+				db_NestedIntFilter: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						equals: { type: "integer" },
+						in: { type: "array", items: { type: "integer" } },
+						notIn: { type: "array", items: { type: "integer" } },
+						lt: { type: "integer" },
+						lte: { type: "integer" },
+						gt: { type: "integer" },
+						gte: { type: "integer" },
+						not: { $ref: "#/definitions/db_NestedIntFilter" },
+					},
+				},
+				db_StringFilter: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						equals: { type: "string" },
+						in: { type: "array", items: { type: "string" } },
+						notIn: { type: "array", items: { type: "string" } },
+						lt: { type: "string" },
+						lte: { type: "string" },
+						gt: { type: "string" },
+						gte: { type: "string" },
+						contains: { type: "string" },
+						startsWith: { type: "string" },
+						endsWith: { type: "string" },
+						mode: { type: "string", enum: ["default", "insensitive"] },
+						not: { $ref: "#/definitions/db_NestedStringFilter" },
+					},
+				},
+				db_NestedStringFilter: {
+					additionalProperties: false,
+					type: "object",
+					properties: {
+						equals: { type: "string" },
+						in: { type: "array", items: { type: "string" } },
+						notIn: { type: "array", items: { type: "string" } },
+						lt: { type: "string" },
+						lte: { type: "string" },
+						gt: { type: "string" },
+						gte: { type: "string" },
+						contains: { type: "string" },
+						startsWith: { type: "string" },
+						endsWith: { type: "string" },
+						not: { $ref: "#/definitions/db_NestedStringFilter" },
+					},
+				},
+				db_messagesUpdateManyMutationInput: {
+					additionalProperties: false,
+					type: "object",
+					properties: { message: { $ref: "#/definitions/db_StringFieldUpdateOperationsInput" } },
+				},
+			},
+			required: ["id", "create", "update"],
+		},
+		response: {
+			type: "object",
+			properties: {
+				data: {
+					type: "object",
+					properties: {
+						db_upsertOneusers: {
+							type: "object",
+							properties: { id: { type: "integer" }, name: { type: "string" }, email: { type: "string" } },
+							additionalProperties: false,
+							required: ["id", "name", "email"],
 						},
 					},
 					additionalProperties: false,
