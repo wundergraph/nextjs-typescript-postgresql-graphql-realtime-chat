@@ -1,9 +1,10 @@
 import styles from '../styles/Home.module.css'
-import {useLiveQuery, useMutation, useQuery, useWunderGraph} from "../.wundergraph/generated/hooks";
+import {useLiveQuery, useMutation, useQuery, useWunderGraph} from "../components/generated/hooks";
 import {useEffect, useState} from "react";
-import type {MessagesResponseData} from "../.wundergraph/generated/models";
+import type {MessagesResponseData} from "../components/generated/models";
 import {GetServerSideProps, NextPage} from "next";
-import {Client, User} from '../.wundergraph/generated/client';
+import {Client} from '../components/generated/wundergraph.web.client';
+import type {User} from "../components/generated/wundergraph.server";
 
 type Messages = MessagesResponseData["findManymessages"];
 
@@ -21,7 +22,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
     const {mutate: addMessage, response: messageAdded} = useMutation.AddMessage({refetchMountedQueriesOnSuccess: true});
     const {response: loadMessages} = useLiveQuery.Messages();
     const [messages, setMessages] = useState<Messages>(user !== undefined && serverSideMessages || []);
-    const {response: userInfo} = useQuery.UserInfo();
+    const {response: userInfo, refetch} = useQuery.UserInfo();
     useEffect(() => {
         if (loadMessages.status === "ok") {
             setMessages((loadMessages.body.data?.findManymessages || []).reverse());
@@ -46,7 +47,7 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                         Please Login to be able to use the chat!
                     </p>
                     <br/>
-                    <button onClick={() => login.github()}>Login GitHub</button><br/>
+                    <button onClick={() => login.github()}>Login GitHub</button><br/><br/>
                 </div>
             ) : <div>
                 <input placeholder="message" value={message} onChange={e => setMessage(e.target.value)}/>
@@ -63,7 +64,9 @@ const Chat: NextPage<Props> = ({messages: serverSideMessages, user: serverSideUs
                     LastLogin: {userInfo.body.data.findFirstusers.lastlogin}
                 </p>}
                 <button onClick={async () => {
-                    await logout();
+                    await logout({
+                        logout_openid_connect_provider: true,
+                    });
                     window.location.reload();
                 }
                 }>Logout</button>

@@ -1,4 +1,4 @@
-import {ChangeUserNameForm} from "../.wundergraph/generated/forms"
+import {ChangeUserNameForm} from "../components/generated/forms";
 
 const UpdateUser = () => {
     return (

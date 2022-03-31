@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "wundergraph/countries",
+    "wundergraph/weather"
+  ]
+}

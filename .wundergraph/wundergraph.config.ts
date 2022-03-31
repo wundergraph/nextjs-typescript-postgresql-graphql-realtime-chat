@@ -7,16 +7,22 @@ import {
     templates
 } from "@wundergraph/sdk";
 import operations from "./wundergraph.operations";
-import wunderGraphHooks from "./wundergraph.hooks";
+import server from "./wundergraph.server";
 
 const db = introspect.postgresql({
     apiNamespace: "db",
     databaseURL: "postgresql://admin:admin@localhost:54322/example?schema=public",
 });
 
+const countries = introspect.graphql({
+    apiNamespace: "countries",
+    url: "https://countries.trevorblades.com/",
+});
+
 const myApplication = new Application({
-    name: "app",
+    name: "api",
     apis: [
+        countries,
         db,
     ],
 });
@@ -24,15 +30,21 @@ const myApplication = new Application({
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
     application: myApplication,
+    server,
     codeGenerators: [
         {
             templates: [
                 // use all the typescript react templates to generate a client
                 templates.typescript.operations,
                 templates.typescript.linkBuilder,
-                ...templates.typescript.react
             ],
         },
+        {
+            templates: [
+                ...templates.typescript.react
+            ],
+            path: "../components/generated/",
+        }
     ],
     cors: {
         ...cors.allowAll,
@@ -61,5 +73,7 @@ configureWunderGraphApplication({
         },
     },
     operations,
-    hooks: wunderGraphHooks.config,
+    security:{
+        enableGraphQLEndpoint: process.env.NODE_ENV !== "production",
+    }
 });

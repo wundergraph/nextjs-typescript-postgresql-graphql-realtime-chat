@@ -1,0 +1,8 @@
+{
+    countries_countries {
+        code
+        name
+        phone
+        capital
+    }
+}

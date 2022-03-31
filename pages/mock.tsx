@@ -1,5 +1,5 @@
 import {NextPage} from "next";
-import {useQuery, useWunderGraph} from "../.wundergraph/generated/hooks";
+import {useQuery, useWunderGraph} from "../components/generated/hooks";
 
 const MockPage: NextPage = () => {
     const {user} = useWunderGraph();

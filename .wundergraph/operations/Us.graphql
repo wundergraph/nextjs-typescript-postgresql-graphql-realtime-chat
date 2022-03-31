@@ -1,0 +1,6 @@
+{
+    countries_country(code: "US"){
+        code
+        name
+    }
+}

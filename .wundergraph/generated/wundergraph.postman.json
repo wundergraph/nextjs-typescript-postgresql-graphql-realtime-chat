@@ -2,9 +2,9 @@
   "item": [
     {
       "_": {
-        "postman_id": "c486abe0-baf5-4901-8987-c4f339a57bc4"
+        "postman_id": "Queries"
       },
-      "id": "c486abe0-baf5-4901-8987-c4f339a57bc4",
+      "id": "Queries",
       "name": "Queries",
       "description": {
         "content": "All your query operations",
@@ -12,7 +12,7 @@
       },
       "item": [
         {
-          "id": "e13454ec-5383-4417-8bf4-28acbeb6f7ad",
+          "id": "AllUsers",
           "name": "AllUsers",
           "request": {
             "url": {
@@ -50,7 +50,63 @@
           "event": []
         },
         {
-          "id": "910ce4f6-5334-42b4-9def-a2417c54ec1d",
+          "id": "Countries",
+          "name": "Countries",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "Countries"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "Germany",
+          "name": "Germany",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "Germany"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "Messages",
           "name": "Messages",
           "request": {
             "url": {
@@ -78,7 +134,7 @@
           "event": []
         },
         {
-          "id": "33df11c7-d72e-43c9-8cfb-b92a42cfe6df",
+          "id": "MockQuery",
           "name": "MockQuery",
           "request": {
             "url": {
@@ -106,7 +162,63 @@
           "event": []
         },
         {
-          "id": "84c6e42a-6213-457f-899c-61a036036c1b",
+          "id": "Query",
+          "name": "Query",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "Query"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "Us",
+          "name": "Us",
+          "request": {
+            "url": {
+              "path": [
+                "api",
+                "main",
+                "operations",
+                "Us"
+              ],
+              "host": [
+                "{{apiBaseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [],
+          "event": []
+        },
+        {
+          "id": "UserInfo",
           "name": "UserInfo",
           "request": {
             "url": {
@@ -138,9 +250,9 @@
     },
     {
       "_": {
-        "postman_id": "df4cc4b9-de4a-4dd6-a469-00db14cd74b2"
+        "postman_id": "Mutations"
       },
-      "id": "df4cc4b9-de4a-4dd6-a469-00db14cd74b2",
+      "id": "Mutations",
       "name": "Mutations",
       "description": {
         "content": "All your mutation operations",
@@ -148,12 +260,13 @@
       },
       "item": [
         {
-          "id": "127022ec-a8c5-4b2e-8ddd-80de26643a1d",
+          "id": "AddMessage",
           "name": "AddMessage",
           "request": {
             "url": {
               "path": [
                 "api",
+                "main",
                 "main",
                 "operations",
                 "AddMessage"
@@ -184,12 +297,13 @@
           "event": []
         },
         {
-          "id": "3c11efec-a1a8-4374-8708-c6d05831b620",
+          "id": "ChangeUserName",
           "name": "ChangeUserName",
           "request": {
             "url": {
               "path": [
                 "api",
+                "main",
                 "main",
                 "operations",
                 "ChangeUserName"
@@ -220,12 +334,13 @@
           "event": []
         },
         {
-          "id": "ecf2ef11-6770-4ec6-a367-fdaeebddb2a7",
+          "id": "DeleteAllMessagesByUserEmail",
           "name": "DeleteAllMessagesByUserEmail",
           "request": {
             "url": {
               "path": [
                 "api",
+                "main",
                 "main",
                 "operations",
                 "DeleteAllMessagesByUserEmail"
@@ -256,12 +371,13 @@
           "event": []
         },
         {
-          "id": "84109332-5965-44ae-a9fd-ecb3b0973d34",
+          "id": "SetLastLogin",
           "name": "SetLastLogin",
           "request": {
             "url": {
               "path": [
                 "api",
+                "main",
                 "main",
                 "operations",
                 "SetLastLogin"
@@ -292,12 +408,13 @@
           "event": []
         },
         {
-          "id": "79cc6ce5-6cfc-409f-ba35-bd663c325bbb",
+          "id": "UpdateUser",
           "name": "UpdateUser",
           "request": {
             "url": {
               "path": [
                 "api",
+                "main",
                 "main",
                 "operations",
                 "UpdateUser"
@@ -340,7 +457,7 @@
     }
   ],
   "info": {
-    "_postman_id": "e5f477de-7951-4e0f-ae8a-eb5d4b1549e3",
+    "_postman_id": "Wundergraph",
     "name": "Wundergraph",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {

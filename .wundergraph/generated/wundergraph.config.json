@@ -54,7 +54,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -101,7 +102,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -149,7 +151,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": [
@@ -160,6 +163,54 @@
               "variableKind": 1
             }
           ]
+        },
+        "internal": false,
+        "postResolveTransformations": []
+      },
+      {
+        "content": "query Countries {\n  countries_countries {\n    code\n    name\n    phone\n    capital\n  }\n}\n",
+        "name": "Countries",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"countries_countries\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"phone\":{\"type\":\"string\"},\"capital\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"code\",\"name\",\"phone\"]}}},\"additionalProperties\":false,\"required\":[\"countries_countries\"]}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "operationType": 0,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": [],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 1
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          },
+          "httpTransportOnResponse": false,
+          "httpTransportOnRequest": true,
+          "customResolve": false
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
         },
         "internal": false,
         "postResolveTransformations": []
@@ -201,7 +252,56 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false,
+        "postResolveTransformations": []
+      },
+      {
+        "content": "query Germany {\n  countries_country(code: \"DE\") {\n    code\n    name\n    __typename\n  }\n}\n",
+        "name": "Germany",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"countries_country\":{\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"__typename\":{\"type\":\"string\",\"enum\":[\"countries_Country\"]}},\"additionalProperties\":false,\"required\":[\"code\",\"name\",\"__typename\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "operationType": 0,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": [],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 1
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          },
+          "httpTransportOnResponse": false,
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -248,7 +348,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -295,13 +396,83 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
         },
         "internal": false,
         "postResolveTransformations": []
+      },
+      {
+        "content": "query Query {\n  db_findManyusers {\n    id\n    name\n    germanyCode: _join {\n      countries_country(code: \"DE\") {\n        code\n      }\n    }\n  }\n}\n",
+        "name": "Query",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"db_findManyusers\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"germanyCode\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"name\",\"germanyCode\"]}}},\"additionalProperties\":false,\"required\":[\"db_findManyusers\"]}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "operationType": 0,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": [],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 1
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          },
+          "httpTransportOnResponse": false,
+          "httpTransportOnRequest": false,
+          "customResolve": false
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false,
+        "postResolveTransformations": [
+          {
+            "kind": 0,
+            "depth": 6,
+            "get": {
+              "from": [
+                "data",
+                "db_findManyusers",
+                "[]",
+                "germanyCode",
+                "countries_country",
+                "code"
+              ],
+              "to": [
+                "data",
+                "db_findManyusers",
+                "[]",
+                "germanyCode"
+              ]
+            }
+          }
+        ]
       },
       {
         "content": "mutation SetLastLogin($email: String!, $now: DateTime! @injectCurrentDateTime) @internalOperation {\n  updateOneusers: db_updateOneusers(\n    where: {email: $email}\n    data: {lastlogin: {set: $now}}\n  ) {\n    id\n    lastlogin\n  }\n}\n",
@@ -338,7 +509,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": [
@@ -357,8 +529,8 @@
         "content": "mutation UpdateUser($id: Int!, $create: db_usersCreateInput!, $update: db_usersUpdateInput!) {\n  db_upsertOneusers(where: {id: $id}, create: $create, update: $update) {\n    id\n    name\n    email\n  }\n}\n",
         "name": "UpdateUser",
         "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"db_upsertOneusers\":{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"id\",\"name\",\"email\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
-        "variablesSchema": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"create\":{\"$ref\":\"#/definitions/db_usersCreateInput\"},\"update\":{\"$ref\":\"#/definitions/db_usersUpdateInput\"}},\"additionalProperties\":false,\"definitions\":{\"db_usersCreateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"updatedat\":{\"type\":\"string\"},\"lastlogin\":{\"type\":\"string\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesCreateNestedManyWithoutUsersInput\"}},\"required\":[\"email\",\"name\"]},\"db_messagesCreateNestedManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"create\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"createMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}}}},\"db_messagesCreateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"}},\"required\":[\"message\"]},\"db_messagesCreateOrConnectWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"create\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}},\"required\":[\"where\"]},\"db_messagesWhereUniqueInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"}}},\"db_messagesCreateManyUsersInputEnvelope\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInput\"}},\"skipDuplicates\":{\"type\":\"boolean\"}},\"required\":[\"data\"]},\"db_messagesCreateManyUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\"]},\"db_usersUpdateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"name\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"updatedat\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"lastlogin\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithoutUsersInput\"}}},\"db_StringFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"set\":{\"type\":\"string\"}}},\"db_DateTimeFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"set\":{\"type\":\"string\"}}},\"db_messagesUpdateManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"create\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"upsert\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpsertWithWhereUniqueWithoutUsersInput\"}},\"createMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"set\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"disconnect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"delete\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"update\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithWhereUniqueWithoutUsersInput\"}},\"updateMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithWhereWithoutUsersInput\"}},\"deleteMany\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}}},\"db_messagesUpsertWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"update\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"create\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}},\"required\":[\"where\"]},\"db_messagesUpdateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}},\"db_messagesUpdateWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"required\":[\"where\",\"data\"]},\"db_messagesUpdateManyWithWhereWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateManyMutationInput\"}},\"required\":[\"where\",\"data\"]},\"db_messagesScalarWhereInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"AND\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"OR\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}},\"NOT\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"user_id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"message\":{\"$ref\":\"#/definitions/db_StringFilter\"}}},\"db_IntFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"integer\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"lt\":{\"type\":\"integer\"},\"lte\":{\"type\":\"integer\"},\"gt\":{\"type\":\"integer\"},\"gte\":{\"type\":\"integer\"},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_NestedIntFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"integer\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"lt\":{\"type\":\"integer\"},\"lte\":{\"type\":\"integer\"},\"gt\":{\"type\":\"integer\"},\"gte\":{\"type\":\"integer\"},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_StringFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"string\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"lt\":{\"type\":\"string\"},\"lte\":{\"type\":\"string\"},\"gt\":{\"type\":\"string\"},\"gte\":{\"type\":\"string\"},\"contains\":{\"type\":\"string\"},\"startsWith\":{\"type\":\"string\"},\"endsWith\":{\"type\":\"string\"},\"mode\":{\"type\":\"string\",\"enum\":[\"default\",\"insensitive\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_NestedStringFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"string\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"lt\":{\"type\":\"string\"},\"lte\":{\"type\":\"string\"},\"gt\":{\"type\":\"string\"},\"gte\":{\"type\":\"string\"},\"contains\":{\"type\":\"string\"},\"startsWith\":{\"type\":\"string\"},\"endsWith\":{\"type\":\"string\"},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_messagesUpdateManyMutationInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}}},\"required\":[\"id\",\"create\",\"update\"]}",
-        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"create\":{\"$ref\":\"#/definitions/db_usersCreateInput\"},\"update\":{\"$ref\":\"#/definitions/db_usersUpdateInput\"}},\"additionalProperties\":false,\"definitions\":{\"db_usersCreateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"updatedat\":{\"type\":\"string\"},\"lastlogin\":{\"type\":\"string\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesCreateNestedManyWithoutUsersInput\"}},\"required\":[\"email\",\"name\"]},\"db_messagesCreateNestedManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"create\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"createMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}}}},\"db_messagesCreateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\"}},\"required\":[\"message\"]},\"db_messagesCreateOrConnectWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"create\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}},\"required\":[\"where\"]},\"db_messagesWhereUniqueInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"}}},\"db_messagesCreateManyUsersInputEnvelope\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInput\"}},\"skipDuplicates\":{\"type\":\"boolean\"}},\"required\":[\"data\"]},\"db_messagesCreateManyUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"message\"]},\"db_usersUpdateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"name\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"updatedat\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"lastlogin\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithoutUsersInput\"}}},\"db_StringFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"set\":{\"type\":\"string\"}}},\"db_DateTimeFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"set\":{\"type\":\"string\"}}},\"db_messagesUpdateManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"create\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"upsert\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpsertWithWhereUniqueWithoutUsersInput\"}},\"createMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"set\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"disconnect\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"delete\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"update\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithWhereUniqueWithoutUsersInput\"}},\"updateMany\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithWhereWithoutUsersInput\"}},\"deleteMany\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}}},\"db_messagesUpsertWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"update\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"create\":{\"type\":\"array\",\"minItems\":1,\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}},\"required\":[\"where\"]},\"db_messagesUpdateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}},\"db_messagesUpdateWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"required\":[\"where\",\"data\"]},\"db_messagesUpdateManyWithWhereWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateManyMutationInput\"}},\"required\":[\"where\",\"data\"]},\"db_messagesScalarWhereInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"AND\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"OR\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}},\"NOT\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"user_id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"message\":{\"$ref\":\"#/definitions/db_StringFilter\"}}},\"db_IntFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"integer\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"lt\":{\"type\":\"integer\"},\"lte\":{\"type\":\"integer\"},\"gt\":{\"type\":\"integer\"},\"gte\":{\"type\":\"integer\"},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_NestedIntFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"integer\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"integer\"}},\"lt\":{\"type\":\"integer\"},\"lte\":{\"type\":\"integer\"},\"gt\":{\"type\":\"integer\"},\"gte\":{\"type\":\"integer\"},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_StringFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"string\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"lt\":{\"type\":\"string\"},\"lte\":{\"type\":\"string\"},\"gt\":{\"type\":\"string\"},\"gte\":{\"type\":\"string\"},\"contains\":{\"type\":\"string\"},\"startsWith\":{\"type\":\"string\"},\"endsWith\":{\"type\":\"string\"},\"mode\":{\"type\":\"string\",\"enum\":[\"default\",\"insensitive\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_NestedStringFilter\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"equals\":{\"type\":\"string\"},\"in\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"notIn\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"lt\":{\"type\":\"string\"},\"lte\":{\"type\":\"string\"},\"gt\":{\"type\":\"string\"},\"gte\":{\"type\":\"string\"},\"contains\":{\"type\":\"string\"},\"startsWith\":{\"type\":\"string\"},\"endsWith\":{\"type\":\"string\"},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_messagesUpdateManyMutationInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}}},\"required\":[\"id\",\"create\",\"update\"]}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"create\":{\"$ref\":\"#/definitions/db_usersCreateInput\"},\"update\":{\"$ref\":\"#/definitions/db_usersUpdateInput\"}},\"additionalProperties\":false,\"definitions\":{\"db_usersCreateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"updatedat\":{\"type\":[\"string\",\"null\"]},\"lastlogin\":{\"type\":[\"string\",\"null\"]},\"messages\":{\"$ref\":\"#/definitions/db_messagesCreateNestedManyWithoutUsersInput\"}},\"required\":[\"email\",\"name\"]},\"db_messagesCreateNestedManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"createMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}}}},\"db_messagesCreateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"message\":{\"type\":\"string\"}}},\"db_messagesCreateOrConnectWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}}},\"db_messagesWhereUniqueInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":[\"integer\",\"null\"]}}},\"db_messagesCreateManyUsersInputEnvelope\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"data\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInput\"}},\"skipDuplicates\":{\"type\":[\"boolean\",\"null\"]}}},\"db_messagesCreateManyUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"id\":{\"type\":[\"integer\",\"null\"]},\"message\":{\"type\":\"string\"}}},\"db_usersUpdateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"name\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"updatedat\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"lastlogin\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithoutUsersInput\"}}},\"db_StringFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"set\":{\"type\":[\"string\",\"null\"]}}},\"db_DateTimeFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"set\":{\"type\":[\"string\",\"null\"]}}},\"db_messagesUpdateManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"upsert\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpsertWithWhereUniqueWithoutUsersInput\"}},\"createMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"set\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"disconnect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"delete\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"update\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithWhereUniqueWithoutUsersInput\"}},\"updateMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithWhereWithoutUsersInput\"}},\"deleteMany\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}}},\"db_messagesUpsertWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"update\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}}},\"db_messagesUpdateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}},\"db_messagesUpdateWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}}},\"db_messagesUpdateManyWithWhereWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateManyMutationInput\"}}},\"db_messagesScalarWhereInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"AND\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"OR\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}},\"NOT\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"user_id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"message\":{\"$ref\":\"#/definitions/db_StringFilter\"}}},\"db_IntFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"integer\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"lt\":{\"type\":[\"integer\",\"null\"]},\"lte\":{\"type\":[\"integer\",\"null\"]},\"gt\":{\"type\":[\"integer\",\"null\"]},\"gte\":{\"type\":[\"integer\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_NestedIntFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"integer\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"lt\":{\"type\":[\"integer\",\"null\"]},\"lte\":{\"type\":[\"integer\",\"null\"]},\"gt\":{\"type\":[\"integer\",\"null\"]},\"gte\":{\"type\":[\"integer\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_StringFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"string\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"lt\":{\"type\":[\"string\",\"null\"]},\"lte\":{\"type\":[\"string\",\"null\"]},\"gt\":{\"type\":[\"string\",\"null\"]},\"gte\":{\"type\":[\"string\",\"null\"]},\"contains\":{\"type\":[\"string\",\"null\"]},\"startsWith\":{\"type\":[\"string\",\"null\"]},\"endsWith\":{\"type\":[\"string\",\"null\"]},\"mode\":{\"type\":[\"string\",\"null\"],\"enum\":[\"default\",\"insensitive\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_NestedStringFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"string\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"lt\":{\"type\":[\"string\",\"null\"]},\"lte\":{\"type\":[\"string\",\"null\"]},\"gt\":{\"type\":[\"string\",\"null\"]},\"gte\":{\"type\":[\"string\",\"null\"]},\"contains\":{\"type\":[\"string\",\"null\"]},\"startsWith\":{\"type\":[\"string\",\"null\"]},\"endsWith\":{\"type\":[\"string\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_messagesUpdateManyMutationInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}}},\"required\":[\"id\",\"create\",\"update\"]}",
+        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{\"id\":{\"type\":\"integer\"},\"create\":{\"$ref\":\"#/definitions/db_usersCreateInput\"},\"update\":{\"$ref\":\"#/definitions/db_usersUpdateInput\"}},\"additionalProperties\":false,\"definitions\":{\"db_usersCreateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"updatedat\":{\"type\":[\"string\",\"null\"]},\"lastlogin\":{\"type\":[\"string\",\"null\"]},\"messages\":{\"$ref\":\"#/definitions/db_messagesCreateNestedManyWithoutUsersInput\"}},\"required\":[\"email\",\"name\"]},\"db_messagesCreateNestedManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"createMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}}}},\"db_messagesCreateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"message\":{\"type\":\"string\"}}},\"db_messagesCreateOrConnectWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}}},\"db_messagesWhereUniqueInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"id\":{\"type\":[\"integer\",\"null\"]}}},\"db_messagesCreateManyUsersInputEnvelope\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"data\":{\"type\":\"array\",\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInput\"}},\"skipDuplicates\":{\"type\":[\"boolean\",\"null\"]}}},\"db_messagesCreateManyUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"id\":{\"type\":[\"integer\",\"null\"]},\"message\":{\"type\":\"string\"}}},\"db_usersUpdateInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"email\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"name\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"},\"updatedat\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"lastlogin\":{\"$ref\":\"#/definitions/db_DateTimeFieldUpdateOperationsInput\"},\"messages\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithoutUsersInput\"}}},\"db_StringFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"set\":{\"type\":[\"string\",\"null\"]}}},\"db_DateTimeFieldUpdateOperationsInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"set\":{\"type\":[\"string\",\"null\"]}}},\"db_messagesUpdateManyWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}},\"connectOrCreate\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateOrConnectWithoutUsersInput\"}},\"upsert\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpsertWithWhereUniqueWithoutUsersInput\"}},\"createMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateManyUsersInputEnvelope\"}},\"connect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"set\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"disconnect\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"delete\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"}},\"update\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithWhereUniqueWithoutUsersInput\"}},\"updateMany\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateManyWithWhereWithoutUsersInput\"}},\"deleteMany\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}}},\"db_messagesUpsertWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"update\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}},\"create\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesCreateWithoutUsersInput\"}}}},\"db_messagesUpdateWithoutUsersInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}},\"db_messagesUpdateWithWhereUniqueWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesWhereUniqueInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateWithoutUsersInput\"}}},\"db_messagesUpdateManyWithWhereWithoutUsersInput\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"where\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"data\":{\"$ref\":\"#/definitions/db_messagesUpdateManyMutationInput\"}}},\"db_messagesScalarWhereInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"AND\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"OR\":{\"type\":[\"array\",\"null\"],\"items\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"}},\"NOT\":{\"$ref\":\"#/definitions/db_messagesScalarWhereInput\"},\"id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"user_id\":{\"$ref\":\"#/definitions/db_IntFilter\"},\"message\":{\"$ref\":\"#/definitions/db_StringFilter\"}}},\"db_IntFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"integer\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"lt\":{\"type\":[\"integer\",\"null\"]},\"lte\":{\"type\":[\"integer\",\"null\"]},\"gt\":{\"type\":[\"integer\",\"null\"]},\"gte\":{\"type\":[\"integer\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_NestedIntFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"integer\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"integer\",\"null\"]}},\"lt\":{\"type\":[\"integer\",\"null\"]},\"lte\":{\"type\":[\"integer\",\"null\"]},\"gt\":{\"type\":[\"integer\",\"null\"]},\"gte\":{\"type\":[\"integer\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedIntFilter\"}}},\"db_StringFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"string\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"lt\":{\"type\":[\"string\",\"null\"]},\"lte\":{\"type\":[\"string\",\"null\"]},\"gt\":{\"type\":[\"string\",\"null\"]},\"gte\":{\"type\":[\"string\",\"null\"]},\"contains\":{\"type\":[\"string\",\"null\"]},\"startsWith\":{\"type\":[\"string\",\"null\"]},\"endsWith\":{\"type\":[\"string\",\"null\"]},\"mode\":{\"type\":[\"string\",\"null\"],\"enum\":[\"default\",\"insensitive\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_NestedStringFilter\":{\"additionalProperties\":false,\"type\":[\"object\",\"null\"],\"properties\":{\"equals\":{\"type\":[\"string\",\"null\"]},\"in\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"notIn\":{\"type\":[\"array\",\"null\"],\"items\":{\"type\":[\"string\",\"null\"]}},\"lt\":{\"type\":[\"string\",\"null\"]},\"lte\":{\"type\":[\"string\",\"null\"]},\"gt\":{\"type\":[\"string\",\"null\"]},\"gte\":{\"type\":[\"string\",\"null\"]},\"contains\":{\"type\":[\"string\",\"null\"]},\"startsWith\":{\"type\":[\"string\",\"null\"]},\"endsWith\":{\"type\":[\"string\",\"null\"]},\"not\":{\"$ref\":\"#/definitions/db_NestedStringFilter\"}}},\"db_messagesUpdateManyMutationInput\":{\"additionalProperties\":false,\"type\":\"object\",\"properties\":{\"message\":{\"$ref\":\"#/definitions/db_StringFieldUpdateOperationsInput\"}}}},\"required\":[\"id\",\"create\",\"update\"]}",
         "operationType": 1,
         "cacheConfig": {
           "enable": false,
@@ -388,7 +560,56 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
+        },
+        "variablesConfiguration": {
+          "injectVariables": []
+        },
+        "internal": false,
+        "postResolveTransformations": []
+      },
+      {
+        "content": "query Us {\n  countries_country(code: \"US\") {\n    code\n    name\n  }\n}\n",
+        "name": "Us",
+        "responseSchema": "{\"type\":\"object\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"countries_country\":{\"type\":\"object\",\"properties\":{\"code\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"}},\"additionalProperties\":false,\"required\":[\"code\",\"name\"]}},\"additionalProperties\":false}},\"additionalProperties\":false}",
+        "variablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "interpolationVariablesSchema": "{\"type\":\"object\",\"properties\":{},\"additionalProperties\":false,\"definitions\":{}}",
+        "operationType": 0,
+        "cacheConfig": {
+          "enable": false,
+          "maxAge": 60,
+          "public": true,
+          "staleWhileRevalidate": 60
+        },
+        "authenticationConfig": {
+          "authRequired": false
+        },
+        "authorizationConfig": {
+          "claims": [],
+          "roleConfig": {
+            "requireMatchAll": [],
+            "requireMatchAny": [],
+            "denyMatchAll": [],
+            "denyMatchAny": []
+          }
+        },
+        "liveQueryConfig": {
+          "enable": true,
+          "pollingIntervalSeconds": 1
+        },
+        "hooksConfiguration": {
+          "preResolve": false,
+          "postResolve": false,
+          "mutatingPreResolve": false,
+          "mutatingPostResolve": false,
+          "mockResolve": {
+            "enable": false,
+            "subscriptionPollingIntervalMillis": 0
+          },
+          "httpTransportOnResponse": false,
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -440,7 +661,8 @@
             "subscriptionPollingIntervalMillis": 0
           },
           "httpTransportOnResponse": false,
-          "httpTransportOnRequest": false
+          "httpTransportOnRequest": false,
+          "customResolve": false
         },
         "variablesConfiguration": {
           "injectVariables": []
@@ -451,8 +673,160 @@
     ],
     "engineConfiguration": {
       "defaultFlushInterval": 500,
-      "graphqlSchema": "directive @fromClaim(name: Claim) on VARIABLE_DEFINITION\n\ndirective @hooksVariable on VARIABLE_DEFINITION\n\ndirective @jsonSchema(\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  title: String\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  description: String\n  \"\"\"\n  The value of \"multipleOf\" MUST be a number, strictly greater than 0.\n  \n  A numeric instance is valid only if division by this keyword's value\n  results in an integer.\n  \"\"\"\n  multipleOf: Int\n  \"\"\"\n  The value of \"maximum\" MUST be a number, representing an inclusive\n  upper limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is less than or exactly equal to \"maximum\".\n  \"\"\"\n  maximum: Int\n  \"\"\"\n  The value of \"exclusiveMaximum\" MUST be number, representing an\n  exclusive upper limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly less than (not equal to) \"exclusiveMaximum\".\n  \"\"\"\n  exclusiveMaximum: Int\n  \"\"\"\n  The value of \"minimum\" MUST be a number, representing an inclusive\n  lower limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is greater than or exactly equal to \"minimum\".\n  \"\"\"\n  minimum: Int\n  \"\"\"\n  The value of \"exclusiveMinimum\" MUST be number, representing an\n  exclusive lower limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly greater than (not equal to) \"exclusiveMinimum\".\n  \"\"\"\n  exclusiveMinimum: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is less\n  than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \"\"\"\n  maxLength: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is\n  greater than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minLength: Int\n  \"\"\"\n  The value of this keyword MUST be a string.  This string SHOULD be a\n  valid regular expression, according to the ECMA 262 regular\n  expression dialect.\n  \n  A string instance is considered valid if the regular expression\n  matches the instance successfully.  Recall: regular expressions are\n  not implicitly anchored.\n  \"\"\"\n  pattern: String\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"maxItems\" if its size is less\n  than, or equal to, the value of this keyword.\n  \"\"\"\n  maxItems: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"minItems\" if its size is greater\n  than, or equal to, the value of this keyword.\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minItems: Int\n  \"\"\"\n  The value of this keyword MUST be a boolean.\n  \n  If this keyword has boolean value false, the instance validates\n  successfully.  If it has boolean value true, the instance validates\n  successfully if all of its elements are unique.\n  \n  Omitting this keyword has the same behavior as a value of false.\n  \"\"\"\n  uniqueItems: Boolean\n  commonPattern: COMMON_REGEX_PATTERN\n) on VARIABLE_DEFINITION\n\ndirective @rbac(\n  \"\"\"the user must match all roles\"\"\"\n  requireMatchAll: [WG_ROLE]\n  \"\"\"the user must match at least one of the roles\"\"\"\n  requireMatchAny: [WG_ROLE]\n  \"\"\"the user must not match all of the roles\"\"\"\n  denyMatchAll: [WG_ROLE]\n  \"\"\"the user must not match any of the roles\"\"\"\n  denyMatchAny: [WG_ROLE]\n) on QUERY | MUTATION | SUBSCRIPTION\n\n\"\"\"\nThe directive @injectCurrentDateTime injects a DateTime string of the current date and time into the variable.\nThis variable MUST be a string compatible scalar. \n\nThe default format, is: ISO 8601\nIf no format is chosen, the default format is used.\nCustom formats are allowed by specifying a format conforming to the Golang specification for specifying a date time format.\n\"\"\"\ndirective @injectCurrentDateTime(\n  format: WunderGraphDateTimeFormat = ISO8601\n  \"\"\"customFormat must conform to the Golang specification for specifying a date time format\"\"\"\n  customFormat: String\n) on VARIABLE_DEFINITION\n\n\"\"\"\nThe directive @injectGeneratedUUID injects a generated UUID into the variable.\nThis variable MUST be a string.\nAt the same time, it removes the variable from the input definition,\ndisallowing the user to supply it.\n\nThis means, the UUID is 100% generated server-side and can be considered untempered.\n\"\"\"\ndirective @injectGeneratedUUID on VARIABLE_DEFINITION\n\n\"\"\"\nThe @internalOperation Directive marks an Operation as internal.\nBy doing so, the Operation is no longer accessible from the public API.\nIt can only be accessed by internal services, like hooks.\n\"\"\"\ndirective @internalOperation on QUERY | MUTATION | SUBSCRIPTION\n\n\"\"\"The directive @injectEnvironmentVariable allows you to inject an environment variable into the variable definition.\"\"\"\ndirective @injectEnvironmentVariable(name: String!) on VARIABLE_DEFINITION\n\n\"\"\"\nThe @export directive instructs the Execution Planner to export the field during the execution into the variable of the 'as' argument.\nAs the execution is depth first, a field can only be used after it has been exported.\nAdditionally, a field can only be used after using the '_join' field or on a different data source.\nIt's not possible to export a field and use it in for the same data source.\n\nNote that the @export directive only works on fields that return a single value.\nIt's not possible to export a list or object field.\n\"\"\"\ndirective @export(\n  \"\"\"The argument 'as' is the name of the variable to export the field to.\"\"\"\n  as: String!\n) on FIELD\n\n\"\"\"\nThe directive @internal marks a variable definition as internal so that clients can't access it.\nThe field is also not visible in the public API.\nIt's only being used as an internal variable to export fields into.\n\"\"\"\ndirective @internal on VARIABLE_DEFINITION\n\n\"\"\"\nThe @transform directive allows to apply transformations to the response.\nBy applying the directive, the shape of the response can be altered,\nwhich will also modify the JSON-Schema of the response.\nThat is, you will keep full type safety and code-generation for transformed fields.\n\"\"\"\ndirective @transform(\n  \"\"\"\n  Using the 'get' transformation allows you to extract a nested field using a JSON path.\n  This is useful to unnest data, e.g. when using the '_join' field, which adds an extra layer of nesting.\n  \n  Example:\n  \n  query GetName {\n      name: me @transform(get: \"info.name\") {\n          info {\n              name\n          }\n      }\n  }\n  \n  Before the transformation, the resolve looks like this:\n  \n  {\n      \"name\": {\n          \"info\": {\n              \"name\": \"John Doe\"\n          }\n      }\n  }\n  \n  With the transformation applied, the response will be reshaped like this:\n  \n  {\n      \"name\": \"John Doe\"\n  }\n  \"\"\"\n  get: String\n) on FIELD\n\ninput db_NestedIntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntFilter\n}\n\ninput db_IntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntFilter\n}\n\nenum db_QueryMode {\n  default\n  insensitive\n}\n\ninput db_NestedStringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: db_NestedStringFilter\n}\n\ninput db_StringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: db_QueryMode\n  not: db_NestedStringFilter\n}\n\ninput db_NestedDateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeFilter\n}\n\ninput db_DateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeFilter\n}\n\ninput db_MessagesListRelationFilter {\n  every: db_messagesWhereInput\n  some: db_messagesWhereInput\n  none: db_messagesWhereInput\n}\n\ninput db_usersWhereInput {\n  AND: db_usersWhereInput\n  OR: [db_usersWhereInput]\n  NOT: db_usersWhereInput\n  id: db_IntFilter\n  email: db_StringFilter\n  name: db_StringFilter\n  updatedat: db_DateTimeFilter\n  lastlogin: db_DateTimeFilter\n  messages: db_MessagesListRelationFilter\n}\n\ninput db_UsersRelationFilter {\n  is: db_usersWhereInput\n  isNot: db_usersWhereInput\n}\n\ninput db_messagesWhereInput {\n  AND: db_messagesWhereInput\n  OR: [db_messagesWhereInput]\n  NOT: db_messagesWhereInput\n  id: db_IntFilter\n  user_id: db_IntFilter\n  message: db_StringFilter\n  users: db_UsersRelationFilter\n}\n\nenum db_SortOrder {\n  asc\n  desc\n}\n\ninput db_messagesOrderByRelationAggregateInput {\n  _count: db_SortOrder\n}\n\ninput db_usersOrderByWithRelationInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n  messages: db_messagesOrderByRelationAggregateInput\n}\n\ninput db_messagesOrderByWithRelationInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n  users: db_usersOrderByWithRelationInput\n}\n\ninput db_messagesWhereUniqueInput {\n  id: Int\n}\n\nenum db_MessagesScalarFieldEnum {\n  id\n  user_id\n  message\n}\n\ntype db_UsersCountOutputType {\n  messages: Int!\n  _join: Query!\n}\n\ntype db_users {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  messages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]\n  _count: db_UsersCountOutputType\n  _join: Query!\n}\n\ntype db_messages {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: db_users!\n  _join: Query!\n}\n\ntype db_MessagesCountAggregateOutputType {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n  _join: Query!\n}\n\ntype db_MessagesAvgAggregateOutputType {\n  id: Float\n  user_id: Float\n  _join: Query!\n}\n\ntype db_MessagesSumAggregateOutputType {\n  id: Int\n  user_id: Int\n  _join: Query!\n}\n\ntype db_MessagesMinAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n  _join: Query!\n}\n\ntype db_MessagesMaxAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n  _join: Query!\n}\n\ntype db_AggregateMessages {\n  _count: db_MessagesCountAggregateOutputType\n  _avg: db_MessagesAvgAggregateOutputType\n  _sum: db_MessagesSumAggregateOutputType\n  _min: db_MessagesMinAggregateOutputType\n  _max: db_MessagesMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_messagesCountOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesAvgOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n}\n\ninput db_messagesMaxOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesMinOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesSumOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n}\n\ninput db_messagesOrderByWithAggregationInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n  _count: db_messagesCountOrderByAggregateInput\n  _avg: db_messagesAvgOrderByAggregateInput\n  _max: db_messagesMaxOrderByAggregateInput\n  _min: db_messagesMinOrderByAggregateInput\n  _sum: db_messagesSumOrderByAggregateInput\n}\n\ninput db_NestedFloatFilter {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: db_NestedFloatFilter\n}\n\ninput db_NestedIntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _avg: db_NestedFloatFilter\n  _sum: db_NestedIntFilter\n  _min: db_NestedIntFilter\n  _max: db_NestedIntFilter\n}\n\ninput db_IntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _avg: db_NestedFloatFilter\n  _sum: db_NestedIntFilter\n  _min: db_NestedIntFilter\n  _max: db_NestedIntFilter\n}\n\ninput db_NestedStringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: db_NestedStringWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedStringFilter\n  _max: db_NestedStringFilter\n}\n\ninput db_StringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: db_QueryMode\n  not: db_NestedStringWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedStringFilter\n  _max: db_NestedStringFilter\n}\n\ninput db_messagesScalarWhereWithAggregatesInput {\n  AND: db_messagesScalarWhereWithAggregatesInput\n  OR: [db_messagesScalarWhereWithAggregatesInput]\n  NOT: db_messagesScalarWhereWithAggregatesInput\n  id: db_IntWithAggregatesFilter\n  user_id: db_IntWithAggregatesFilter\n  message: db_StringWithAggregatesFilter\n}\n\ntype db_MessagesGroupByOutputType {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: db_MessagesCountAggregateOutputType\n  _avg: db_MessagesAvgAggregateOutputType\n  _sum: db_MessagesSumAggregateOutputType\n  _min: db_MessagesMinAggregateOutputType\n  _max: db_MessagesMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_usersWhereUniqueInput {\n  id: Int\n  email: String\n}\n\nenum db_UsersScalarFieldEnum {\n  id\n  email\n  name\n  updatedat\n  lastlogin\n}\n\ntype db_UsersCountAggregateOutputType {\n  id: Int!\n  email: Int!\n  name: Int!\n  updatedat: Int!\n  lastlogin: Int!\n  _all: Int!\n  _join: Query!\n}\n\ntype db_UsersAvgAggregateOutputType {\n  id: Float\n  _join: Query!\n}\n\ntype db_UsersSumAggregateOutputType {\n  id: Int\n  _join: Query!\n}\n\ntype db_UsersMinAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n  _join: Query!\n}\n\ntype db_UsersMaxAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n  _join: Query!\n}\n\ntype db_AggregateUsers {\n  _count: db_UsersCountAggregateOutputType\n  _avg: db_UsersAvgAggregateOutputType\n  _sum: db_UsersSumAggregateOutputType\n  _min: db_UsersMinAggregateOutputType\n  _max: db_UsersMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_usersCountOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersAvgOrderByAggregateInput {\n  id: db_SortOrder\n}\n\ninput db_usersMaxOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersMinOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersSumOrderByAggregateInput {\n  id: db_SortOrder\n}\n\ninput db_usersOrderByWithAggregationInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n  _count: db_usersCountOrderByAggregateInput\n  _avg: db_usersAvgOrderByAggregateInput\n  _max: db_usersMaxOrderByAggregateInput\n  _min: db_usersMinOrderByAggregateInput\n  _sum: db_usersSumOrderByAggregateInput\n}\n\ninput db_NestedDateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedDateTimeFilter\n  _max: db_NestedDateTimeFilter\n}\n\ninput db_DateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedDateTimeFilter\n  _max: db_NestedDateTimeFilter\n}\n\ninput db_usersScalarWhereWithAggregatesInput {\n  AND: db_usersScalarWhereWithAggregatesInput\n  OR: [db_usersScalarWhereWithAggregatesInput]\n  NOT: db_usersScalarWhereWithAggregatesInput\n  id: db_IntWithAggregatesFilter\n  email: db_StringWithAggregatesFilter\n  name: db_StringWithAggregatesFilter\n  updatedat: db_DateTimeWithAggregatesFilter\n  lastlogin: db_DateTimeWithAggregatesFilter\n}\n\ntype db_UsersGroupByOutputType {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  _count: db_UsersCountAggregateOutputType\n  _avg: db_UsersAvgAggregateOutputType\n  _sum: db_UsersSumAggregateOutputType\n  _min: db_UsersMinAggregateOutputType\n  _max: db_UsersMaxAggregateOutputType\n  _join: Query!\n}\n\ntype Query {\n  db_findFirstmessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): db_messages\n  db_findManymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]!\n  db_aggregatemessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int): db_AggregateMessages!\n  db_groupBymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithAggregationInput], by: [db_MessagesScalarFieldEnum]!, having: db_messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_MessagesGroupByOutputType]!\n  db_findUniquemessages(where: db_messagesWhereUniqueInput!): db_messages\n  db_findFirstusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): db_users\n  db_findManyusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): [db_users]!\n  db_aggregateusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int): db_AggregateUsers!\n  db_groupByusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithAggregationInput], by: [db_UsersScalarFieldEnum]!, having: db_usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_UsersGroupByOutputType]!\n  db_findUniqueusers(where: db_usersWhereUniqueInput!): db_users\n}\n\ninput db_usersCreateWithoutMessagesInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput db_usersCreateOrConnectWithoutMessagesInput {\n  where: db_usersWhereUniqueInput!\n  create: db_usersCreateWithoutMessagesInput!\n}\n\ninput db_usersCreateNestedOneWithoutMessagesInput {\n  create: db_usersCreateWithoutMessagesInput\n  connectOrCreate: db_usersCreateOrConnectWithoutMessagesInput\n  connect: db_usersWhereUniqueInput\n}\n\ninput db_messagesCreateInput {\n  message: String!\n  users: db_usersCreateNestedOneWithoutMessagesInput!\n}\n\ninput db_StringFieldUpdateOperationsInput {\n  set: String\n}\n\ninput db_DateTimeFieldUpdateOperationsInput {\n  set: DateTime\n}\n\ninput db_usersUpdateWithoutMessagesInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n}\n\ninput db_usersUpsertWithoutMessagesInput {\n  update: db_usersUpdateWithoutMessagesInput!\n  create: db_usersCreateWithoutMessagesInput!\n}\n\ninput db_usersUpdateOneRequiredWithoutMessagesInput {\n  create: db_usersCreateWithoutMessagesInput\n  connectOrCreate: db_usersCreateOrConnectWithoutMessagesInput\n  upsert: db_usersUpsertWithoutMessagesInput\n  connect: db_usersWhereUniqueInput\n  update: db_usersUpdateWithoutMessagesInput\n}\n\ninput db_messagesUpdateInput {\n  message: db_StringFieldUpdateOperationsInput\n  users: db_usersUpdateOneRequiredWithoutMessagesInput\n}\n\ninput db_messagesCreateManyInput {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype db_AffectedRowsOutput {\n  count: Int!\n  _join: Query!\n}\n\ninput db_messagesUpdateManyMutationInput {\n  message: db_StringFieldUpdateOperationsInput\n}\n\ninput db_messagesCreateWithoutUsersInput {\n  message: String!\n}\n\ninput db_messagesCreateOrConnectWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  create: [db_messagesCreateWithoutUsersInput!]\n}\n\ninput db_messagesCreateManyUsersInput {\n  id: Int\n  message: String!\n}\n\ninput db_messagesCreateManyUsersInputEnvelope {\n  data: [db_messagesCreateManyUsersInput]!\n  skipDuplicates: Boolean\n}\n\ninput db_messagesCreateNestedManyWithoutUsersInput {\n  create: [db_messagesCreateWithoutUsersInput]\n  connectOrCreate: [db_messagesCreateOrConnectWithoutUsersInput]\n  createMany: [db_messagesCreateManyUsersInputEnvelope]\n  connect: [db_messagesWhereUniqueInput]\n}\n\ninput db_usersCreateInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n  messages: db_messagesCreateNestedManyWithoutUsersInput\n}\n\ninput db_messagesUpdateWithoutUsersInput {\n  message: db_StringFieldUpdateOperationsInput\n}\n\ninput db_messagesUpsertWithWhereUniqueWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  update: [db_messagesUpdateWithoutUsersInput!]\n  create: [db_messagesCreateWithoutUsersInput!]\n}\n\ninput db_messagesUpdateWithWhereUniqueWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  data: db_messagesUpdateWithoutUsersInput!\n}\n\ninput db_messagesScalarWhereInput {\n  AND: db_messagesScalarWhereInput\n  OR: [db_messagesScalarWhereInput]\n  NOT: db_messagesScalarWhereInput\n  id: db_IntFilter\n  user_id: db_IntFilter\n  message: db_StringFilter\n}\n\ninput db_messagesUpdateManyWithWhereWithoutUsersInput {\n  where: db_messagesScalarWhereInput!\n  data: db_messagesUpdateManyMutationInput!\n}\n\ninput db_messagesUpdateManyWithoutUsersInput {\n  create: [db_messagesCreateWithoutUsersInput]\n  connectOrCreate: [db_messagesCreateOrConnectWithoutUsersInput]\n  upsert: [db_messagesUpsertWithWhereUniqueWithoutUsersInput]\n  createMany: [db_messagesCreateManyUsersInputEnvelope]\n  connect: [db_messagesWhereUniqueInput]\n  set: db_messagesWhereUniqueInput\n  disconnect: [db_messagesWhereUniqueInput]\n  delete: [db_messagesWhereUniqueInput]\n  update: [db_messagesUpdateWithWhereUniqueWithoutUsersInput]\n  updateMany: [db_messagesUpdateManyWithWhereWithoutUsersInput]\n  deleteMany: db_messagesScalarWhereInput\n}\n\ninput db_usersUpdateInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n  messages: db_messagesUpdateManyWithoutUsersInput\n}\n\ninput db_usersCreateManyInput {\n  id: Int\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput db_usersUpdateManyMutationInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n}\n\ntype Mutation {\n  db_createOnemessages(data: db_messagesCreateInput!): db_messages\n  db_upsertOnemessages(where: db_messagesWhereUniqueInput!, create: db_messagesCreateInput!, update: db_messagesUpdateInput!): db_messages\n  db_createManymessages(data: [db_messagesCreateManyInput]!, skipDuplicates: Boolean): db_AffectedRowsOutput\n  db_deleteOnemessages(where: db_messagesWhereUniqueInput!): db_messages\n  db_updateOnemessages(data: db_messagesUpdateInput!, where: db_messagesWhereUniqueInput!): db_messages\n  db_updateManymessages(data: db_messagesUpdateManyMutationInput!, where: db_messagesWhereInput): db_AffectedRowsOutput\n  db_deleteManymessages(where: db_messagesWhereInput): db_AffectedRowsOutput\n  db_createOneusers(data: db_usersCreateInput!): db_users\n  db_upsertOneusers(where: db_usersWhereUniqueInput!, create: db_usersCreateInput!, update: db_usersUpdateInput!): db_users\n  db_createManyusers(data: [db_usersCreateManyInput]!, skipDuplicates: Boolean): db_AffectedRowsOutput\n  db_deleteOneusers(where: db_usersWhereUniqueInput!): db_users\n  db_updateOneusers(data: db_usersUpdateInput!, where: db_usersWhereUniqueInput!): db_users\n  db_updateManyusers(data: db_usersUpdateManyMutationInput!, where: db_usersWhereInput): db_AffectedRowsOutput\n  db_deleteManyusers(where: db_usersWhereInput): db_AffectedRowsOutput\n}\n\nscalar DateTime\n\nscalar JSON\n\nscalar UUID\n\nscalar BigInt\n\nenum Claim {\n  EMAIL\n  EMAIL_VERIFIED\n  NAME\n  NICKNAME\n  LOCATION\n  PROVIDER\n}\n\nenum COMMON_REGEX_PATTERN {\n  EMAIL\n  DOMAIN\n}\n\nenum WG_ROLE {\n  user\n  superadmin\n}\n\nenum WunderGraphDateTimeFormat {\n  \"\"\"2006-01-02T15:04:05-0700\"\"\"\n  ISO8601\n  \"\"\"Mon Jan _2 15:04:05 2006\"\"\"\n  ANSIC\n  \"\"\"Mon Jan _2 15:04:05 MST 2006\"\"\"\n  UnixDate\n  \"\"\"Mon Jan 02 15:04:05 -0700 2006\"\"\"\n  RubyDate\n  \"\"\"02 Jan 06 15:04 MST\"\"\"\n  RFC822\n  \"\"\"02 Jan 06 15:04 -0700\"\"\"\n  RFC822Z\n  \"\"\"Monday, 02-Jan-06 15:04:05 MST\"\"\"\n  RFC850\n  \"\"\"Mon, 02 Jan 2006 15:04:05 MST\"\"\"\n  RFC1123\n  \"\"\"Mon, 02 Jan 2006 15:04:05 -0700\"\"\"\n  RFC1123Z\n  \"\"\"2006-01-02T15:04:05Z07:00\"\"\"\n  RFC3339\n  \"\"\"2006-01-02T15:04:05.999999999Z07:00\"\"\"\n  RFC3339Nano\n  \"\"\"3:04PM\"\"\"\n  Kitchen\n  \"\"\"Jan _2 15:04:05\"\"\"\n  Stamp\n  \"\"\"Jan _2 15:04:05.000\"\"\"\n  StampMilli\n  \"\"\"Jan _2 15:04:05.000000\"\"\"\n  StampMicro\n  \"\"\"Jan _2 15:04:05.000000000\"\"\"\n  StampNano\n}\n",
+      "graphqlSchema": "directive @fromClaim(name: Claim) on VARIABLE_DEFINITION\n\ndirective @hooksVariable on VARIABLE_DEFINITION\n\ndirective @jsonSchema(\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  title: String\n  \"\"\"\n  The value of both of these keywords MUST be a string.\n  \n  Both of these keywords can be used to decorate a user interface with\n  information about the data produced by this user interface.  A title\n  will preferably be short, whereas a description will provide\n  explanation about the purpose of the instance described by this\n  schema.\n  \"\"\"\n  description: String\n  \"\"\"\n  The value of \"multipleOf\" MUST be a number, strictly greater than 0.\n  \n  A numeric instance is valid only if division by this keyword's value\n  results in an integer.\n  \"\"\"\n  multipleOf: Int\n  \"\"\"\n  The value of \"maximum\" MUST be a number, representing an inclusive\n  upper limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is less than or exactly equal to \"maximum\".\n  \"\"\"\n  maximum: Int\n  \"\"\"\n  The value of \"exclusiveMaximum\" MUST be number, representing an\n  exclusive upper limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly less than (not equal to) \"exclusiveMaximum\".\n  \"\"\"\n  exclusiveMaximum: Int\n  \"\"\"\n  The value of \"minimum\" MUST be a number, representing an inclusive\n  lower limit for a numeric instance.\n  \n  If the instance is a number, then this keyword validates only if the\n  instance is greater than or exactly equal to \"minimum\".\n  \"\"\"\n  minimum: Int\n  \"\"\"\n  The value of \"exclusiveMinimum\" MUST be number, representing an\n  exclusive lower limit for a numeric instance.\n  \n  If the instance is a number, then the instance is valid only if it\n  has a value strictly greater than (not equal to) \"exclusiveMinimum\".\n  \"\"\"\n  exclusiveMinimum: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is less\n  than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \"\"\"\n  maxLength: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  A string instance is valid against this keyword if its length is\n  greater than, or equal to, the value of this keyword.\n  \n  The length of a string instance is defined as the number of its\n  characters as defined by RFC 7159 [RFC7159].\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minLength: Int\n  \"\"\"\n  The value of this keyword MUST be a string.  This string SHOULD be a\n  valid regular expression, according to the ECMA 262 regular\n  expression dialect.\n  \n  A string instance is considered valid if the regular expression\n  matches the instance successfully.  Recall: regular expressions are\n  not implicitly anchored.\n  \"\"\"\n  pattern: String\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"maxItems\" if its size is less\n  than, or equal to, the value of this keyword.\n  \"\"\"\n  maxItems: Int\n  \"\"\"\n  The value of this keyword MUST be a non-negative integer.\n  \n  An array instance is valid against \"minItems\" if its size is greater\n  than, or equal to, the value of this keyword.\n  \n  Omitting this keyword has the same behavior as a value of 0.\n  \"\"\"\n  minItems: Int\n  \"\"\"\n  The value of this keyword MUST be a boolean.\n  \n  If this keyword has boolean value false, the instance validates\n  successfully.  If it has boolean value true, the instance validates\n  successfully if all of its elements are unique.\n  \n  Omitting this keyword has the same behavior as a value of false.\n  \"\"\"\n  uniqueItems: Boolean\n  commonPattern: COMMON_REGEX_PATTERN\n) on VARIABLE_DEFINITION\n\ndirective @rbac(\n  \"\"\"the user must match all roles\"\"\"\n  requireMatchAll: [WG_ROLE]\n  \"\"\"the user must match at least one of the roles\"\"\"\n  requireMatchAny: [WG_ROLE]\n  \"\"\"the user must not match all of the roles\"\"\"\n  denyMatchAll: [WG_ROLE]\n  \"\"\"the user must not match any of the roles\"\"\"\n  denyMatchAny: [WG_ROLE]\n) on QUERY | MUTATION | SUBSCRIPTION\n\n\"\"\"\nThe directive @injectCurrentDateTime injects a DateTime string of the current date and time into the variable.\nThis variable MUST be a string compatible scalar. \n\nThe default format, is: ISO 8601\nIf no format is chosen, the default format is used.\nCustom formats are allowed by specifying a format conforming to the Golang specification for specifying a date time format.\n\"\"\"\ndirective @injectCurrentDateTime(\n  format: WunderGraphDateTimeFormat = ISO8601\n  \"\"\"customFormat must conform to the Golang specification for specifying a date time format\"\"\"\n  customFormat: String\n) on VARIABLE_DEFINITION\n\n\"\"\"\nThe directive @injectGeneratedUUID injects a generated UUID into the variable.\nThis variable MUST be a string.\nAt the same time, it removes the variable from the input definition,\ndisallowing the user to supply it.\n\nThis means, the UUID is 100% generated server-side and can be considered untempered.\n\"\"\"\ndirective @injectGeneratedUUID on VARIABLE_DEFINITION\n\n\"\"\"\nThe @internalOperation Directive marks an Operation as internal.\nBy doing so, the Operation is no longer accessible from the public API.\nIt can only be accessed by internal services, like hooks.\n\"\"\"\ndirective @internalOperation on QUERY | MUTATION | SUBSCRIPTION\n\n\"\"\"The directive @injectEnvironmentVariable allows you to inject an environment variable into the variable definition.\"\"\"\ndirective @injectEnvironmentVariable(name: String!) on VARIABLE_DEFINITION\n\n\"\"\"\nThe @export directive instructs the Execution Planner to export the field during the execution into the variable of the 'as' argument.\nAs the execution is depth first, a field can only be used after it has been exported.\nAdditionally, a field can only be used after using the '_join' field or on a different data source.\nIt's not possible to export a field and use it in for the same data source.\n\nNote that the @export directive only works on fields that return a single value.\nIt's not possible to export a list or object field.\n\"\"\"\ndirective @export(\n  \"\"\"The argument 'as' is the name of the variable to export the field to.\"\"\"\n  as: String!\n) on FIELD\n\n\"\"\"\nThe directive @internal marks a variable definition as internal so that clients can't access it.\nThe field is also not visible in the public API.\nIt's only being used as an internal variable to export fields into.\n\"\"\"\ndirective @internal on VARIABLE_DEFINITION\n\n\"\"\"\nThe @transform directive allows to apply transformations to the response.\nBy applying the directive, the shape of the response can be altered,\nwhich will also modify the JSON-Schema of the response.\nThat is, you will keep full type safety and code-generation for transformed fields.\n\"\"\"\ndirective @transform(\n  \"\"\"\n  Using the 'get' transformation allows you to extract a nested field using a JSON path.\n  This is useful to unnest data, e.g. when using the '_join' field, which adds an extra layer of nesting.\n  \n  Example:\n  \n  query GetName {\n      name: me @transform(get: \"info.name\") {\n          info {\n              name\n          }\n      }\n  }\n  \n  Before the transformation, the resolve looks like this:\n  \n  {\n      \"name\": {\n          \"info\": {\n              \"name\": \"John Doe\"\n          }\n      }\n  }\n  \n  With the transformation applied, the response will be reshaped like this:\n  \n  {\n      \"name\": \"John Doe\"\n  }\n  \"\"\"\n  get: String\n) on FIELD\n\ntype countries_Country {\n  code: ID!\n  name: String!\n  native: String!\n  phone: String!\n  continent: countries_Continent!\n  capital: String\n  currency: String\n  languages: [countries_Language!]!\n  emoji: String!\n  emojiU: String!\n  states: [countries_State!]!\n  _join: Query!\n}\n\ntype countries_Continent {\n  code: ID!\n  name: String!\n  countries: [countries_Country!]!\n  _join: Query!\n}\n\ntype countries_Language {\n  code: ID!\n  name: String\n  native: String\n  rtl: Boolean!\n  _join: Query!\n}\n\ntype countries_State {\n  code: String\n  name: String!\n  country: countries_Country!\n  _join: Query!\n}\n\ninput countries_StringQueryOperatorInput {\n  eq: String\n  ne: String\n  in: [String]\n  nin: [String]\n  regex: String\n  glob: String\n}\n\ninput countries_CountryFilterInput {\n  code: countries_StringQueryOperatorInput\n  currency: countries_StringQueryOperatorInput\n  continent: countries_StringQueryOperatorInput\n}\n\ninput countries_ContinentFilterInput {\n  code: countries_StringQueryOperatorInput\n}\n\ninput countries_LanguageFilterInput {\n  code: countries_StringQueryOperatorInput\n}\n\ntype Query {\n  countries_countries(filter: countries_CountryFilterInput): [countries_Country!]!\n  countries_country(code: ID!): countries_Country\n  countries_continents(filter: countries_ContinentFilterInput): [countries_Continent!]!\n  countries_continent(code: ID!): countries_Continent\n  countries_languages(filter: countries_LanguageFilterInput): [countries_Language!]!\n  countries_language(code: ID!): countries_Language\n  db_findFirstmessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): db_messages\n  db_findManymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]!\n  db_aggregatemessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int): db_AggregateMessages!\n  db_groupBymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithAggregationInput], by: [db_MessagesScalarFieldEnum]!, having: db_messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_MessagesGroupByOutputType]!\n  db_findUniquemessages(where: db_messagesWhereUniqueInput!): db_messages\n  db_findFirstusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): db_users\n  db_findManyusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): [db_users]!\n  db_aggregateusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int): db_AggregateUsers!\n  db_groupByusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithAggregationInput], by: [db_UsersScalarFieldEnum]!, having: db_usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_UsersGroupByOutputType]!\n  db_findUniqueusers(where: db_usersWhereUniqueInput!): db_users\n}\n\ninput db_NestedIntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntFilter\n}\n\ninput db_IntFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntFilter\n}\n\nenum db_QueryMode {\n  default\n  insensitive\n}\n\ninput db_NestedStringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: db_NestedStringFilter\n}\n\ninput db_StringFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: db_QueryMode\n  not: db_NestedStringFilter\n}\n\ninput db_NestedDateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeFilter\n}\n\ninput db_DateTimeFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeFilter\n}\n\ninput db_MessagesListRelationFilter {\n  every: db_messagesWhereInput\n  some: db_messagesWhereInput\n  none: db_messagesWhereInput\n}\n\ninput db_usersWhereInput {\n  AND: db_usersWhereInput\n  OR: [db_usersWhereInput]\n  NOT: db_usersWhereInput\n  id: db_IntFilter\n  email: db_StringFilter\n  name: db_StringFilter\n  updatedat: db_DateTimeFilter\n  lastlogin: db_DateTimeFilter\n  messages: db_MessagesListRelationFilter\n}\n\ninput db_UsersRelationFilter {\n  is: db_usersWhereInput\n  isNot: db_usersWhereInput\n}\n\ninput db_messagesWhereInput {\n  AND: db_messagesWhereInput\n  OR: [db_messagesWhereInput]\n  NOT: db_messagesWhereInput\n  id: db_IntFilter\n  user_id: db_IntFilter\n  message: db_StringFilter\n  users: db_UsersRelationFilter\n}\n\nenum db_SortOrder {\n  asc\n  desc\n}\n\ninput db_messagesOrderByRelationAggregateInput {\n  _count: db_SortOrder\n}\n\ninput db_usersOrderByWithRelationInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n  messages: db_messagesOrderByRelationAggregateInput\n}\n\ninput db_messagesOrderByWithRelationInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n  users: db_usersOrderByWithRelationInput\n}\n\ninput db_messagesWhereUniqueInput {\n  id: Int\n}\n\nenum db_MessagesScalarFieldEnum {\n  id\n  user_id\n  message\n}\n\ntype db_UsersCountOutputType {\n  messages: Int!\n  _join: Query!\n}\n\ntype db_users {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  messages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]\n  _count: db_UsersCountOutputType\n  _join: Query!\n}\n\ntype db_messages {\n  id: Int!\n  user_id: Int!\n  message: String!\n  users: db_users!\n  _join: Query!\n}\n\ntype db_MessagesCountAggregateOutputType {\n  id: Int!\n  user_id: Int!\n  message: Int!\n  _all: Int!\n  _join: Query!\n}\n\ntype db_MessagesAvgAggregateOutputType {\n  id: Float\n  user_id: Float\n  _join: Query!\n}\n\ntype db_MessagesSumAggregateOutputType {\n  id: Int\n  user_id: Int\n  _join: Query!\n}\n\ntype db_MessagesMinAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n  _join: Query!\n}\n\ntype db_MessagesMaxAggregateOutputType {\n  id: Int\n  user_id: Int\n  message: String\n  _join: Query!\n}\n\ntype db_AggregateMessages {\n  _count: db_MessagesCountAggregateOutputType\n  _avg: db_MessagesAvgAggregateOutputType\n  _sum: db_MessagesSumAggregateOutputType\n  _min: db_MessagesMinAggregateOutputType\n  _max: db_MessagesMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_messagesCountOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesAvgOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n}\n\ninput db_messagesMaxOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesMinOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n}\n\ninput db_messagesSumOrderByAggregateInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n}\n\ninput db_messagesOrderByWithAggregationInput {\n  id: db_SortOrder\n  user_id: db_SortOrder\n  message: db_SortOrder\n  _count: db_messagesCountOrderByAggregateInput\n  _avg: db_messagesAvgOrderByAggregateInput\n  _max: db_messagesMaxOrderByAggregateInput\n  _min: db_messagesMinOrderByAggregateInput\n  _sum: db_messagesSumOrderByAggregateInput\n}\n\ninput db_NestedFloatFilter {\n  equals: Float\n  in: [Float]\n  notIn: [Float]\n  lt: Float\n  lte: Float\n  gt: Float\n  gte: Float\n  not: db_NestedFloatFilter\n}\n\ninput db_NestedIntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _avg: db_NestedFloatFilter\n  _sum: db_NestedIntFilter\n  _min: db_NestedIntFilter\n  _max: db_NestedIntFilter\n}\n\ninput db_IntWithAggregatesFilter {\n  equals: Int\n  in: [Int]\n  notIn: [Int]\n  lt: Int\n  lte: Int\n  gt: Int\n  gte: Int\n  not: db_NestedIntWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _avg: db_NestedFloatFilter\n  _sum: db_NestedIntFilter\n  _min: db_NestedIntFilter\n  _max: db_NestedIntFilter\n}\n\ninput db_NestedStringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  not: db_NestedStringWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedStringFilter\n  _max: db_NestedStringFilter\n}\n\ninput db_StringWithAggregatesFilter {\n  equals: String\n  in: [String]\n  notIn: [String]\n  lt: String\n  lte: String\n  gt: String\n  gte: String\n  contains: String\n  startsWith: String\n  endsWith: String\n  mode: db_QueryMode\n  not: db_NestedStringWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedStringFilter\n  _max: db_NestedStringFilter\n}\n\ninput db_messagesScalarWhereWithAggregatesInput {\n  AND: db_messagesScalarWhereWithAggregatesInput\n  OR: [db_messagesScalarWhereWithAggregatesInput]\n  NOT: db_messagesScalarWhereWithAggregatesInput\n  id: db_IntWithAggregatesFilter\n  user_id: db_IntWithAggregatesFilter\n  message: db_StringWithAggregatesFilter\n}\n\ntype db_MessagesGroupByOutputType {\n  id: Int!\n  user_id: Int!\n  message: String!\n  _count: db_MessagesCountAggregateOutputType\n  _avg: db_MessagesAvgAggregateOutputType\n  _sum: db_MessagesSumAggregateOutputType\n  _min: db_MessagesMinAggregateOutputType\n  _max: db_MessagesMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_usersWhereUniqueInput {\n  id: Int\n  email: String\n}\n\nenum db_UsersScalarFieldEnum {\n  id\n  email\n  name\n  updatedat\n  lastlogin\n}\n\ntype db_UsersCountAggregateOutputType {\n  id: Int!\n  email: Int!\n  name: Int!\n  updatedat: Int!\n  lastlogin: Int!\n  _all: Int!\n  _join: Query!\n}\n\ntype db_UsersAvgAggregateOutputType {\n  id: Float\n  _join: Query!\n}\n\ntype db_UsersSumAggregateOutputType {\n  id: Int\n  _join: Query!\n}\n\ntype db_UsersMinAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n  _join: Query!\n}\n\ntype db_UsersMaxAggregateOutputType {\n  id: Int\n  email: String\n  name: String\n  updatedat: DateTime\n  lastlogin: DateTime\n  _join: Query!\n}\n\ntype db_AggregateUsers {\n  _count: db_UsersCountAggregateOutputType\n  _avg: db_UsersAvgAggregateOutputType\n  _sum: db_UsersSumAggregateOutputType\n  _min: db_UsersMinAggregateOutputType\n  _max: db_UsersMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_usersCountOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersAvgOrderByAggregateInput {\n  id: db_SortOrder\n}\n\ninput db_usersMaxOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersMinOrderByAggregateInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n}\n\ninput db_usersSumOrderByAggregateInput {\n  id: db_SortOrder\n}\n\ninput db_usersOrderByWithAggregationInput {\n  id: db_SortOrder\n  email: db_SortOrder\n  name: db_SortOrder\n  updatedat: db_SortOrder\n  lastlogin: db_SortOrder\n  _count: db_usersCountOrderByAggregateInput\n  _avg: db_usersAvgOrderByAggregateInput\n  _max: db_usersMaxOrderByAggregateInput\n  _min: db_usersMinOrderByAggregateInput\n  _sum: db_usersSumOrderByAggregateInput\n}\n\ninput db_NestedDateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedDateTimeFilter\n  _max: db_NestedDateTimeFilter\n}\n\ninput db_DateTimeWithAggregatesFilter {\n  equals: DateTime\n  in: [DateTime]\n  notIn: [DateTime]\n  lt: DateTime\n  lte: DateTime\n  gt: DateTime\n  gte: DateTime\n  not: db_NestedDateTimeWithAggregatesFilter\n  _count: db_NestedIntFilter\n  _min: db_NestedDateTimeFilter\n  _max: db_NestedDateTimeFilter\n}\n\ninput db_usersScalarWhereWithAggregatesInput {\n  AND: db_usersScalarWhereWithAggregatesInput\n  OR: [db_usersScalarWhereWithAggregatesInput]\n  NOT: db_usersScalarWhereWithAggregatesInput\n  id: db_IntWithAggregatesFilter\n  email: db_StringWithAggregatesFilter\n  name: db_StringWithAggregatesFilter\n  updatedat: db_DateTimeWithAggregatesFilter\n  lastlogin: db_DateTimeWithAggregatesFilter\n}\n\ntype db_UsersGroupByOutputType {\n  id: Int!\n  email: String!\n  name: String!\n  updatedat: DateTime!\n  lastlogin: DateTime!\n  _count: db_UsersCountAggregateOutputType\n  _avg: db_UsersAvgAggregateOutputType\n  _sum: db_UsersSumAggregateOutputType\n  _min: db_UsersMinAggregateOutputType\n  _max: db_UsersMaxAggregateOutputType\n  _join: Query!\n}\n\ninput db_usersCreateWithoutMessagesInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput db_usersCreateOrConnectWithoutMessagesInput {\n  where: db_usersWhereUniqueInput!\n  create: db_usersCreateWithoutMessagesInput!\n}\n\ninput db_usersCreateNestedOneWithoutMessagesInput {\n  create: db_usersCreateWithoutMessagesInput\n  connectOrCreate: db_usersCreateOrConnectWithoutMessagesInput\n  connect: db_usersWhereUniqueInput\n}\n\ninput db_messagesCreateInput {\n  message: String!\n  users: db_usersCreateNestedOneWithoutMessagesInput!\n}\n\ninput db_StringFieldUpdateOperationsInput {\n  set: String\n}\n\ninput db_DateTimeFieldUpdateOperationsInput {\n  set: DateTime\n}\n\ninput db_usersUpdateWithoutMessagesInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n}\n\ninput db_usersUpsertWithoutMessagesInput {\n  update: db_usersUpdateWithoutMessagesInput!\n  create: db_usersCreateWithoutMessagesInput!\n}\n\ninput db_usersUpdateOneRequiredWithoutMessagesInput {\n  create: db_usersCreateWithoutMessagesInput\n  connectOrCreate: db_usersCreateOrConnectWithoutMessagesInput\n  upsert: db_usersUpsertWithoutMessagesInput\n  connect: db_usersWhereUniqueInput\n  update: db_usersUpdateWithoutMessagesInput\n}\n\ninput db_messagesUpdateInput {\n  message: db_StringFieldUpdateOperationsInput\n  users: db_usersUpdateOneRequiredWithoutMessagesInput\n}\n\ninput db_messagesCreateManyInput {\n  id: Int\n  user_id: Int!\n  message: String!\n}\n\ntype db_AffectedRowsOutput {\n  count: Int!\n  _join: Query!\n}\n\ninput db_messagesUpdateManyMutationInput {\n  message: db_StringFieldUpdateOperationsInput\n}\n\ninput db_messagesCreateWithoutUsersInput {\n  message: String!\n}\n\ninput db_messagesCreateOrConnectWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  create: [db_messagesCreateWithoutUsersInput!]\n}\n\ninput db_messagesCreateManyUsersInput {\n  id: Int\n  message: String!\n}\n\ninput db_messagesCreateManyUsersInputEnvelope {\n  data: [db_messagesCreateManyUsersInput]!\n  skipDuplicates: Boolean\n}\n\ninput db_messagesCreateNestedManyWithoutUsersInput {\n  create: [db_messagesCreateWithoutUsersInput]\n  connectOrCreate: [db_messagesCreateOrConnectWithoutUsersInput]\n  createMany: [db_messagesCreateManyUsersInputEnvelope]\n  connect: [db_messagesWhereUniqueInput]\n}\n\ninput db_usersCreateInput {\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n  messages: db_messagesCreateNestedManyWithoutUsersInput\n}\n\ninput db_messagesUpdateWithoutUsersInput {\n  message: db_StringFieldUpdateOperationsInput\n}\n\ninput db_messagesUpsertWithWhereUniqueWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  update: [db_messagesUpdateWithoutUsersInput!]\n  create: [db_messagesCreateWithoutUsersInput!]\n}\n\ninput db_messagesUpdateWithWhereUniqueWithoutUsersInput {\n  where: db_messagesWhereUniqueInput!\n  data: db_messagesUpdateWithoutUsersInput!\n}\n\ninput db_messagesScalarWhereInput {\n  AND: db_messagesScalarWhereInput\n  OR: [db_messagesScalarWhereInput]\n  NOT: db_messagesScalarWhereInput\n  id: db_IntFilter\n  user_id: db_IntFilter\n  message: db_StringFilter\n}\n\ninput db_messagesUpdateManyWithWhereWithoutUsersInput {\n  where: db_messagesScalarWhereInput!\n  data: db_messagesUpdateManyMutationInput!\n}\n\ninput db_messagesUpdateManyWithoutUsersInput {\n  create: [db_messagesCreateWithoutUsersInput]\n  connectOrCreate: [db_messagesCreateOrConnectWithoutUsersInput]\n  upsert: [db_messagesUpsertWithWhereUniqueWithoutUsersInput]\n  createMany: [db_messagesCreateManyUsersInputEnvelope]\n  connect: [db_messagesWhereUniqueInput]\n  set: db_messagesWhereUniqueInput\n  disconnect: [db_messagesWhereUniqueInput]\n  delete: [db_messagesWhereUniqueInput]\n  update: [db_messagesUpdateWithWhereUniqueWithoutUsersInput]\n  updateMany: [db_messagesUpdateManyWithWhereWithoutUsersInput]\n  deleteMany: db_messagesScalarWhereInput\n}\n\ninput db_usersUpdateInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n  messages: db_messagesUpdateManyWithoutUsersInput\n}\n\ninput db_usersCreateManyInput {\n  id: Int\n  email: String!\n  name: String!\n  updatedat: DateTime\n  lastlogin: DateTime\n}\n\ninput db_usersUpdateManyMutationInput {\n  email: db_StringFieldUpdateOperationsInput\n  name: db_StringFieldUpdateOperationsInput\n  updatedat: db_DateTimeFieldUpdateOperationsInput\n  lastlogin: db_DateTimeFieldUpdateOperationsInput\n}\n\ntype Mutation {\n  db_createOnemessages(data: db_messagesCreateInput!): db_messages\n  db_upsertOnemessages(where: db_messagesWhereUniqueInput!, create: db_messagesCreateInput!, update: db_messagesUpdateInput!): db_messages\n  db_createManymessages(data: [db_messagesCreateManyInput]!, skipDuplicates: Boolean): db_AffectedRowsOutput\n  db_deleteOnemessages(where: db_messagesWhereUniqueInput!): db_messages\n  db_updateOnemessages(data: db_messagesUpdateInput!, where: db_messagesWhereUniqueInput!): db_messages\n  db_updateManymessages(data: db_messagesUpdateManyMutationInput!, where: db_messagesWhereInput): db_AffectedRowsOutput\n  db_deleteManymessages(where: db_messagesWhereInput): db_AffectedRowsOutput\n  db_createOneusers(data: db_usersCreateInput!): db_users\n  db_upsertOneusers(where: db_usersWhereUniqueInput!, create: db_usersCreateInput!, update: db_usersUpdateInput!): db_users\n  db_createManyusers(data: [db_usersCreateManyInput]!, skipDuplicates: Boolean): db_AffectedRowsOutput\n  db_deleteOneusers(where: db_usersWhereUniqueInput!): db_users\n  db_updateOneusers(data: db_usersUpdateInput!, where: db_usersWhereUniqueInput!): db_users\n  db_updateManyusers(data: db_usersUpdateManyMutationInput!, where: db_usersWhereInput): db_AffectedRowsOutput\n  db_deleteManyusers(where: db_usersWhereInput): db_AffectedRowsOutput\n}\n\nscalar DateTime\n\nscalar JSON\n\nscalar UUID\n\nscalar BigInt\n\nenum Claim {\n  EMAIL\n  EMAIL_VERIFIED\n  NAME\n  NICKNAME\n  LOCATION\n  PROVIDER\n}\n\nenum COMMON_REGEX_PATTERN {\n  EMAIL\n  DOMAIN\n}\n\nenum WG_ROLE {\n  user\n  superadmin\n}\n\nenum WunderGraphDateTimeFormat {\n  \"\"\"2006-01-02T15:04:05-0700\"\"\"\n  ISO8601\n  \"\"\"Mon Jan _2 15:04:05 2006\"\"\"\n  ANSIC\n  \"\"\"Mon Jan _2 15:04:05 MST 2006\"\"\"\n  UnixDate\n  \"\"\"Mon Jan 02 15:04:05 -0700 2006\"\"\"\n  RubyDate\n  \"\"\"02 Jan 06 15:04 MST\"\"\"\n  RFC822\n  \"\"\"02 Jan 06 15:04 -0700\"\"\"\n  RFC822Z\n  \"\"\"Monday, 02-Jan-06 15:04:05 MST\"\"\"\n  RFC850\n  \"\"\"Mon, 02 Jan 2006 15:04:05 MST\"\"\"\n  RFC1123\n  \"\"\"Mon, 02 Jan 2006 15:04:05 -0700\"\"\"\n  RFC1123Z\n  \"\"\"2006-01-02T15:04:05Z07:00\"\"\"\n  RFC3339\n  \"\"\"2006-01-02T15:04:05.999999999Z07:00\"\"\"\n  RFC3339Nano\n  \"\"\"3:04PM\"\"\"\n  Kitchen\n  \"\"\"Jan _2 15:04:05\"\"\"\n  Stamp\n  \"\"\"Jan _2 15:04:05.000\"\"\"\n  StampMilli\n  \"\"\"Jan _2 15:04:05.000000\"\"\"\n  StampMicro\n  \"\"\"Jan _2 15:04:05.000000000\"\"\"\n  StampNano\n}\n",
       "datasourceConfigurations": [
+        {
+          "kind": 2,
+          "customGraphql": {
+            "fetch": {
+              "url": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": "https://countries.trevorblades.com/"
+              },
+              "method": 1,
+              "body": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": ""
+              },
+              "header": {},
+              "query": [],
+              "urlEncodeBody": false
+            },
+            "federation": {
+              "enabled": true,
+              "serviceSdl": "type Country @key(fields: \"code\") {\n  code: ID!\n  name: String!\n  native: String!\n  phone: String!\n  continent: Continent!\n  capital: String\n  currency: String\n  languages: [Language!]!\n  emoji: String!\n  emojiU: String!\n  states: [State!]!\n}\n\ntype Continent @key(fields: \"code\") {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n}\n\ntype Language @key(fields: \"code\") {\n  code: ID!\n  name: String\n  native: String\n  rtl: Boolean!\n}\n\ntype State {\n  code: String\n  name: String!\n  country: Country!\n}\n\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  in: [String]\n  nin: [String]\n  regex: String\n  glob: String\n}\n\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\n\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\n\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\n\ntype Query {\n  countries(filter: CountryFilterInput): [Country!]!\n  country(code: ID!): Country\n  continents(filter: ContinentFilterInput): [Continent!]!\n  continent(code: ID!): Continent\n  languages(filter: LanguageFilterInput): [Language!]!\n  language(code: ID!): Language\n}\n"
+            },
+            "subscription": {
+              "enabled": false,
+              "url": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": "wss://countries.trevorblades.com/"
+              }
+            },
+            "upstreamSchema": "type Country {\n  code: ID!\n  name: String!\n  native: String!\n  phone: String!\n  continent: Continent!\n  capital: String\n  currency: String\n  languages: [Language!]!\n  emoji: String!\n  emojiU: String!\n  states: [State!]!\n}\n\ntype Continent {\n  code: ID!\n  name: String!\n  countries: [Country!]!\n}\n\ntype Language {\n  code: ID!\n  name: String\n  native: String\n  rtl: Boolean!\n}\n\ntype State {\n  code: String\n  name: String!\n  country: Country!\n}\n\ninput StringQueryOperatorInput {\n  eq: String\n  ne: String\n  in: [String]\n  nin: [String]\n  regex: String\n  glob: String\n}\n\ninput CountryFilterInput {\n  code: StringQueryOperatorInput\n  currency: StringQueryOperatorInput\n  continent: StringQueryOperatorInput\n}\n\ninput ContinentFilterInput {\n  code: StringQueryOperatorInput\n}\n\ninput LanguageFilterInput {\n  code: StringQueryOperatorInput\n}\n\ntype Query {\n  countries(filter: CountryFilterInput): [Country!]!\n  country(code: ID!): Country\n  continents(filter: ContinentFilterInput): [Continent!]!\n  continent(code: ID!): Continent\n  languages(filter: LanguageFilterInput): [Language!]!\n  language(code: ID!): Language\n}\n"
+          },
+          "rootNodes": [
+            {
+              "typeName": "countries_Country",
+              "fieldNames": [
+                "code",
+                "name",
+                "native",
+                "phone",
+                "continent",
+                "capital",
+                "currency",
+                "languages",
+                "emoji",
+                "emojiU",
+                "states"
+              ]
+            },
+            {
+              "typeName": "countries_Continent",
+              "fieldNames": [
+                "code",
+                "name",
+                "countries"
+              ]
+            },
+            {
+              "typeName": "countries_Language",
+              "fieldNames": [
+                "code",
+                "name",
+                "native",
+                "rtl"
+              ]
+            },
+            {
+              "typeName": "Query",
+              "fieldNames": [
+                "countries_countries",
+                "countries_country",
+                "countries_continents",
+                "countries_continent",
+                "countries_languages",
+                "countries_language"
+              ]
+            }
+          ],
+          "childNodes": [
+            {
+              "typeName": "countries_Country",
+              "fieldNames": [
+                "code",
+                "name",
+                "native",
+                "phone",
+                "continent",
+                "capital",
+                "currency",
+                "languages",
+                "emoji",
+                "emojiU",
+                "states"
+              ]
+            },
+            {
+              "typeName": "countries_Continent",
+              "fieldNames": [
+                "code",
+                "name",
+                "countries"
+              ]
+            },
+            {
+              "typeName": "countries_Language",
+              "fieldNames": [
+                "code",
+                "name",
+                "native",
+                "rtl"
+              ]
+            },
+            {
+              "typeName": "countries_State",
+              "fieldNames": [
+                "code",
+                "name",
+                "country"
+              ]
+            }
+          ],
+          "overrideFieldPathFromAlias": true,
+          "directives": [
+            {
+              "directiveName": "countries_key",
+              "renameTo": "key"
+            },
+            {
+              "directiveName": "countries_extends",
+              "renameTo": "extends"
+            },
+            {
+              "directiveName": "countries_external",
+              "renameTo": "external"
+            },
+            {
+              "directiveName": "countries_requires",
+              "renameTo": "requires"
+            },
+            {
+              "directiveName": "countries_provides",
+              "renameTo": "provides"
+            }
+          ]
+        },
         {
           "kind": 3,
           "rootNodes": [
@@ -5065,6 +5439,98 @@
           "kind": 0,
           "rootNodes": [
             {
+              "typeName": "countries_Country",
+              "fieldNames": [
+                "_join"
+              ]
+            }
+          ],
+          "childNodes": [],
+          "customStatic": {
+            "data": {
+              "kind": 0,
+              "staticVariableContent": "{}",
+              "placeholderVariableName": "",
+              "environmentVariableDefaultValue": "",
+              "environmentVariableName": ""
+            }
+          },
+          "overrideFieldPathFromAlias": false,
+          "directives": []
+        },
+        {
+          "kind": 0,
+          "rootNodes": [
+            {
+              "typeName": "countries_Continent",
+              "fieldNames": [
+                "_join"
+              ]
+            }
+          ],
+          "childNodes": [],
+          "customStatic": {
+            "data": {
+              "kind": 0,
+              "staticVariableContent": "{}",
+              "placeholderVariableName": "",
+              "environmentVariableDefaultValue": "",
+              "environmentVariableName": ""
+            }
+          },
+          "overrideFieldPathFromAlias": false,
+          "directives": []
+        },
+        {
+          "kind": 0,
+          "rootNodes": [
+            {
+              "typeName": "countries_Language",
+              "fieldNames": [
+                "_join"
+              ]
+            }
+          ],
+          "childNodes": [],
+          "customStatic": {
+            "data": {
+              "kind": 0,
+              "staticVariableContent": "{}",
+              "placeholderVariableName": "",
+              "environmentVariableDefaultValue": "",
+              "environmentVariableName": ""
+            }
+          },
+          "overrideFieldPathFromAlias": false,
+          "directives": []
+        },
+        {
+          "kind": 0,
+          "rootNodes": [
+            {
+              "typeName": "countries_State",
+              "fieldNames": [
+                "_join"
+              ]
+            }
+          ],
+          "childNodes": [],
+          "customStatic": {
+            "data": {
+              "kind": 0,
+              "staticVariableContent": "{}",
+              "placeholderVariableName": "",
+              "environmentVariableDefaultValue": "",
+              "environmentVariableName": ""
+            }
+          },
+          "overrideFieldPathFromAlias": false,
+          "directives": []
+        },
+        {
+          "kind": 0,
+          "rootNodes": [
+            {
               "typeName": "db_UsersCountOutputType",
               "fieldNames": [
                 "_join"
@@ -5478,6 +5944,309 @@
       ],
       "fieldConfigurations": [
         {
+          "typeName": "countries_Country",
+          "fieldName": "name",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "name"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "native",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "native"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "phone",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "phone"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "continent",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "continent"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "capital",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "capital"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "currency",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "currency"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "languages",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "languages"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "emoji",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "emoji"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "emojiU",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "emojiU"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Country",
+          "fieldName": "states",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "states"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Continent",
+          "fieldName": "name",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "name"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Continent",
+          "fieldName": "countries",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "countries"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Language",
+          "fieldName": "name",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "name"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Language",
+          "fieldName": "native",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "native"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Language",
+          "fieldName": "rtl",
+          "requiresFields": [
+            "code"
+          ],
+          "argumentsConfiguration": [],
+          "path": [
+            "rtl"
+          ],
+          "disableDefaultFieldMapping": false,
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_countries",
+          "argumentsConfiguration": [
+            {
+              "name": "filter",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "countries"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_country",
+          "argumentsConfiguration": [
+            {
+              "name": "code",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "country"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_continents",
+          "argumentsConfiguration": [
+            {
+              "name": "filter",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "continents"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_continent",
+          "argumentsConfiguration": [
+            {
+              "name": "code",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "continent"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_languages",
+          "argumentsConfiguration": [
+            {
+              "name": "filter",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "languages"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "Query",
+          "fieldName": "countries_language",
+          "argumentsConfiguration": [
+            {
+              "name": "code",
+              "sourceType": 1,
+              "sourcePath": [],
+              "renderConfiguration": 0
+            }
+          ],
+          "disableDefaultFieldMapping": false,
+          "path": [
+            "language"
+          ],
+          "requiresFields": [],
+          "unescapeResponseJson": false
+        },
+        {
           "typeName": "db_users",
           "fieldName": "messages",
           "argumentsConfiguration": [
@@ -5519,7 +6288,9 @@
             }
           ],
           "disableDefaultFieldMapping": false,
-          "path": [],
+          "path": [
+            "messages"
+          ],
           "requiresFields": [],
           "unescapeResponseJson": false
         },
@@ -6244,6 +7015,50 @@
           "unescapeResponseJson": false
         },
         {
+          "typeName": "countries_Country",
+          "fieldName": "_join",
+          "disableDefaultFieldMapping": true,
+          "path": [
+            "_join"
+          ],
+          "requiresFields": [],
+          "argumentsConfiguration": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Continent",
+          "fieldName": "_join",
+          "disableDefaultFieldMapping": true,
+          "path": [
+            "_join"
+          ],
+          "requiresFields": [],
+          "argumentsConfiguration": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_Language",
+          "fieldName": "_join",
+          "disableDefaultFieldMapping": true,
+          "path": [
+            "_join"
+          ],
+          "requiresFields": [],
+          "argumentsConfiguration": [],
+          "unescapeResponseJson": false
+        },
+        {
+          "typeName": "countries_State",
+          "fieldName": "_join",
+          "disableDefaultFieldMapping": true,
+          "path": [
+            "_join"
+          ],
+          "requiresFields": [],
+          "argumentsConfiguration": [],
+          "unescapeResponseJson": false
+        },
+        {
           "typeName": "db_UsersCountOutputType",
           "fieldName": "_join",
           "disableDefaultFieldMapping": true,
@@ -6443,6 +7258,38 @@
         }
       ],
       "typeConfigurations": [
+        {
+          "typeName": "countries_Country",
+          "renameTo": "Country"
+        },
+        {
+          "typeName": "countries_Continent",
+          "renameTo": "Continent"
+        },
+        {
+          "typeName": "countries_Language",
+          "renameTo": "Language"
+        },
+        {
+          "typeName": "countries_State",
+          "renameTo": "State"
+        },
+        {
+          "typeName": "countries_StringQueryOperatorInput",
+          "renameTo": "StringQueryOperatorInput"
+        },
+        {
+          "typeName": "countries_CountryFilterInput",
+          "renameTo": "CountryFilterInput"
+        },
+        {
+          "typeName": "countries_ContinentFilterInput",
+          "renameTo": "ContinentFilterInput"
+        },
+        {
+          "typeName": "countries_LanguageFilterInput",
+          "renameTo": "LanguageFilterInput"
+        },
         {
           "typeName": "db_NestedIntFilter",
           "renameTo": "NestedIntFilter"
@@ -6831,6 +7678,33 @@
               }
             },
             "id": "github"
+          },
+          {
+            "kind": 1,
+            "oidcConfig": {
+              "clientId": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": "test"
+              },
+              "clientSecret": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": "UMaIfTUrLElpGGYx3ER8lhCtn2Epnv9R"
+              },
+              "issuer": {
+                "kind": 0,
+                "environmentVariableDefaultValue": "",
+                "environmentVariableName": "",
+                "placeholderVariableName": "",
+                "staticVariableContent": "https://lemur-9.cloud-iam.com/auth/realms/wundergraph-staging"
+              }
+            },
+            "id": "test"
           }
         ],
         "authorizedRedirectUris": [
@@ -6855,5 +7729,5 @@
     },
     "additionalHostNames": []
   },
-  "dangerouslyEnableGraphQLEndpoint": false
+  "dangerouslyEnableGraphQLEndpoint": true
 }

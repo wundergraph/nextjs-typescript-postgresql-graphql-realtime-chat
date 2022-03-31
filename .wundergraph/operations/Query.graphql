@@ -1,0 +1,11 @@
+{
+    db_findManyusers{
+        id
+        name
+        germanyCode: _join @transform(get: "countries_country.code") {
+            countries_country(code: "DE"){
+                code
+            }
+        }
+    }
+}

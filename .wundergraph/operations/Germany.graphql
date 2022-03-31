@@ -1,0 +1,7 @@
+{
+    countries_country(code: "DE"){
+        code
+        name
+        __typename
+    }
+}

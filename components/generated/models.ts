@@ -95,150 +95,67 @@ export interface InjectedUserInfoInput {
 }
 
 export interface AddMessageResponse {
-	data?: {
-		createOnemessages?: {
-			id: number;
-			message: string;
-		};
-	};
+	data?: AddMessageResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface AllUsersResponse {
-	data?: {
-		findManyusers: {
-			id: number;
-			email: string;
-			name: string;
-			messages?: {
-				id: number;
-				message: string;
-			}[];
-		}[];
-	};
+	data?: AllUsersResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface ChangeUserNameResponse {
-	data?: {
-		updateOneusers?: {
-			id: number;
-			email: string;
-			name: string;
-			updatedat: string;
-		};
-	};
+	data?: ChangeUserNameResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface CountriesResponse {
-	data?: {
-		countries_countries: {
-			code: string;
-			name: string;
-			phone: string;
-			capital?: string;
-		}[];
-	};
+	data?: CountriesResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface DeleteAllMessagesByUserEmailResponse {
-	data?: {
-		deleteManymessages?: {
-			count: number;
-		};
-	};
+	data?: DeleteAllMessagesByUserEmailResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface GermanyResponse {
-	data?: {
-		countries_country?: {
-			code: string;
-			name: string;
-			__typename: "countries_Country";
-		};
-	};
+	data?: GermanyResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface MessagesResponse {
-	data?: {
-		findManymessages: {
-			id: number;
-			message: string;
-			users: {
-				id: number;
-				name: string;
-			};
-		}[];
-	};
+	data?: MessagesResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface MockQueryResponse {
-	data?: {
-		findFirstusers?: {
-			id: number;
-			email: string;
-			name: string;
-		};
-	};
+	data?: MockQueryResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface QueryResponse {
-	data?: {
-		db_findManyusers: {
-			id: number;
-			name: string;
-			germanyCode: string;
-		}[];
-	};
+	data?: QueryResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface SetLastLoginResponse {
-	data?: {
-		updateOneusers?: {
-			id: number;
-			lastlogin: string;
-		};
-	};
+	data?: SetLastLoginResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface UpdateUserResponse {
-	data?: {
-		db_upsertOneusers?: {
-			id: number;
-			name: string;
-			email: string;
-		};
-	};
+	data?: UpdateUserResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface UsResponse {
-	data?: {
-		countries_country?: {
-			code: string;
-			name: string;
-		};
-	};
+	data?: UsResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
 export interface UserInfoResponse {
-	data?: {
-		findFirstusers?: {
-			id: number;
-			email: string;
-			name: string;
-			lastlogin: string;
-		};
-	};
+	data?: UserInfoResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
@@ -354,10 +271,17 @@ export interface UserInfoResponseData {
 export interface db_usersCreateInput {
 	email: string;
 	name: string;
+	updatedat?: string;
+	lastlogin?: string;
 	messages?: db_messagesCreateNestedManyWithoutUsersInput;
 }
 
-export interface db_messagesCreateNestedManyWithoutUsersInput {}
+export interface db_messagesCreateNestedManyWithoutUsersInput {
+	create?: db_messagesCreateWithoutUsersInput[];
+	connectOrCreate?: db_messagesCreateOrConnectWithoutUsersInput[];
+	createMany?: db_messagesCreateManyUsersInputEnvelope[];
+	connect?: db_messagesWhereUniqueInput[];
+}
 
 export interface db_messagesCreateWithoutUsersInput {
 	message?: string;
@@ -365,15 +289,20 @@ export interface db_messagesCreateWithoutUsersInput {
 
 export interface db_messagesCreateOrConnectWithoutUsersInput {
 	where?: db_messagesWhereUniqueInput;
+	create?: db_messagesCreateWithoutUsersInput[];
 }
 
-export interface db_messagesWhereUniqueInput {}
+export interface db_messagesWhereUniqueInput {
+	id?: number;
+}
 
 export interface db_messagesCreateManyUsersInputEnvelope {
 	data?: db_messagesCreateManyUsersInput[];
+	skipDuplicates?: boolean;
 }
 
 export interface db_messagesCreateManyUsersInput {
+	id?: number;
 	message?: string;
 }
 
@@ -385,17 +314,32 @@ export interface db_usersUpdateInput {
 	messages?: db_messagesUpdateManyWithoutUsersInput;
 }
 
-export interface db_StringFieldUpdateOperationsInput {}
+export interface db_StringFieldUpdateOperationsInput {
+	set?: string;
+}
 
-export interface db_DateTimeFieldUpdateOperationsInput {}
+export interface db_DateTimeFieldUpdateOperationsInput {
+	set?: string;
+}
 
 export interface db_messagesUpdateManyWithoutUsersInput {
+	create?: db_messagesCreateWithoutUsersInput[];
+	connectOrCreate?: db_messagesCreateOrConnectWithoutUsersInput[];
+	upsert?: db_messagesUpsertWithWhereUniqueWithoutUsersInput[];
+	createMany?: db_messagesCreateManyUsersInputEnvelope[];
+	connect?: db_messagesWhereUniqueInput[];
 	set?: db_messagesWhereUniqueInput;
+	disconnect?: db_messagesWhereUniqueInput[];
+	delete?: db_messagesWhereUniqueInput[];
+	update?: db_messagesUpdateWithWhereUniqueWithoutUsersInput[];
+	updateMany?: db_messagesUpdateManyWithWhereWithoutUsersInput[];
 	deleteMany?: db_messagesScalarWhereInput;
 }
 
 export interface db_messagesUpsertWithWhereUniqueWithoutUsersInput {
 	where?: db_messagesWhereUniqueInput;
+	update?: db_messagesUpdateWithoutUsersInput[];
+	create?: db_messagesCreateWithoutUsersInput[];
 }
 
 export interface db_messagesUpdateWithoutUsersInput {
@@ -414,6 +358,7 @@ export interface db_messagesUpdateManyWithWhereWithoutUsersInput {
 
 export interface db_messagesScalarWhereInput {
 	AND?: db_messagesScalarWhereInput;
+	OR?: db_messagesScalarWhereInput[];
 	NOT?: db_messagesScalarWhereInput;
 	id?: db_IntFilter;
 	user_id?: db_IntFilter;
@@ -421,18 +366,53 @@ export interface db_messagesScalarWhereInput {
 }
 
 export interface db_IntFilter {
+	equals?: number;
+	in?: number[];
+	notIn?: number[];
+	lt?: number;
+	lte?: number;
+	gt?: number;
+	gte?: number;
 	not?: db_NestedIntFilter;
 }
 
 export interface db_NestedIntFilter {
+	equals?: number;
+	in?: number[];
+	notIn?: number[];
+	lt?: number;
+	lte?: number;
+	gt?: number;
+	gte?: number;
 	not?: db_NestedIntFilter;
 }
 
 export interface db_StringFilter {
+	equals?: string;
+	in?: string[];
+	notIn?: string[];
+	lt?: string;
+	lte?: string;
+	gt?: string;
+	gte?: string;
+	contains?: string;
+	startsWith?: string;
+	endsWith?: string;
+	mode?: "default" | "insensitive";
 	not?: db_NestedStringFilter;
 }
 
 export interface db_NestedStringFilter {
+	equals?: string;
+	in?: string[];
+	notIn?: string[];
+	lt?: string;
+	lte?: string;
+	gt?: string;
+	gte?: string;
+	contains?: string;
+	startsWith?: string;
+	endsWith?: string;
 	not?: db_NestedStringFilter;
 }
 

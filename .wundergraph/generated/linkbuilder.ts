@@ -73,6 +73,22 @@ const targetStep = <T, F extends keyof T, R>(field: F) => ({
 });
 
 interface TargetTypes {
+	countries_Country:
+		| "code"
+		| "name"
+		| "native"
+		| "phone"
+		| "continent"
+		| "capital"
+		| "currency"
+		| "languages"
+		| "emoji"
+		| "emojiU"
+		| "states"
+		| "_join";
+	countries_Continent: "code" | "name" | "countries" | "_join";
+	countries_Language: "code" | "name" | "native" | "rtl" | "_join";
+	countries_State: "code" | "name" | "country" | "_join";
 	db_UsersCountOutputType: "messages" | "_join";
 	db_users: "id" | "email" | "name" | "updatedat" | "lastlogin" | "messages" | "_count" | "_join";
 	db_messages: "id" | "user_id" | "message" | "users" | "_join";
@@ -105,6 +121,24 @@ interface TargetTypes {
 }
 
 interface SourceFields {
+	countries_countries: {
+		filter: null;
+	};
+	countries_country: {
+		code: null;
+	};
+	countries_continents: {
+		filter: null;
+	};
+	countries_continent: {
+		code: null;
+	};
+	countries_languages: {
+		filter: null;
+	};
+	countries_language: {
+		code: null;
+	};
 	db_findFirstmessages: {
 		where: null;
 		orderBy: null;

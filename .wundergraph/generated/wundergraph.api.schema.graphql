@@ -231,6 +231,85 @@ directive @transform(
   get: String
 ) on FIELD
 
+type countries_Country {
+  code: ID!
+  name: String!
+  native: String!
+  phone: String!
+  continent: countries_Continent!
+  capital: String
+  currency: String
+  languages: [countries_Language!]!
+  emoji: String!
+  emojiU: String!
+  states: [countries_State!]!
+  _join: Query!
+}
+
+type countries_Continent {
+  code: ID!
+  name: String!
+  countries: [countries_Country!]!
+  _join: Query!
+}
+
+type countries_Language {
+  code: ID!
+  name: String
+  native: String
+  rtl: Boolean!
+  _join: Query!
+}
+
+type countries_State {
+  code: String
+  name: String!
+  country: countries_Country!
+  _join: Query!
+}
+
+input countries_StringQueryOperatorInput {
+  eq: String
+  ne: String
+  in: [String]
+  nin: [String]
+  regex: String
+  glob: String
+}
+
+input countries_CountryFilterInput {
+  code: countries_StringQueryOperatorInput
+  currency: countries_StringQueryOperatorInput
+  continent: countries_StringQueryOperatorInput
+}
+
+input countries_ContinentFilterInput {
+  code: countries_StringQueryOperatorInput
+}
+
+input countries_LanguageFilterInput {
+  code: countries_StringQueryOperatorInput
+}
+
+type Query {
+  countries_countries(filter: countries_CountryFilterInput): [countries_Country!]!
+  countries_country(code: ID!): countries_Country
+  countries_continents(filter: countries_ContinentFilterInput): [countries_Continent!]!
+  countries_continent(code: ID!): countries_Continent
+  countries_languages(filter: countries_LanguageFilterInput): [countries_Language!]!
+  countries_language(code: ID!): countries_Language
+  db_findFirstmessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): db_messages
+  db_findManymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]!
+  db_aggregatemessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int): db_AggregateMessages!
+  db_groupBymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithAggregationInput], by: [db_MessagesScalarFieldEnum]!, having: db_messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_MessagesGroupByOutputType]!
+  db_findUniquemessages(where: db_messagesWhereUniqueInput!): db_messages
+  db_findFirstusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): db_users
+  db_findManyusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): [db_users]!
+  db_aggregateusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int): db_AggregateUsers!
+  db_groupByusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithAggregationInput], by: [db_UsersScalarFieldEnum]!, having: db_usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_UsersGroupByOutputType]!
+  db_findUniqueusers(where: db_usersWhereUniqueInput!): db_users
+}
+
 input db_NestedIntFilter {
   equals: Int
   in: [Int]
@@ -738,19 +817,6 @@ type db_UsersGroupByOutputType {
   _min: db_UsersMinAggregateOutputType
   _max: db_UsersMaxAggregateOutputType
   _join: Query!
-}
-
-type Query {
-  db_findFirstmessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): db_messages
-  db_findManymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int, distinct: [db_MessagesScalarFieldEnum]): [db_messages]!
-  db_aggregatemessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithRelationInput], cursor: db_messagesWhereUniqueInput, take: Int, skip: Int): db_AggregateMessages!
-  db_groupBymessages(where: db_messagesWhereInput, orderBy: [db_messagesOrderByWithAggregationInput], by: [db_MessagesScalarFieldEnum]!, having: db_messagesScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_MessagesGroupByOutputType]!
-  db_findUniquemessages(where: db_messagesWhereUniqueInput!): db_messages
-  db_findFirstusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): db_users
-  db_findManyusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int, distinct: [db_UsersScalarFieldEnum]): [db_users]!
-  db_aggregateusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithRelationInput], cursor: db_usersWhereUniqueInput, take: Int, skip: Int): db_AggregateUsers!
-  db_groupByusers(where: db_usersWhereInput, orderBy: [db_usersOrderByWithAggregationInput], by: [db_UsersScalarFieldEnum]!, having: db_usersScalarWhereWithAggregatesInput, take: Int, skip: Int): [db_UsersGroupByOutputType]!
-  db_findUniqueusers(where: db_usersWhereUniqueInput!): db_users
 }
 
 input db_usersCreateWithoutMessagesInput {
