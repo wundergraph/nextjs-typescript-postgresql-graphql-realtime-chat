@@ -37,6 +37,7 @@ configureWunderGraphApplication({
                 // use all the typescript react templates to generate a client
                 templates.typescript.operations,
                 templates.typescript.linkBuilder,
+                ...templates.typescript.all,
             ],
         },
         {
