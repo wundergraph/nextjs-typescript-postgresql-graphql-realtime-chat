@@ -124,6 +124,11 @@ export interface GermanyResponse {
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
+export interface HelloResponse {
+	data?: HelloResponseData;
+	errors?: ReadonlyArray<GraphQLError>;
+}
+
 export interface MessagesResponse {
 	data?: MessagesResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
@@ -208,6 +213,10 @@ export interface GermanyResponseData {
 		name: string;
 		__typename: "countries_Country";
 	};
+}
+
+export interface HelloResponseData {
+	gql_hello?: string;
 }
 
 export interface MessagesResponseData {

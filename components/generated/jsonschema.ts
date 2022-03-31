@@ -27,6 +27,10 @@ interface Schema {
 		input: JSONSchema7;
 		response: JSONSchema7;
 	};
+	Hello: {
+		input: JSONSchema7;
+		response: JSONSchema7;
+	};
 	Messages: {
 		input: JSONSchema7;
 		response: JSONSchema7;
@@ -239,6 +243,16 @@ const jsonSchema: Schema = {
 					},
 					additionalProperties: false,
 				},
+			},
+			additionalProperties: false,
+		},
+	},
+	Hello: {
+		input: { type: "object", properties: {}, additionalProperties: false, definitions: {} },
+		response: {
+			type: "object",
+			properties: {
+				data: { type: "object", properties: { gql_hello: { type: "string" } }, additionalProperties: false },
 			},
 			additionalProperties: false,
 		},

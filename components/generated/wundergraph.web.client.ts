@@ -11,6 +11,7 @@ import type {
 	DeleteAllMessagesByUserEmailResponse,
 	DeleteAllMessagesByUserEmailInput,
 	GermanyResponse,
+	HelloResponse,
 	MessagesResponse,
 	MockQueryResponse,
 	QueryResponse,
@@ -55,7 +56,7 @@ export class Client {
 	private customFetch?: (input: RequestInfo, init?: RequestInit) => Promise<globalThis.Response>;
 	private extraHeaders?: Headers;
 	private readonly baseURL: string = "http://localhost:9991";
-	private readonly applicationHash: string = "afce2d4b";
+	private readonly applicationHash: string = "0ebfad09";
 	private readonly applicationPath: string = "api/main";
 	private readonly sdkVersion: string = "1.0.0-next.9";
 	private csrfToken: string | undefined;
@@ -97,6 +98,14 @@ export class Client {
 			return await this.doFetch<GermanyResponse>({
 				method: "GET",
 				path: "Germany",
+				input: options.input,
+				abortSignal: options.abortSignal,
+			});
+		},
+		Hello: async (options: RequestOptions<never, HelloResponse>) => {
+			return await this.doFetch<HelloResponse>({
+				method: "GET",
+				path: "Hello",
 				input: options.input,
 				abortSignal: options.abortSignal,
 			});
@@ -215,6 +224,18 @@ export class Client {
 				{
 					method: "GET",
 					path: "Germany",
+					input: options.input,
+					abortSignal: options.abortSignal,
+					liveQuery: true,
+				},
+				cb
+			);
+		},
+		Hello: (options: RequestOptions<never, HelloResponse>, cb: (response: Response<HelloResponse>) => void) => {
+			return this.startSubscription<HelloResponse>(
+				{
+					method: "GET",
+					path: "Hello",
 					input: options.input,
 					abortSignal: options.abortSignal,
 					liveQuery: true,

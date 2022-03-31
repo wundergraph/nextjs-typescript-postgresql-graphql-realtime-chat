@@ -19,6 +19,7 @@ import {
 	InternalDeleteAllMessagesByUserEmailInput,
 	InjectedDeleteAllMessagesByUserEmailInput,
 	GermanyResponse,
+	HelloResponse,
 	MessagesResponse,
 	MockQueryResponse,
 	QueryResponse,
@@ -41,6 +42,7 @@ export interface InternalClient {
 		AllUsers: (input: InternalAllUsersInput) => Promise<AllUsersResponse>;
 		Countries: () => Promise<CountriesResponse>;
 		Germany: () => Promise<GermanyResponse>;
+		Hello: () => Promise<HelloResponse>;
 		Messages: () => Promise<MessagesResponse>;
 		MockQuery: () => Promise<MockQueryResponse>;
 		Query: () => Promise<QueryResponse>;

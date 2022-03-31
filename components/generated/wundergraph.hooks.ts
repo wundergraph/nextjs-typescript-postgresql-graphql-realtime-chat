@@ -19,6 +19,7 @@ import {
 	InternalDeleteAllMessagesByUserEmailInput,
 	InjectedDeleteAllMessagesByUserEmailInput,
 	GermanyResponse,
+	HelloResponse,
 	MessagesResponse,
 	MockQueryResponse,
 	QueryResponse,
@@ -65,6 +66,7 @@ export type WUNDERGRAPH_OPERATION =
 	| "Countries"
 	| "DeleteAllMessagesByUserEmail"
 	| "Germany"
+	| "Hello"
 	| "Messages"
 	| "MockQuery"
 	| "Query"
@@ -147,6 +149,13 @@ export interface HooksConfig {
 			postResolve?: (ctx: Context<User>, response: GermanyResponse) => Promise<void>;
 			customResolve?: (ctx: Context<User>) => Promise<void | GermanyResponse>;
 			mutatingPostResolve?: (ctx: Context<User>, response: GermanyResponse) => Promise<GermanyResponse>;
+		};
+		Hello?: {
+			mockResolve?: (ctx: Context<User>) => Promise<HelloResponse>;
+			preResolve?: (ctx: Context<User>) => Promise<void>;
+			postResolve?: (ctx: Context<User>, response: HelloResponse) => Promise<void>;
+			customResolve?: (ctx: Context<User>) => Promise<void | HelloResponse>;
+			mutatingPostResolve?: (ctx: Context<User>, response: HelloResponse) => Promise<HelloResponse>;
 		};
 		Messages?: {
 			mockResolve?: (ctx: Context<User>) => Promise<MessagesResponse>;

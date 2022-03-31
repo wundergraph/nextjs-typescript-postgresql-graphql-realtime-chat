@@ -31,6 +31,7 @@ export interface OperationsConfiguration {
 		Countries?: CustomizeQuery;
 		DeleteAllMessagesByUserEmail?: CustomizeMutation;
 		Germany?: CustomizeQuery;
+		Hello?: CustomizeQuery;
 		Messages?: CustomizeQuery;
 		MockQuery?: CustomizeQuery;
 		Query?: CustomizeQuery;

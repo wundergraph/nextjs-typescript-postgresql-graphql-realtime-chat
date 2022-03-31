@@ -12,6 +12,7 @@ import {
 	AllUsersResponse,
 	CountriesResponse,
 	GermanyResponse,
+	HelloResponse,
 	MessagesResponse,
 	MockQueryResponse,
 	QueryResponse,
@@ -245,6 +246,10 @@ export const useQuery = {
 		const { client } = useWunderGraph();
 		return Query(client.query.Germany, { requiresAuthentication: false }, options);
 	},
+	Hello: (options?: RequestOptions<never, HelloResponse>) => {
+		const { client } = useWunderGraph();
+		return Query(client.query.Hello, { requiresAuthentication: false }, options);
+	},
 	Messages: (options?: RequestOptions<never, MessagesResponse>) => {
 		const { client } = useWunderGraph();
 		return Query(client.query.Messages, { requiresAuthentication: false }, options);
@@ -298,6 +303,10 @@ export const useLiveQuery = {
 	Germany: (options?: SubscriptionRequestOptions) => {
 		const { client } = useWunderGraph();
 		return Subscription(client.liveQuery.Germany, { requiresAuthentication: false }, options);
+	},
+	Hello: (options?: SubscriptionRequestOptions) => {
+		const { client } = useWunderGraph();
+		return Subscription(client.liveQuery.Hello, { requiresAuthentication: false }, options);
 	},
 	Messages: (options?: SubscriptionRequestOptions) => {
 		const { client } = useWunderGraph();
