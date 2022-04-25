@@ -1,19 +1,20 @@
-import {useLoadingComplete, useQuery} from "../components/generated/hooks";
+import {useQuery, withWunderGraph} from "../components/generated/wundergraph.nextjs.integration";
 
 const Countries = () => {
-    const germany = useQuery.Germany({
-        lazy: true,
-    });
+    const germany = useQuery.Germany();
+    const us = useQuery.Us()
+    const userIfno = useQuery.UserInfo();
     return (
         <div>
             <p>
                 {JSON.stringify({
-                    germany: germany.response,
+                    germany,
+                    us,
+                    userIfno
                 })}
             </p>
-            <button onClick={()=>germany.refetch()}>lazyLoad</button>
         </div>
     )
 }
 
-export default Countries;
+export default withWunderGraph(Countries);

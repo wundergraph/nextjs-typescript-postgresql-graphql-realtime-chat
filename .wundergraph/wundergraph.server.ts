@@ -71,21 +71,7 @@ export default configureWunderGraphServer<HooksConfig,
                 }
             }
         },
-        queries: {
-            MockQuery: {
-                mockResolve: async () => {
-                    return {
-                        data: {
-                            findFirstusers: {
-                                id: 1,
-                                email: "jens@wundergraph.com",
-                                name: "Jens"
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        queries: {},
         mutations: {},
     },
     graphqlServers: [

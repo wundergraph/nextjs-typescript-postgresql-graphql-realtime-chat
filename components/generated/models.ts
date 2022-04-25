@@ -26,74 +26,6 @@ export interface UpdateUserInput {
 	update: db_usersUpdateInput;
 }
 
-export interface InternalAddMessageInput {
-	email: string;
-	name: string;
-	message: string;
-}
-
-export interface InternalAllUsersInput {
-	email: string;
-}
-
-export interface InternalChangeUserNameInput {
-	newName: string;
-	email: string;
-}
-
-export interface InternalDeleteAllMessagesByUserEmailInput {
-	email: string;
-}
-
-export interface InternalSetLastLoginInput {
-	email: string;
-}
-
-export interface InternalUpdateUserInput {
-	id: number;
-	create: db_usersCreateInput;
-	update: db_usersUpdateInput;
-}
-
-export interface InternalUserInfoInput {
-	email: string;
-}
-
-export interface InjectedAddMessageInput {
-	email: string;
-	name: string;
-	message: string;
-}
-
-export interface InjectedAllUsersInput {
-	email: string;
-}
-
-export interface InjectedChangeUserNameInput {
-	newName: string;
-	email: string;
-	updatedAt: string;
-}
-
-export interface InjectedDeleteAllMessagesByUserEmailInput {
-	email: string;
-}
-
-export interface InjectedSetLastLoginInput {
-	email: string;
-	now: string;
-}
-
-export interface InjectedUpdateUserInput {
-	id: number;
-	create: db_usersCreateInput;
-	update: db_usersUpdateInput;
-}
-
-export interface InjectedUserInfoInput {
-	email: string;
-}
-
 export interface AddMessageResponse {
 	data?: AddMessageResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
@@ -131,11 +63,6 @@ export interface HelloResponse {
 
 export interface MessagesResponse {
 	data?: MessagesResponseData;
-	errors?: ReadonlyArray<GraphQLError>;
-}
-
-export interface MockQueryResponse {
-	data?: MockQueryResponseData;
 	errors?: ReadonlyArray<GraphQLError>;
 }
 
@@ -230,14 +157,6 @@ export interface MessagesResponseData {
 	}[];
 }
 
-export interface MockQueryResponseData {
-	findFirstusers?: {
-		id: number;
-		email: string;
-		name: string;
-	};
-}
-
 export interface QueryResponseData {
 	db_findManyusers: {
 		id: number;
@@ -294,6 +213,7 @@ export interface db_messagesCreateNestedManyWithoutUsersInput {
 
 export interface db_messagesCreateWithoutUsersInput {
 	message?: string;
+	attachement?: JSONValue;
 }
 
 export interface db_messagesCreateOrConnectWithoutUsersInput {
@@ -313,6 +233,7 @@ export interface db_messagesCreateManyUsersInputEnvelope {
 export interface db_messagesCreateManyUsersInput {
 	id?: number;
 	message?: string;
+	attachement?: JSONValue;
 }
 
 export interface db_usersUpdateInput {
@@ -336,10 +257,10 @@ export interface db_messagesUpdateManyWithoutUsersInput {
 	connectOrCreate?: db_messagesCreateOrConnectWithoutUsersInput[];
 	upsert?: db_messagesUpsertWithWhereUniqueWithoutUsersInput[];
 	createMany?: db_messagesCreateManyUsersInputEnvelope[];
-	connect?: db_messagesWhereUniqueInput[];
 	set?: db_messagesWhereUniqueInput;
 	disconnect?: db_messagesWhereUniqueInput[];
 	delete?: db_messagesWhereUniqueInput[];
+	connect?: db_messagesWhereUniqueInput[];
 	update?: db_messagesUpdateWithWhereUniqueWithoutUsersInput[];
 	updateMany?: db_messagesUpdateManyWithWhereWithoutUsersInput[];
 	deleteMany?: db_messagesScalarWhereInput;
@@ -353,6 +274,7 @@ export interface db_messagesUpsertWithWhereUniqueWithoutUsersInput {
 
 export interface db_messagesUpdateWithoutUsersInput {
 	message?: db_StringFieldUpdateOperationsInput;
+	attachement?: JSONValue;
 }
 
 export interface db_messagesUpdateWithWhereUniqueWithoutUsersInput {
@@ -372,6 +294,7 @@ export interface db_messagesScalarWhereInput {
 	id?: db_IntFilter;
 	user_id?: db_IntFilter;
 	message?: db_StringFilter;
+	attachement?: db_JsonFilter;
 }
 
 export interface db_IntFilter {
@@ -425,8 +348,14 @@ export interface db_NestedStringFilter {
 	not?: db_NestedStringFilter;
 }
 
+export interface db_JsonFilter {
+	equals?: "DbNull" | "JsonNull" | "AnyNull";
+	not?: "DbNull" | "JsonNull" | "AnyNull";
+}
+
 export interface db_messagesUpdateManyMutationInput {
 	message?: db_StringFieldUpdateOperationsInput;
+	attachement?: JSONValue;
 }
 
 export type JSONValue = string | number | boolean | JSONObject | Array<JSONValue>;
