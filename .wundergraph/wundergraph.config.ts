@@ -19,17 +19,9 @@ const countries = introspect.graphql({
     url: "https://countries.trevorblades.com/",
 });
 
-const myApplication = new Application({
-    name: "api",
-    apis: [
-        countries,
-        db,
-    ],
-});
-
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
-    application: myApplication,
+    apis: [countries, db],
     server,
     codeGenerators: [
         {
