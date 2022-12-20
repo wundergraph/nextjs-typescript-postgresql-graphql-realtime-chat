@@ -1,11 +1,11 @@
 import {
-    Application,
     authProviders,
     configureWunderGraphApplication,
     cors, EnvironmentVariable,
     introspect,
     templates
 } from "@wundergraph/sdk";
+import { NextJsTemplate } from '@wundergraph/nextjs/dist/template';
 import operations from "./wundergraph.operations";
 import server from "./wundergraph.server";
 
@@ -19,17 +19,9 @@ const countries = introspect.graphql({
     url: "https://countries.trevorblades.com/",
 });
 
-const myApplication = new Application({
-    name: "api",
-    apis: [
-        countries,
-        db,
-    ],
-});
-
 // configureWunderGraph emits the configuration
 configureWunderGraphApplication({
-    application: myApplication,
+    apis: [countries, db],
     server,
     codeGenerators: [
         {
@@ -42,7 +34,8 @@ configureWunderGraphApplication({
         },
         {
             templates: [
-                ...templates.typescript.nextjs
+                templates.typescript.client,
+                new NextJsTemplate(),
             ],
             path: "../components/generated/",
         }
